@@ -1,38 +1,35 @@
-NAME = minishell 
+NAME = minishell
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 
 RM = rm -f
-OBJ_DIR = ./obj
-LIB_DIR = ./libft
-LIB_NAME = libft.a
-LIBRARY = -L./libft -lft
-INCLUDE = -I./libft
+OBJ_DIR = obj
+OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+LIBRARY = includes/libft/libft.a
+INCLUDES = -I./includes -I./includes/libft
 
-SRC = sources/main.c sources/readline.c
+SRC = src/main.c src/readline.c
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
-all: $(LIB_DIR)/$(LIB_NAME) $(NAME)
+all: $(NAME)
 
-$(LIB_DIR)/$(LIB_NAME):
-	make -C $(LIB_DIR)
+$(NAME): $(OBJ)
+	make all -C includes/libft
+	$(CC) $(OBJ) $(CFLAGS) $(INCLUDES) $(LIBRARY) -o $(NAME) -lreadline
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
-
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBRARY) -lreadline
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	$(RM) -r $(OBJ_DIR)
-	make -C $(LIB_DIR) clean
+	make clean -C includes/libft
 
 fclean: clean
 	$(RM) $(NAME)
-	make -C $(LIB_DIR) fclean
+	make fclean -C includes/libft
 
 re: fclean all
 
