@@ -4,33 +4,48 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 
 RM = rm -f
+
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+SRC = src/main.c src/readline.c
+
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft
 
-SRC = src/main.c src/readline.c
-
-OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
+# Define colors for terminal output
+GREEN = \033[0;32m
+RED = \033[0;31m
+YELLOW = \033[0;33m
+BLUE = \033[0;34m
+RESET = \033[0m
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	make all -C includes/libft
-	$(CC) $(OBJ) $(CFLAGS) $(INCLUDES) $(LIBRARY) -o $(NAME) -lreadline
+	@echo "$(YELLOW)Building libft...$(RESET)"
+	@make -s -C includes/libft all
+	@echo "$(YELLOW)Linking $(NAME)...$(RESET)"
+	@$(CC) $(OBJ) $(CFLAGS) $(INCLUDES) $(LIBRARY) -o $(NAME) -lreadline
+	@echo "$(GREEN)$(NAME) successfully built!"
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@echo "$(BLUE)Compiling $<...$(RESET)"
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	$(RM) -r $(OBJ_DIR)
-	make clean -C includes/libft
+	@echo "$(RED)Cleaning object files...$(RESET)"
+	@$(RM) -r $(OBJ_DIR)
+	@make -s -C includes/libft clean
 
 fclean: clean
-	$(RM) $(NAME)
-	make fclean -C includes/libft
+	@echo "$(RED)Removing $(NAME)...$(RESET)"
+	@$(RM) $(NAME)
+	@make -s -C includes/libft fclean
 
 re: fclean all
+
+verbose:
+	$(MAKE) all
 
 .PHONY: all bonus clean fclean re
