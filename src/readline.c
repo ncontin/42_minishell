@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/11 17:17:06 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/12 16:04:44 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	line_read(void)
 
 	while (1)
 	{
-		input = readline("> ");
+		input = readline("minishell> ");
 		if (input && (ft_strlen(input) > 0))
 		{
 			if (ft_strncmp("exit", input, ft_strlen(input)) == 0)
