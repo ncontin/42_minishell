@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 16:32:57 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:33:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ void	get_path(char **envp, t_env *lst_env);
 void	line_read(void);
 //error.c
 void	error_msg(char *message, int error);
+//free.c
+void	free_struct(t_env *lst_env);
 
 #endif

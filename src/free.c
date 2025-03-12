@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 14:57:25 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 16:43:14 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/12 17:29:01 by aroullea          #+#    #+#             */
+/*   Updated: 2025/03/12 17:35:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	get_path(char **envp, t_env *lst_env)
+void	free_struct(t_env *lst_env)
 {
-	char	**mypath;
-	char	*env_path;
+	int	i;
 
-	mypath = NULL;
-	lst_env->envp = envp;
-	env_path = getenv("PATH");
-	mypath = ft_split(env_path, ':');
-	if (mypath == NULL)
-		error_msg("Path : memory allocation failed\n", 12);
-	lst_env->path = mypath;
+	i = 0;
+	while (lst_env->path[i] != NULL)
+	{
+		free(lst_env->path[i]);
+		i++;
+	}
+	free(lst_env->path);
 }
