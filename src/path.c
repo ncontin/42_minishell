@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 16:32:57 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/12 14:57:25 by aroullea          #+#    #+#             */
+/*   Updated: 2025/03/12 16:33:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "../libft/libft.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_env
+void	get_path(char **envp, t_env *lst_env)
 {
-	char	**envp;
-	char	**path;
-}	t_env;
+	char	**mypath;
+	char	*env_path;
 
-//path.c
-void	get_path(char **envp, t_env *lst_env);
-//readline.c
-void	line_read(void);
-//error.c
-void	error_msg(char *message, int error);
-
-#endif
+	mypath = NULL;
+	lst_env->envp = envp;
+	env_path = getenv("PATH");
+	mypath = ft_split(env_path, ':');
+	if (mypath == NULL)
+		error_msg("path : memory allocation failed\n", 12);
+	lst_env->path = mypath;
+}

@@ -1,33 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline.c                                         :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 15:54:30 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/12 15:31:12 by aroullea          #+#    #+#             */
+/*   Updated: 2025/03/12 15:33:18 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	line_read(void)
+void	error_msg(char *message, int error)
 {
-	char	*input;
-
-	while (1)
-	{
-		input = readline("minishell> ");
-		if (input && (ft_strlen(input) > 0))
-		{
-			if (ft_strncmp("exit", input, ft_strlen(input)) == 0)
-			{
-				free(input);
-				break ;
-			}
-			add_history(input);
-			free(input);
-		}
-	}
+	write(STDERR_FILENO, message, ft_strlen(message) + 1);
+	write(STDERR_FILENO, "\n", 1);
+	exit(error);
 }
