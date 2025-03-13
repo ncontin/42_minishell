@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/13 11:20:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/13 14:50:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,6 @@ void	free_struct(t_env *lst_env);
 void	parsing(t_env *lst_env, char *input);
 //arg_split.c
 char	**arg_split(char const *s);
+//arg_split_utils.c
+t_bool	is_operator(char c, int no_space);
 #endif
