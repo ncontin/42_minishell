@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/13 16:28:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/13 18:42:12 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static int	count_args(char const *s, int count)
 			in_quotes = !in_quotes;
 		else if ((s[i] == '\'') && (!in_quotes))
 			in_single_quotes = !in_single_quotes;
-		else if ((!in_quotes) && (!in_single_quotes) && is_operator(s[i], 0))
+		else if ((!in_quotes) && (!in_single_quotes) && is_operator(s + i, 0, &i))
 		{
 			in_word = FALSE;
-			if ((s[i + 1] == '"' && s[i] != ' ') || is_operator(s[i], 1))
+			if ((s[i + 1] == '"' && s[i] != ' ') || is_operator(s + i, 1, &i))
 				count++;
 		}
 		else if (!in_word)
@@ -69,10 +69,12 @@ static int	wordlen(char const *s)
 			in_single_quotes = !in_single_quotes;
 		else if ((!in_quotes) && (!in_single_quotes) && ((s[len] == ' ')))
 			break ;
-		else if ((!in_quotes) && (!in_single_quotes) && is_operator(s[len], 1))
+		else if ((!in_quotes) && (!in_single_quotes) && is_operator(s + len, 1, &len))
 		{
-			if (len == 0)
+			if (len == 0 || len == 1)
 				len++;
+			else if (s[len - 1] == '>' || s[len - 1] == '<')
+				len--;
 			break ;
 		}
 		len++;

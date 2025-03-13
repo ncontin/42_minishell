@@ -6,20 +6,28 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 14:03:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/13 14:50:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/13 18:47:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_bool	is_operator(char c, int no_space)
+t_bool	is_operator(char const *c, int no_space, int *len)
 {
 	if (no_space == 1)
 	{
-		if ((c == '>') || (c == '<') || (c == '|'))
+		if ((c[0] == '>') || (c[0] == '<') || (c[0] == '|'))
+		{
+			if ((c[0] == '>' && c[1] == '>') || (c[0] == '<' && c[1] == '<'))
+				(*len)++;
 			return (TRUE);
+		}
 	}
-	else if ((c == ' ') || (c == '>') || (c == '<') || (c == '|'))
+	else if ((c[0] == ' ') || (c[0] == '>') || (c[0] == '<') || (c[0] == '|'))
+	{
+		if ((c[0] == '>' && c[1] == '>') || (c[0] == '<' && c[1] == '<'))
+			(*len)++;
 		return (TRUE);
+	}
 	return (FALSE);
 }
