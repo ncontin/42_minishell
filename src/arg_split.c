@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/13 15:04:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:03:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static int	count_args(char const *s, int count)
 		if (s[i] == '"')
 		{
 			in_quotes = !in_quotes;
-			if (s[i - 1] == '"')
-				in_word = FALSE;
+			/*if (i > 0 && s[i - 1] == '"')
+				in_word = FALSE;*/
 		}
 		else if ((s[i] == '\'') && (!in_quotes))
 			in_single_quotes = !in_single_quotes;
@@ -63,7 +63,7 @@ static int	wordlen(char const *s)
 		if (s[len] == '"')
 		{
 			in_quotes = !in_quotes;
-			if (in_quotes == FALSE)
+			if (in_quotes == FALSE && s[len + 1] != '"')
 			{
 				len++;
 				break ;
