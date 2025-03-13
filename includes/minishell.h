@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 17:33:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:20:27 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef enum s_bool
+{
+	FALSE,
+	TRUE
+}	t_bool;
+
 typedef struct s_env
 {
 	char	**envp;
@@ -28,10 +34,13 @@ typedef struct s_env
 //path.c
 void	get_path(char **envp, t_env *lst_env);
 //readline.c
-void	line_read(void);
+void	line_read(t_env *lst_env);
 //error.c
 void	error_msg(char *message, int error);
 //free.c
 void	free_struct(t_env *lst_env);
-
+//parsing.c
+void	parsing(t_env *lst_env, char *input);
+//arg_split.c
+char	**arg_split(char const *s);
 #endif

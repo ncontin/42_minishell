@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 17:45:23 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
+/*   Updated: 2025/03/13 09:35:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	parsing(t_env *lst_env, char *input)
 {
-	t_env	lst_env;
+	char	**res;
+	int		i;
 
-	(void)argc;
-	(void)argv;
-	get_path(envp, &lst_env);
-	line_read(&lst_env);
-	free_struct(&lst_env);
+	(void)lst_env;
+	i = 0;
+	res = arg_split(input);
+	while (res[i] != NULL)
+	{
+		printf("%s\n", res[i]);
+		free(res[i]);
+		i++;
+	}
+	free(res);
 }
