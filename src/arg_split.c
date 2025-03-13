@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/13 11:19:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/13 13:46:27 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	count_args(char const *s, int count)
 		else if ((!in_quotes) && (!in_single_quotes) && ((s[i] == ' ') || (s[i] == '>') || (s[i] == '<') || (s[i] == '|')))
 		{
 			in_word = FALSE;
-			if (s[i + 1] == '"' || ((s[i] == '>') || (s[i] == '<') || (s[i] == '|')))
+			if ((s[i + 1] == '"' && s[i] != ' ') || ((s[i] == '>') || (s[i] == '<') || (s[i] == '|')))
 				count++;
 		}
 		else if (!in_word)
