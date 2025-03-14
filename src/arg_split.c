@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/14 05:06:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/14 06:03:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,17 @@ static int	count_args(char const *s, int count, int i, t_bool in_word)
 	return (count);
 }
 
-static int	wordlen(char const *s)
+static int	wordlen(char const *s, t_bool dquotes, t_bool squotes)
 {
 	int		len;
-	t_bool	dquotes;
-	t_bool	squotes;
 
 	len = 0;
-	dquotes = FALSE;
-	squotes = FALSE;
 	while (s[len])
 	{
 		if (s[len] == '"')
 		{
 			dquotes = !dquotes;
-			if (dquotes == FALSE && s[len + 1] != '"')
-			{
-				len++;
-				break ;
-			}
+			add_len(s, &dquotes, &len);
 		}
 		else if ((s[len] == '\'') && (!dquotes))
 			squotes = !squotes;
@@ -89,8 +81,7 @@ static void	copyword(char *dest, char const *s, int len, int i)
 	in_squotes = FALSE;
 	while (i < len)
 	{
-		if ((s[i] == '"' && !in_squotes)
-			|| (s[i] == '\'' && !in_dquotes))
+		if ((s[i] == '"' && !in_squotes) || (s[i] == '\'' && !in_dquotes))
 		{
 			if (s[i] == '"')
 				in_dquotes = !in_dquotes;
@@ -114,7 +105,7 @@ static char	**sort(char const *s, char **str, int nb_args)
 	{
 		while (*s == ' ')
 			s++;
-		len = wordlen(s);
+		len = wordlen(s, FALSE, FALSE);
 		str[k] = (char *) malloc(sizeof(char) * (len + 1));
 		if (str[k] == NULL)
 		{

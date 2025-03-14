@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/14 04:26:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/14 05:53:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,5 @@ void	parsing(t_env *lst_env, char *input);
 char	**arg_split(char const *s);
 //arg_split_utils.c
 t_bool	is_operator(char const *c, int no_space, int *len);
+void	add_len(char const *s, t_bool *dquotes, int *len);
 #endif
