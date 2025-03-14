@@ -6,31 +6,26 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/13 19:37:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/14 05:06:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	count_args(char const *s, int count)
+static int	count_args(char const *s, int count, int i, t_bool in_word)
 {
-	t_bool	in_word;
-	t_bool	in_quotes;
-	t_bool	in_single_quotes;
-	int		i;
+	t_bool	in_dquotes;
+	t_bool	in_squotes;
 
-	in_word = FALSE;
-	in_quotes = FALSE;
-	in_single_quotes = FALSE;
-	i = 0;
+	in_dquotes = FALSE;
+	in_squotes = FALSE;
 	while (s[i])
 	{
 		if (s[i] == '"')
-			in_quotes = !in_quotes;
-		else if ((s[i] == '\'') && (!in_quotes))
-			in_single_quotes = !in_single_quotes;
-		else if ((!in_quotes) && (!in_single_quotes)
-			&& is_operator(s + i, 0, &i))
+			in_dquotes = !in_dquotes;
+		else if ((s[i] == '\'') && (!in_dquotes))
+			in_squotes = !in_squotes;
+		else if ((!in_dquotes) && (!in_squotes) && is_operator(s + i, 0, &i))
 		{
 			in_word = FALSE;
 			if ((s[i + 1] == '"' && s[i] != ' ') || is_operator(s + i, 1, &i))
@@ -49,29 +44,28 @@ static int	count_args(char const *s, int count)
 static int	wordlen(char const *s)
 {
 	int		len;
-	t_bool	in_quotes;
-	t_bool	in_single_quotes;
+	t_bool	dquotes;
+	t_bool	squotes;
 
 	len = 0;
-	in_quotes = FALSE;
-	in_single_quotes = FALSE;
+	dquotes = FALSE;
+	squotes = FALSE;
 	while (s[len])
 	{
 		if (s[len] == '"')
 		{
-			in_quotes = !in_quotes;
-			if (in_quotes == FALSE && s[len + 1] != '"')
+			dquotes = !dquotes;
+			if (dquotes == FALSE && s[len + 1] != '"')
 			{
 				len++;
 				break ;
 			}
 		}
-		else if ((s[len] == '\'') && (!in_quotes))
-			in_single_quotes = !in_single_quotes;
-		else if ((!in_quotes) && (!in_single_quotes) && ((s[len] == ' ')))
+		else if ((s[len] == '\'') && (!dquotes))
+			squotes = !squotes;
+		else if ((!dquotes) && (!squotes) && ((s[len] == ' ')))
 			break ;
-		else if ((!in_quotes) && (!in_single_quotes)
-			&& is_operator(s + len, 1, &len))
+		else if ((!dquotes) && (!squotes) && is_operator(s + len, 1, &len))
 		{
 			if (len == 0 || len == 1)
 				len++;
@@ -87,21 +81,21 @@ static int	wordlen(char const *s)
 static void	copyword(char *dest, char const *s, int len, int i)
 {
 	int		j;
-	t_bool	in_quotes;
-	t_bool	single;
+	t_bool	in_dquotes;
+	t_bool	in_squotes;
 
 	j = 0;
-	in_quotes = FALSE;
-	single = FALSE;
+	in_dquotes = FALSE;
+	in_squotes = FALSE;
 	while (i < len)
 	{
-		if ((s[i] == '"' && !single)
-			|| (s[i] == '\'' && !in_quotes))
+		if ((s[i] == '"' && !in_squotes)
+			|| (s[i] == '\'' && !in_dquotes))
 		{
 			if (s[i] == '"')
-				in_quotes = !in_quotes;
+				in_dquotes = !in_dquotes;
 			else
-				single = !single;
+				in_squotes = !in_squotes;
 			i++;
 		}
 		else
@@ -144,7 +138,7 @@ char	**arg_split(char const *s)
 
 	if (!s)
 		return (NULL);
-	nb_args = count_args(s, 0);
+	nb_args = count_args(s, 0, 0, FALSE);
 	str = (char **) malloc(sizeof(char *) * (nb_args + 1));
 	if (str == NULL)
 		return (NULL);
