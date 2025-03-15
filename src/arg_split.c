@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/15 12:17:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/15 19:03:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@ static int	count_args(char const *s, int count, int i, t_bool in_word)
 	{
 		if (s[i] == '"')
 		{
-			if (s[i + 1] == '"' || !(is_operator(s + i, 0, &i)))
+			if ((s[i + 1] == '"' || !(is_operator(s + i, 0, &i))))
 			{
 				if (s[i + 1] == '"')
 					i++;
+				else if (s[i + 1] == ' ')
+					in_word = FALSE;
+				else
+					in_word = FALSE;
 			}
 			else
 			{
@@ -49,6 +53,8 @@ static int	count_args(char const *s, int count, int i, t_bool in_word)
 				if ((s[i + 1] == '"' && s[i] != ' ') || is_operator(s + i, 1, &i))
 					count++;
 			}
+			else if (is_operator(s + i, 1, &i) && in_word != TRUE)
+				count++;
 		}
 		else if (!in_word)
 		{
@@ -69,10 +75,15 @@ static int	wordlen(char const *s, t_bool dquotes, t_bool squotes)
 	{
 		if (s[len] == '"')
 		{
-			if (s[len + 1] == '"'|| !(is_operator(s + len, 0, &len)))
+			if (s[len + 1] == '"' || !(is_operator(s + len, 0, &len)))
 			{
 				if (s[len + 1] == '"')
 					len++;
+				else if (len > 0)
+				{
+					len++;
+					break ;
+				}
 			}
 			else
 			{
@@ -93,6 +104,11 @@ static int	wordlen(char const *s, t_bool dquotes, t_bool squotes)
 			break ;
 		else if ((!dquotes) && (!squotes) && is_operator(s + len, 1, &len))
 		{
+			if (len == 0)
+			{
+				len++;
+				break ;
+			}
 			if (s[len - 1] != '"')
 			{
 				if (len == 0 || len == 1)
