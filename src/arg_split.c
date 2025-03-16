@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/15 19:03:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/16 14:00:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,47 @@
 
 static int	count_args(char const *s, int count, int i, t_bool in_word)
 {
-	t_bool	in_dquotes;
-	t_bool	in_squotes;
+	t_bool	in_quotes;
+	char	quote_char;
 
-	in_dquotes = FALSE;
-	in_squotes = FALSE;
+	in_quotes = FALSE;
 	while (s[i])
 	{
-		if (s[i] == '"')
+		if (s[i] == '"' || s[i] == '\'')
 		{
-			if ((s[i + 1] == '"' || !(is_operator(s + i, 0, &i))))
+			if (in_quotes == FALSE)
 			{
-				if (s[i + 1] == '"')
-					i++;
-				else if (s[i + 1] == ' ')
-					in_word = FALSE;
-				else
-					in_word = FALSE;
+				if (in_word == FALSE)
+					count++;
+				in_quotes = TRUE;
+				in_word = TRUE;
+				quote_char = s[i];
 			}
 			else
 			{
-				in_dquotes = !in_dquotes;
-				in_word = !in_word;
-				if (in_dquotes == TRUE)
+				if (s[i + 1] == quote_char)
+					i++;
+				else
 				{
-					in_word = TRUE;
-					count++;
+					if (is_operator(s + (i + 1), 0, &i))
+						in_word = FALSE;
+					in_quotes = FALSE;
+					quote_char = 0;
 				}
 			}
 		}
-		else if ((s[i] == '\'') && (!in_dquotes))
-			in_squotes = !in_squotes;
-		else if ((!in_dquotes) && (!in_squotes) && is_operator(s + i, 0, &i))
+		else if ((!in_quotes) && is_operator(s + i, 0, &i))
 		{
-			if (s[i - 1] != '"')
+			if (in_word)
 			{
 				in_word = FALSE;
-				if ((s[i + 1] == '"' && s[i] != ' ') || is_operator(s + i, 1, &i))
+				if (s[i] != ' ')
 					count++;
 			}
-			else if (is_operator(s + i, 1, &i) && in_word != TRUE)
+			else if (is_operator(s + i, 1, &i))
 				count++;
 		}
-		else if (!in_word)
+		else if (!in_word && !in_quotes)
 		{
 			in_word = TRUE;
 			count++;
@@ -73,52 +71,43 @@ static int	wordlen(char const *s, t_bool dquotes, t_bool squotes)
 	len = 0;
 	while (s[len])
 	{
-		if (s[len] == '"')
+		if ((s[len] == '"' && dquotes) || (s[len] == '\'' && squotes))
 		{
-			if (s[len + 1] == '"' || !(is_operator(s + len, 0, &len)))
-			{
-				if (s[len + 1] == '"')
-					len++;
-				else if (len > 0)
-				{
-					len++;
-					break ;
-				}
-			}
+			if ((s[len + 1] == '"' && dquotes) || (s[len + 1] == '\'' && squotes))
+				len += 2;
 			else
 			{
-				if (len > 0 && dquotes == FALSE)
+				if (s[len] == '"')
+					dquotes = FALSE;
+				else if (s[len] == '\'')
+					squotes = FALSE;
+				len++;
+				if (is_operator(s +(len + 1), 0, &len))
 					break ;
-				dquotes = !dquotes;
-				add_len(s, &dquotes, &len);
-				if (len > 0 && is_operator(s + (len - 1), 1, &len))
-				{
-					len++;
-					break ;
-				}
 			}
+		}
+		else if (s[len] == '"' && !squotes)
+		{
+			dquotes = TRUE;
+			len++;
+			if (s[len] == '"')
+				len++;
 		}
 		else if ((s[len] == '\'') && (!dquotes))
-			squotes = !squotes;
-		else if ((!dquotes) && (!squotes) && ((s[len] == ' ')))
-			break ;
-		else if ((!dquotes) && (!squotes) && is_operator(s + len, 1, &len))
 		{
-			if (len == 0)
-			{
-				len++;
-				break ;
-			}
-			if (s[len - 1] != '"')
-			{
-				if (len == 0 || len == 1)
-					len++;
-				else if (s[len - 1] == '>' || s[len - 1] == '<')
-					len--;
-				break ;
-			}
+			squotes = TRUE;
+			len++;
 		}
-		len++;
+		else if (!dquotes && !squotes && is_operator(s + len, 0, &len))
+		{
+			if (len == 0 || len == 1)
+				len++;
+			else if (s[len - 1] == '>' || s[len - 1] == '<')
+				len--;
+			break ;
+		}
+		else
+			len++;
 	}
 	return (len);
 }
