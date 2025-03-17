@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 12:22:06 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/17 18:01:46 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	line_read(t_env *lst_env)
 {
 	char	*input;
+	char	**args;
 
 	while (1)
 	{
@@ -26,6 +27,9 @@ void	line_read(t_env *lst_env)
 				free(input);
 				break ;
 			}
+			args = ft_split(input, ' ');
+			if (is_builtin(args[0]))
+				execute_builtin(args);
 			parsing(lst_env, input);
 			add_history(input);
 			free(input);

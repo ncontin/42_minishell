@@ -14,6 +14,7 @@ SRC = src/main.c src/readline.c src/error.c src/path.c src/free.c \
 
 SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
+				src/builtins/echo.c\
 
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft

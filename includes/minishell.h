@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 13:17:02 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/17 17:07:36 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ t_bool		is_operator(char const *c, int no_space, int *len);
 void		add_len(char const *s, t_bool *dquotes, int *len);
 // builtins
 int			is_builtin(char *str);
-void		execute_builtin(char *str);
+void		execute_builtin(char **args);
 void		ft_pwd(void);
+void		ft_echo(char **args);
 
 #endif

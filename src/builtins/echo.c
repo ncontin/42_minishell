@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 18:02:23 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/17 18:01:35 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parsing(t_env *lst_env, char *input)
+void	ft_echo(char **args)
 {
-	char	**res;
-	int		i;
+	int	i;
+	int	newline;
 
-	(void)lst_env;
-	i = 0;
-	res = arg_split(input);
-	while (res[i] != NULL)
+	newline = 1;
+	i = 1;
+	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
 	{
-		// printf("%s\n", res[i]);
-		free(res[i]);
+		newline = 0;
 		i++;
 	}
-	free(res);
+	while (args[i])
+	{
+		printf("%s", args[i]);
+		if (args[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (newline == 1)
+		printf("\n");
 }

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/17 13:45:28 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/17 17:04:09 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,34 +28,32 @@ int	is_builtin(char *str)
 	return (0);
 }
 
-void	execute_builtin(char *str)
+void	execute_builtin(char **args)
 {
-	if (ft_strncmp(str, "pwd", 3) == 0)
-	{
-		// no options
+	if (ft_strncmp(args[0], "pwd", 3) == 0)
 		ft_pwd();
-	}
-	else if (ft_strncmp(str, "echo", 4))
+	else if (ft_strncmp(args[0], "echo", 4) == 0)
 	{
+		ft_echo(args);
 		// with options -n
 	}
-	else if (ft_strncmp(str, "exit", 4))
+	else if (ft_strncmp(args[0], "exit", 4) == 0)
 	{
 		// no options
 	}
-	else if (ft_strncmp(str, "cd", 2) == 0)
+	else if (ft_strncmp(args[0], "cd", 2) == 0)
 	{
 		// only relative or absolute path
 	}
-	else if (ft_strncmp(str, "env", 3))
+	else if (ft_strncmp(args[0], "env", 3) == 0)
 	{
 		// no options
 	}
-	else if (ft_strncmp(str, "export", 6))
+	else if (ft_strncmp(args[0], "export", 6) == 0)
 	{
 		// no options
 	}
-	else if (ft_strncmp(str, "unset", 5))
+	else if (ft_strncmp(args[0], "unset", 5) == 0)
 	{
 		// no options
 	}
