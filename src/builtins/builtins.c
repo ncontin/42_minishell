@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/17 13:17:32 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/17 13:45:28 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,32 @@ int	is_builtin(char *str)
 void	execute_builtin(char *str)
 {
 	if (ft_strncmp(str, "pwd", 3) == 0)
+	{
+		// no options
 		ft_pwd();
-	else if (ft_strncmp(str, "cd", 2) == 0)
-	{
-	}
-	else if (ft_strncmp(str, "exit", 4))
-	{
-	}
-	else if (ft_strncmp(str, "env", 3))
-	{
-	}
-	else if (ft_strncmp(str, "export", 6))
-	{
-	}
-	else if (ft_strncmp(str, "unset", 5))
-	{
 	}
 	else if (ft_strncmp(str, "echo", 4))
 	{
+		// with options -n
+	}
+	else if (ft_strncmp(str, "exit", 4))
+	{
+		// no options
+	}
+	else if (ft_strncmp(str, "cd", 2) == 0)
+	{
+		// only relative or absolute path
+	}
+	else if (ft_strncmp(str, "env", 3))
+	{
+		// no options
+	}
+	else if (ft_strncmp(str, "export", 6))
+	{
+		// no options
+	}
+	else if (ft_strncmp(str, "unset", 5))
+	{
+		// no options
 	}
 }
