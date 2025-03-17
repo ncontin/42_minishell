@@ -58,8 +58,7 @@ cat-e
 >
 result.txt
 minishell> "l"res
-"l"
-res
+"l"res
 minishell> "l"<>res
 "l"
 <

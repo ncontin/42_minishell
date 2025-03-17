@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 08:02:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/17 10:53:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	count_args(char const *s, int count, int i, t_bool in_word)
 		{
 			if (in_quotes == FALSE)
 			{
-				if (in_word == FALSE)
+				if (in_word == FALSE) // for this argument -->inf"ile".txt
 					count++;
 				in_quotes = TRUE;
 				in_word = TRUE;
@@ -32,7 +32,7 @@ static int	count_args(char const *s, int count, int i, t_bool in_word)
 			}
 			else
 			{
-				if (s[i + 1] == quote_char)
+				if (s[i + 1] == quote_char) // for this argument -->"arg1""arg2"
 					i++;
 				else
 				{
@@ -67,13 +67,15 @@ static int	count_args(char const *s, int count, int i, t_bool in_word)
 static int	wordlen(char const *s, t_bool dquotes, t_bool squotes)
 {
 	int		len;
+	int		next;
 
 	len = 0;
 	while (s[len])
 	{
 		if ((s[len] == '"' && dquotes) || (s[len] == '\'' && squotes))
 		{
-			if ((s[len + 1] == '"' && dquotes) || (s[len + 1] == '\'' && squotes))
+			next = len + 1;
+			if ((s[next] == '"' && dquotes) || (s[next] == '\'' && squotes))
 				len += 2;
 			else
 			{
@@ -82,27 +84,21 @@ static int	wordlen(char const *s, t_bool dquotes, t_bool squotes)
 				else if (s[len] == '\'')
 					squotes = FALSE;
 				len++;
-				if (is_operator(s +(len + 1), 0, &len))
-					break ;
 			}
 		}
-		else if (s[len] == '"' && !squotes)
+		else if ((s[len] == '"' && !squotes) || (s[len] == '\'' && !dquotes))
 		{
-			dquotes = TRUE;
+			if (s[len] == '"')
+				dquotes = TRUE;
+			else if (s[len] == '\'')
+				squotes = TRUE;
 			len++;
-			while (s[len] == '"')
+			while (s[len] == '"' || s[len] == '\'')
 			{
-				dquotes = !dquotes;
-				len++;
-			}
-		}
-		else if ((s[len] == '\'') && (!dquotes))
-		{
-			squotes = TRUE;
-			len++;
-			while (s[len] == '\'')
-			{
-				dquotes = !dquotes;
+				if (s[len] == '"')
+					dquotes = !dquotes;
+				else if (s[len] == '\'')
+					squotes = !squotes;
 				len++;
 			}
 		}
@@ -126,7 +122,7 @@ static void	copyword(char *dest, char const *s, int len, int i)
 
 	j = 0;
 	while (i < len)
-			dest[j++] = s[i++];
+		dest[j++] = s[i++];
 	dest[j] = '\0';
 }
 
