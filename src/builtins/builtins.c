@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/17 17:04:09 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/17 18:26:25 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,11 @@ void	execute_builtin(char **args)
 	if (ft_strncmp(args[0], "pwd", 3) == 0)
 		ft_pwd();
 	else if (ft_strncmp(args[0], "echo", 4) == 0)
-	{
 		ft_echo(args);
-		// with options -n
-	}
-	else if (ft_strncmp(args[0], "exit", 4) == 0)
-	{
-		// no options
-	}
+	// else if (ft_strncmp(args[0], "exit", 4) == 0)
+	// {
+	// 	// no options
+	// }
 	else if (ft_strncmp(args[0], "cd", 2) == 0)
 	{
 		// only relative or absolute path
