@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/16 14:00:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/17 08:02:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,21 @@ static int	wordlen(char const *s, t_bool dquotes, t_bool squotes)
 		{
 			dquotes = TRUE;
 			len++;
-			if (s[len] == '"')
+			while (s[len] == '"')
+			{
+				dquotes = !dquotes;
 				len++;
+			}
 		}
 		else if ((s[len] == '\'') && (!dquotes))
 		{
 			squotes = TRUE;
 			len++;
+			while (s[len] == '\'')
+			{
+				dquotes = !dquotes;
+				len++;
+			}
 		}
 		else if (!dquotes && !squotes && is_operator(s + len, 0, &len))
 		{
@@ -115,25 +123,10 @@ static int	wordlen(char const *s, t_bool dquotes, t_bool squotes)
 static void	copyword(char *dest, char const *s, int len, int i)
 {
 	int		j;
-	t_bool	in_dquotes;
-	t_bool	in_squotes;
 
 	j = 0;
-	in_dquotes = FALSE;
-	in_squotes = FALSE;
 	while (i < len)
-	{
-		if ((s[i] == '"' && !in_squotes) || (s[i] == '\'' && !in_dquotes))
-		{
-			if (s[i] == '"')
-				in_dquotes = !in_dquotes;
-			else
-				in_squotes = !in_squotes;
 			dest[j++] = s[i++];
-		}
-		else
-			dest[j++] = s[i++];
-	}
 	dest[j] = '\0';
 }
 
