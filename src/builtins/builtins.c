@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/17 18:26:25 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/17 19:05:13 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ int	is_builtin(char *str)
 	return (0);
 }
 
-void	execute_builtin(char **args)
+void	execute_builtin(t_env *lst_env, char **args)
 {
+	(void)lst_env;
 	if (ft_strncmp(args[0], "pwd", 3) == 0)
 		ft_pwd();
 	else if (ft_strncmp(args[0], "echo", 4) == 0)
@@ -40,6 +41,7 @@ void	execute_builtin(char **args)
 	// }
 	else if (ft_strncmp(args[0], "cd", 2) == 0)
 	{
+		ft_cd(args[1]);
 		// only relative or absolute path
 	}
 	else if (ft_strncmp(args[0], "env", 3) == 0)

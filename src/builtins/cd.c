@@ -6,13 +6,20 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/17 18:45:10 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/17 19:04:07 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	ft_cd(void)
-// {
-// 	chdir();
-// }
+int	ft_cd(char *path)
+{
+	if (!path)
+		return (1);
+	if (chdir(path) == -1)
+	{
+		perror("cd");
+		return (1);
+	}
+	return (0);
+}

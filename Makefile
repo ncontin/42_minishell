@@ -16,6 +16,7 @@ SRC = src/main.c src/readline.c src/error.c src/path.c src/free.c \
 SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
 				src/builtins/echo.c\
+				src/builtins/cd.c\
 
 SRC_CLEANUP =	src/cleanup/free_array.c
 
