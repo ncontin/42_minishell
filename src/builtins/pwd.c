@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 13:24:29 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/17 12:28:54 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/17 13:42:18 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parsing(t_env *lst_env, char *input)
+void	ft_pwd(void)
 {
-	char	**res;
-	int		i;
+	char	*buffer;
 
-	(void)lst_env;
-	i = 0;
-	res = arg_split(input);
-	while (res[i] != NULL)
+	buffer = getcwd(NULL, 0);
+	if (buffer)
 	{
-		if (is_builtin(res[0]))
-			execute_builtin(res[0]);
-		printf("%s\n", res[i]);
-		free(res[i]);
-		i++;
+		printf("%s\n", buffer);
+		free(buffer);
 	}
-	free(res);
+	else
+	{
+		perror("pwd");
+	}
 }
