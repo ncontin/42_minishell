@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 17:45:23 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/12 15:31:12 by aroullea          #+#    #+#             */
+/*   Updated: 2025/03/12 15:33:18 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	error_msg(char *message, int error)
 {
-	t_env	lst_env;
-
-	(void)argc;
-	(void)argv;
-	get_path(envp, &lst_env);
-	line_read(&lst_env);
-	free_struct(&lst_env);
+	write(STDERR_FILENO, message, ft_strlen(message) + 1);
+	write(STDERR_FILENO, "\n", 1);
+	exit(error);
 }

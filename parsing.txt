@@ -1,0 +1,95 @@
+minishell> "cat"<
+"cat"
+<
+minishell> "cat" "<" "truc"
+"cat"
+"<"
+"truc"
+minishell> "cat" "<" "test.txt" | cat -e > result.txt
+"cat"
+"<"
+"test.txt"
+|
+cat
+-e
+>
+result.txt
+minishell> "cat" "<" "test.txt" "|" "cat" "-e" ">" "result.txt"
+"cat"
+"<"
+"test.txt"
+"|"
+"cat"
+"-e"
+">"
+"result.txt"
+minishell> cat < test.txt | cat -e > result.txt
+cat
+<
+test.txt
+|
+cat
+-e
+>
+result.txt
+minishell> cat<test.txt|cat -e>result.txt
+cat
+<
+test.txt
+|
+cat
+-e
+>
+result.txt
+minishell> cat<test.txt|cat-e>result.txt
+cat
+<
+test.txt
+|
+cat-e
+>
+result.txt
+minishell> "cat"<test.txt|cat-e>result.txt
+"cat"
+<
+test.txt
+|
+cat-e
+>
+result.txt
+minishell> "l"res
+"l"res
+minishell> "l"<>res
+"l"
+<
+>
+res
+minishell> "l">>res
+"l"
+>>
+res
+minishell> "l"<>>res
+"l"
+<
+>>
+res
+minishell> "cat" "<" "truc"
+"cat"
+"<"
+"truc"
+minishell> "cat""truc""bidule"">"
+minishell> wc <re"sul"t.txt -l
+minishell> cat "   " "<" test.txt
+cat
+"   "
+"<"
+test.txt
+minishell> cat "   ""<"test.txt
+cat
+"   ""<"
+test.txt
+minishell> cat "   " "<"test.txt
+cat
+"   "
+"<"
+test.txt

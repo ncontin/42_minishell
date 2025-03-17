@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 16:04:44 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/17 12:22:06 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	line_read(void)
+void	line_read(t_env *lst_env)
 {
 	char	*input;
 
@@ -26,8 +26,10 @@ void	line_read(void)
 				free(input);
 				break ;
 			}
+			parsing(lst_env, input);
 			add_history(input);
 			free(input);
 		}
 	}
+	rl_clear_history();
 }

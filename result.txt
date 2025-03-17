@@ -1,0 +1,8 @@
+salut$
+bonjour$
+test$
+coucou$
+bidule$
+machin$
+truc$
+FIN$

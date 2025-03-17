@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/12 17:45:23 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/12 17:29:01 by aroullea          #+#    #+#             */
+/*   Updated: 2025/03/12 17:35:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	free_struct(t_env *lst_env)
 {
-	t_env	lst_env;
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	get_path(envp, &lst_env);
-	line_read(&lst_env);
-	free_struct(&lst_env);
+	i = 0;
+	while (lst_env->path[i] != NULL)
+	{
+		free(lst_env->path[i]);
+		i++;
+	}
+	free(lst_env->path);
 }
