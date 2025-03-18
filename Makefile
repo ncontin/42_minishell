@@ -20,6 +20,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/echo.c\
 				src/builtins/cd.c\
 				src/builtins/env.c\
+				src/builtins/export.c\
 
 SRC_CLEANUP =	src/cleanup/free_array.c\
 				src/cleanup/free.c\
@@ -49,7 +50,7 @@ $(NAME): $(OBJ)
 	@make -s -C includes/libft all
 	@echo "$(YELLOW)Linking $(NAME)...$(RESET)"
 	@$(CC) $(OBJ) $(CFLAGS) $(INCLUDES) $(LIBRARY) -o $(NAME) -lreadline
-	@echo "$(GREEN)$(NAME) successfully built!"
+	@echo "$(GREEN)$(NAME) successfully built!$(RESET)"
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
