@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/18 15:45:32 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/18 16:53:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_builtin(char *str)
 	i = 0;
 	while (builtins[i])
 	{
-		if (ft_strncmp(str, builtins[i], ft_strlen(str)) == 0)
+		if (ft_strncmp(str, builtins[i], (ft_strlen(str)+1)) == 0)
 			return (1);
 		i++;
 	}
