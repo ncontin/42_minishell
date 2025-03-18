@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline.c                                         :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 18:45:14 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/17 19:04:07 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	line_read(t_env *lst_env)
+int	ft_cd(char *path)
 {
-	char	*input;
-
-	while (1)
+	if (!path)
+		return (1);
+	if (chdir(path) == -1)
 	{
-		input = readline("minishell> ");
-		if (input && (ft_strlen(input) > 0))
-		{
-			if (ft_strncmp("exit", input, ft_strlen(input)) == 0)
-			{
-				free(input);
-				break ;
-			}
-			parsing(lst_env, input);
-			add_history(input);
-			free(input);
-		}
+		perror("cd");
+		return (1);
 	}
-	rl_clear_history();
+	return (0);
 }
