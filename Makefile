@@ -19,6 +19,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
 				src/builtins/echo.c\
 				src/builtins/cd.c\
+				src/builtins/env.c\
 
 SRC_CLEANUP =	src/cleanup/free_array.c\
 				src/cleanup/free.c\

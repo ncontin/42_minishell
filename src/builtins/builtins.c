@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/17 19:09:37 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/18 15:45:32 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	execute_builtin(t_env *lst_env, char **args)
 	}
 	else if (ft_strncmp(args[0], "env", 3) == 0)
 	{
+		ft_env(lst_env->envp);
 		// no options
 	}
 	else if (ft_strncmp(args[0], "export", 6) == 0)

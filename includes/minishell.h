@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/18 11:28:18 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/18 15:47:05 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ typedef enum s_bool
 {
 	FALSE,
 	TRUE
-}			t_bool;
+}				t_bool;
 
 typedef struct s_env
 {
-	char	**envp;
-	char	**path;
-}			t_env;
+	char		**envp;
+	char		**path;
+}				t_env;
 
 typedef struct s_parser
 {
@@ -38,47 +38,49 @@ typedef struct s_parser
 	t_bool		in_quotes;
 	int			count;
 	char		quote_char;
-}	t_parser;
+}				t_parser;
 
 // path.c
-void		get_path(char **envp, t_env *lst_env);
+void			get_path(char **envp, t_env *lst_env);
 // readline.c
-void		line_read(t_env *lst_env);
+void			line_read(t_env *lst_env);
 // error.c
-void		error_msg(char *message, int error);
+void			error_msg(char *message, int error);
 // free.c
-void		free_struct(t_env *lst_env);
+void			free_struct(t_env *lst_env);
 // parsing.c
-void		parsing(t_env *lst_env, char *input);
+void			parsing(t_env *lst_env, char *input);
 // arg_split.c
-char		**arg_split(char const *s);
+char			**arg_split(char const *s);
 // arg_split_utils.c
-t_bool		is_operator(char const *c, int no_space, int *len);
-void		add_len(char const *s, t_bool *dquotes, int *len);
+t_bool			is_operator(char const *c, int no_space, int *len);
+void			add_len(char const *s, t_bool *dquotes, int *len);
 // builtins
-int			is_builtin(char *str);
-void		execute_builtin(t_env *lst_env, char **args);
-void		ft_pwd(void);
-void		ft_echo(char **args);
-void		free_array(char **array);
-int			ft_cd(char *path);
+int				is_builtin(char *str);
+void			execute_builtin(t_env *lst_env, char **args);
+void			ft_pwd(void);
+void			ft_echo(char **args);
+void			free_array(char **array);
+int				ft_cd(char *path);
+void			ft_env(char **envp);
 
-//path.c
-void	get_path(char **envp, t_env *lst_env);
-//readline.c
-void	line_read(t_env *lst_env);
-//error.c
-void	error_msg(char *message, int error);
-//free.c
-void	free_struct(t_env *lst_env);
-//parsing.c
-void	parsing(t_env *lst_env, char *input);
-//arg_split.c
-char	**arg_split(char const *s);
-//arg_split_utils.c
-t_bool	is_operator(char const *c, int no_space, int *len);
-//count_args
-int		count_args(t_parser *parser);
-//wordlen.c
-int		wordlen(char const *s, t_bool dquotes, t_bool squotes);
+// path.c
+void			get_path(char **envp, t_env *lst_env);
+// readline.c
+void			line_read(t_env *lst_env);
+// error.c
+void			error_msg(char *message, int error);
+// free.c
+void			free_struct(t_env *lst_env);
+// parsing.c
+void			parsing(t_env *lst_env, char *input);
+// arg_split.c
+char			**arg_split(char const *s);
+// arg_split_utils.c
+t_bool			is_operator(char const *c, int no_space, int *len);
+// count_args
+int				count_args(t_parser *parser);
+// wordlen.c
+int				wordlen(char const *s, t_bool dquotes, t_bool squotes);
+
 #endif
