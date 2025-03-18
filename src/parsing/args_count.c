@@ -1,16 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   count_args.c                                       :+:      :+:    :+:   */
+/*   args_count.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 11:06:22 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 17:08:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:37:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	handle_inquotes(t_parser *parser, int *j)
+{
+	int		i;
+	t_bool	check_quote;
+	t_bool	compare_quote;
+
+	i = *j;
+	check_quote = (parser->s[i + 1] != '"' && parser->s[i + 1] != '\'');
+	compare_quote = parser->s[i] == parser->s[i + 1];
+	if (compare_quote && parser->s[i + 1] == parser->quote_char)
+		i++;
+	else if (check_quote && parser->s[i] == parser->quote_char)
+	{
+		if (is_operator(parser->s + (i + 1), 0, NULL))
+			parser->in_word = FALSE;
+		parser->in_quotes = FALSE;
+		parser->quote_char = 0;
+	}
+	*j = i;
+}
 
 static void	count_parse(t_parser *parser, int *j)
 {
@@ -26,17 +47,7 @@ static void	count_parse(t_parser *parser, int *j)
 		parser->quote_char = parser->s[i];
 	}
 	else
-	{
-		if (parser->s[i + 1] == parser->quote_char)
-			i++;
-		else
-		{
-			if (is_operator(parser->s + (i + 1), 0, &i))
-				parser->in_word = FALSE;
-			parser->in_quotes = FALSE;
-			parser->quote_char = 0;
-		}
-	}
+		handle_inquotes(parser, &i);
 	*j = i;
 }
 
