@@ -8,7 +8,9 @@ RM = rm -f
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC = src/main.c src/readline.c src/error.c src/path.c src/free.c \
-	  src/arg_split.c src/parsing.c src/arg_split_utils.c
+	  src/parsing/args_split.c src/parsing/parsing.c \
+	  src/parsing/args_split_utils.c src/parsing/args_count.c \
+	  src/parsing/args_wordlen.c
 
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft
