@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/18 16:01:22 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/17 12:28:54 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/17 16:45:54 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parsing(t_env *lst_env, char *input)
+/*
+custom pwd function,
+it uses the getcwd function to get the current working directory
+char	*getcwd(char *__buf, size_t __size)
+if buf is NULL, an array is allocated with `malloc'; the array is SIZE
+bytes long, unless SIZE == 0, in which case it is as big as necessary.
+*/
+void	ft_pwd(void)
 {
-	char	**res;
-	int		i;
+	char	*buffer;
 
-	(void)lst_env;
-	i = 0;
-	res = arg_split(input);
-	while (res[i] != NULL)
+	buffer = getcwd(NULL, 0);
+	if (buffer)
 	{
-		if (is_builtin(res[0]))
-			execute_builtin(lst_env, res);
-		//printf("%s\n", res[i]);
-		free(res[i]);
-		i++;
+		printf("%s\n", buffer);
+		free(buffer);
 	}
-	free(res);
+	else
+		perror("pwd");
 }

@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/18 16:01:22 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/17 19:04:07 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parsing(t_env *lst_env, char *input)
+int	ft_cd(char *path)
 {
-	char	**res;
-	int		i;
-
-	(void)lst_env;
-	i = 0;
-	res = arg_split(input);
-	while (res[i] != NULL)
+	if (!path)
+		return (1);
+	if (chdir(path) == -1)
 	{
-		if (is_builtin(res[0]))
-			execute_builtin(lst_env, res);
-		//printf("%s\n", res[i]);
-		free(res[i]);
-		i++;
+		perror("cd");
+		return (1);
 	}
-	free(res);
+	return (0);
 }
