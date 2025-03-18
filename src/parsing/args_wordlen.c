@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wordlen_args.c                                     :+:      :+:    :+:   */
+/*   args_wordlen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:35:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 17:43:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:18:11 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,48 @@
 
 static void	no_quotes(char const *s, t_bool *dquotes, t_bool *squotes, int *len)
 {
-	int	lenght;
+	int	size;
 
-	lenght = *len;
-	if (s[lenght] == '"')
+	size = *len;
+	if (s[size] == '"')
 		*dquotes = TRUE;
-	else if (s[lenght] == '\'')
+	else if (s[size] == '\'')
 		*squotes = TRUE;
-	lenght++;
-	while (s[lenght] == '"' || s[lenght] == '\'')
+	size++;
+	while ((s[size] == '"' || s[size] == '\'') && s[size] == s[size + 1])
 	{
-		if (s[lenght] == '"')
+		if (s[size] == '"' && !squotes)
 			*dquotes = !(*dquotes);
-		else if (s[lenght] == '\'')
+		else if (s[size] == '\'' && !dquotes)
 			*squotes = !(*squotes);
-		lenght++;
+		size++;
 	}
-	*len = lenght;
+	*len = size;
 }
 
 static void	in_quotes(char const *s, t_bool *dquotes, t_bool *squotes, int *len)
 {
 	int		next;
-	int		lenght;
+	int		size;
 
-	lenght = *len;
-	next = lenght + 1;
+	size = *len;
+	next = size + 1;
 	if ((s[next] == '"' && *dquotes) || (s[next] == '\'' && *squotes))
-		lenght += 2;
+		size += 2;
 	else
 	{
-		if (s[lenght] == '"')
+		if (s[size] == '"')
+		{
 			*dquotes = FALSE;
-		else if (s[lenght] == '\'')
+			size++;
+		}
+		else if (s[size] == '\'')
+		{
 			*squotes = FALSE;
-		lenght++;
+			size++;
+		}
 	}
-	*len = lenght;
+	*len = size;
 }
 
 int	wordlen(char const *s, t_bool dquotes, t_bool squotes)

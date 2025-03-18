@@ -99,4 +99,12 @@ minishell>&&<<>><>|||
 >                                                                                                       
 ||                                                                                                      
 |  
-
+minishell> "'" bonjour '""""""'
+"'"
+bonjour
+'""""""'
+minishell> "'''>>'''||'''"
+"'''>>'''||'''"
+minishell> echo "'''>>'''||''&&"
+echo
+"'''>>'''||''&&"
