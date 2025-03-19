@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/19 11:03:27 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/19 12:05:44 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void			free_array(char **array);
 int				ft_cd(char *path);
 void			ft_env(char **envp);
 void			ft_export(char **envp);
-void			ft_unset(char **envp);
+void			ft_unset(char **envp, char *input);
 
 // path.c
 void			get_path(char **envp, t_env *lst_env);

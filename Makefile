@@ -21,6 +21,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/cd.c\
 				src/builtins/env.c\
 				src/builtins/export.c\
+				src/builtins/unset.c\
 
 SRC_CLEANUP =	src/cleanup/free_array.c\
 				src/cleanup/free.c\

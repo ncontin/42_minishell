@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:38:46 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/18 16:51:54 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/19 12:25:39 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	ft_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
+		if (ft_strlen(envp[i]) == 0)
+			i++;
 		printf("%s\n", envp[i]);
 		i++;
 	}

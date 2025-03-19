@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/18 19:24:09 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/19 13:20:27 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static char	**copy_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
+		if (ft_strlen(envp[i]) == 0)
+			i++;
 		sorted_env[i] = ft_strdup(envp[i]);
 		i++;
 	}
@@ -101,6 +103,8 @@ void	ft_export(char **envp)
 	i = 0;
 	while (sorted_env[i])
 	{
+		if (ft_strlen(sorted_env[i]) == 0)
+			i++;
 		printf("declare -x %s\n", sorted_env[i]);
 		i++;
 	}
