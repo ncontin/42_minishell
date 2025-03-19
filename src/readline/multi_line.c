@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:09:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/19 16:07:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/19 17:41:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static void	is_odd_quotes(char *input, t_bool *squotes, t_bool *dquotes)
 		return ;
 	while (input[i] != '\0')
 	{
-		if (input[i] == '\'')
+		if (input[i] == '\'' && !(*dquotes))
 			*squotes = !(*squotes);
-		if (input[i] == '"')
+		if (input[i] == '"' && !(*squotes))
 			*dquotes = !(*dquotes);
 		i++;
 	}
