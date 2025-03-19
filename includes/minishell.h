@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/18 18:13:14 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/19 11:03:27 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void			free_array(char **array);
 int				ft_cd(char *path);
 void			ft_env(char **envp);
 void			ft_export(char **envp);
+void			ft_unset(char **envp);
 
 // path.c
 void			get_path(char **envp, t_env *lst_env);
@@ -68,7 +69,7 @@ t_bool			is_operator(char const *c, int no_space, int *len);
 int				count_args(t_parser *parser);
 // wordlen.c
 int				wordlen(char const *s, t_bool dquotes, t_bool squotes);
-//free_array.c
+// free_array.c
 void			free_array(char **array);
 
 #endif
