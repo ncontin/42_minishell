@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/18 17:42:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:16:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void			ft_env(char **envp);
 void			get_path(char **envp, t_env *lst_env);
 // readline.c
 void			line_read(t_env *lst_env);
+// mutil_line.c
+char			*user_input(char *str);
 // error.c
 void			error_msg(char *message, int error);
 // free.c
@@ -63,7 +65,6 @@ void			parsing(t_env *lst_env, char *input);
 char			**arg_split(char const *s);
 // arg_split_utils.c
 t_bool			is_operator(char const *c, int no_space, int *len);
-char			*shell_join(char *s1, char const *s2, size_t k, size_t l);
 // count_args
 int				count_args(t_parser *parser);
 // wordlen.c
