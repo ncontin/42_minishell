@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/19 12:02:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:20:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,9 @@ static char	*read_new_input(char *input, t_bool *squotes, t_bool *dquotes)
 static char	*user_input(void)
 {
 	char	*input;
-	char	*new_line;
 	t_bool	squotes;
 	t_bool	dquotes;
 
-	new_line = NULL;
 	squotes = FALSE;
 	dquotes = FALSE;
 	input = readline("minishell> ");
@@ -84,7 +82,7 @@ void	line_read(t_env *lst_env)
 		input = user_input();
 		if (input && (ft_strlen(input) > 0))
 		{
-			if (ft_strncmp("exit", input, ft_strlen(input)) == 0)
+			if (ft_strncmp("exit", input, 4) == 0)
 			{
 				free(input);
 				break ;
