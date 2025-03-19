@@ -8,12 +8,12 @@ RM = rm -f
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
-		src/readline.c\
 		src/path.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\
 		$(SRC_PARSING)\
+		$(SRC_READLINE)\
 
 SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
@@ -31,6 +31,9 @@ SRC_PARSING = 	src/parsing/args_split.c\
 				src/parsing/args_split_utils.c\
 				src/parsing/args_count.c \
 				src/parsing/args_wordlen.c\
+
+SRC_READLINE =  src/readline/readline.c\
+				src/readline/multi_line.c
 
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft
