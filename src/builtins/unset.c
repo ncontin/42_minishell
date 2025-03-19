@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 11:01:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/19 13:17:53 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/19 16:23:29 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,16 @@ void	ft_unset(char **envp, char *input)
 		substr = ft_substr(envp[i], 0, find_equal(envp[i]));
 		if (ft_strncmp(input, substr, ft_strlen(input)) == 0)
 		{
-			temp = ft_strdup("");
-			envp[i] = temp;
-			free(temp);
+			while (envp[i] && envp[i + 1])
+			{
+				temp = envp[i];
+				envp[i] = envp[i + 1];
+				envp[i + 1] = temp;
+				i++;
+			}
+			envp[i] = NULL;
 		}
 		free(substr);
 		i++;
 	}
-	// free(temp);
-	// unset
 }

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/19 13:20:27 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/19 16:27:53 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static char	**copy_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strlen(envp[i]) == 0)
-			i++;
 		sorted_env[i] = ft_strdup(envp[i]);
 		i++;
 	}
@@ -80,9 +78,9 @@ void	sort_env(char **sorted_env)
 		{
 			substr1 = ft_substr(sorted_env[i], 0, find_equal(sorted_env[i]));
 			substr2 = ft_substr(sorted_env[j], 0, find_equal(sorted_env[j]));
+			temp = sorted_env[i];
 			if (ft_strncmp(substr1, substr2, find_len(substr1, substr2)) > 0)
 			{
-				temp = sorted_env[i];
 				sorted_env[i] = sorted_env[j];
 				sorted_env[j] = temp;
 			}
