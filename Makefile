@@ -10,6 +10,7 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
 		src/readline.c\
 		src/path.c\
+		src/envp.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\

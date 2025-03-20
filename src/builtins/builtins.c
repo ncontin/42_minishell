@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/19 12:05:47 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:40:28 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ int	is_builtin(char *str)
 
 void	execute_builtin(t_env *lst_env, char **args)
 {
-	(void)lst_env;
 	if (ft_strncmp(args[0], "pwd", 3) == 0)
+	{
+		// get_path(lst_env->envp, lst_env);
 		ft_pwd();
+	}
 	else if (ft_strncmp(args[0], "echo", 4) == 0)
 		ft_echo(args);
 	// else if (ft_strncmp(args[0], "exit", 4) == 0)
@@ -46,9 +48,12 @@ void	execute_builtin(t_env *lst_env, char **args)
 	else if (ft_strncmp(args[0], "cd", 2) == 0)
 		ft_cd(args[1]);
 	else if (ft_strncmp(args[0], "env", 3) == 0)
-		ft_env(lst_env->envp);
+	{
+		// get_path(lst_env->envp, lst_env);
+		ft_env(&lst_env->envp_cp);
+	}
 	else if (ft_strncmp(args[0], "export", 6) == 0)
-		ft_export(lst_env->envp);
+		ft_export(&lst_env->envp_cp, args);
 	else if (ft_strncmp(args[0], "unset", 5) == 0)
-		ft_unset(lst_env->envp, args[1]);
+		ft_unset(&lst_env->envp_cp, args[1]);
 }

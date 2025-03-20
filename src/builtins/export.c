@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/19 16:27:53 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:42:18 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,26 @@ static int	find_equal(char *str)
 	return (-1);
 }
 
-static char	**copy_env(char **envp)
-{
-	int		i;
-	char	**sorted_env;
+// static char	**copy_env(char **envp)
+// {
+// 	int		i;
+// 	char	**sorted_env;
 
-	i = 0;
-	while (envp[i])
-		i++;
-	sorted_env = malloc(sizeof(char *) * (i + 1));
-	if (!sorted_env)
-		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
-		sorted_env[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	sorted_env[i] = NULL;
-	return (sorted_env);
-}
+// 	i = 0;
+// 	while (envp[i])
+// 		i++;
+// 	sorted_env = malloc(sizeof(char *) * (i + 1));
+// 	if (!sorted_env)
+// 		return (NULL);
+// 	i = 0;
+// 	while (envp[i])
+// 	{
+// 		sorted_env[i] = ft_strdup(envp[i]);
+// 		i++;
+// 	}
+// 	sorted_env[i] = NULL;
+// 	return (sorted_env);
+// }
 
 static int	find_len(char *s1, char *s2)
 {
@@ -62,7 +62,7 @@ static int	find_len(char *s1, char *s2)
 	return (len);
 }
 
-void	sort_env(char **sorted_env)
+static void	sort_env(char **sorted_env)
 {
 	int		i;
 	int		j;
@@ -91,20 +91,103 @@ void	sort_env(char **sorted_env)
 	}
 }
 
-void	ft_export(char **envp)
+static void	print_env_stack(t_export_node **env_stack)
 {
-	char	**sorted_env;
-	int		i;
+	t_export_node	*current;
 
-	sorted_env = copy_env(envp);
-	sort_env(sorted_env);
-	i = 0;
-	while (sorted_env[i])
+	current = *env_stack;
+	while (current)
 	{
-		if (ft_strlen(sorted_env[i]) == 0)
-			i++;
-		printf("declare -x %s\n", sorted_env[i]);
+		printf("%s\n", current->string);
+		current = current->next;
+	}
+}
+
+// chained list
+static void	add_export(char **args, t_export_node **env_stack)
+{
+	t_export_node	*env;
+	t_export_node	*last;
+	int				i;
+
+	i = 1;
+	while (args[i])
+	{
+		env = malloc(sizeof(t_export_node));
+		if (!env)
+			return ;
+		env->string = ft_strdup(args[i]);
+		env->next = NULL;
+		if (!(*env_stack))
+		{
+			*env_stack = env;
+		}
+		else
+		{
+			last = *env_stack;
+			while (last->next)
+			{
+				last = last->next;
+			}
+			last->next = env;
+		}
 		i++;
 	}
+}
+
+// static char	**add_env(char **args)
+// {
+// 	char	**env_added;
+// 	int		i;
+// 	int		args_len;
+
+// 	args_len = 0;
+// 	while (args[args_len])
+// 		args_len++;
+// 	env_added = malloc((args_len + 1) * sizeof(char *));
+// 	if (!env_added)
+// 		return (NULL);
+// 	i = 0;
+// 	while (args[i + 1])
+// 	{
+// 		env_added[i] = ft_strdup(args[i + 1]);
+// 		printf("added\n");
+// 		i++;
+// 	}
+// 	env_added[i] = NULL;
+// 	return (env_added);
+// }
+
+static void	print_export(char **sorted_env, char **args,
+		t_export_node **env_stack)
+{
+	int		i;
+	char	*substr;
+
+	i = 0;
+	if (args[0] && !args[1])
+	{
+		while (sorted_env[i])
+		{
+			substr = ft_substr(sorted_env[i], 0, find_equal(sorted_env[i]));
+			printf("declare -x %s=\"%s\"\n", substr, (ft_strchr(sorted_env[i],
+						'=') + 1));
+			free(substr);
+			i++;
+		}
+		print_env_stack(env_stack);
+	}
+}
+
+void	ft_export_node(t_env_node **env_stack, char **args)
+{
+	char			**sorted_env;
+	t_export_node	*env_stack;
+
+	env_stack = NULL;
+	sorted_env = copy_env(envp);
+	sort_env(sorted_env);
+	add_export(args, &env_stack);
+	print_export(sorted_env, args, &env_stack);
 	free_array(sorted_env);
 }
