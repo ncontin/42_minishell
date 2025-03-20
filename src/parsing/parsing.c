@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/20 09:18:22 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:22:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	parsing(t_env *lst_env, char *input)
 	(void)lst_env;
 	i = 0;
 	tokens = arg_split(input);
+	unquotes(tokens);
 	while (tokens[i] != NULL)
 	{
 		if (is_builtin(tokens[i]))

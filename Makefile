@@ -31,6 +31,7 @@ SRC_PARSING = 	src/parsing/args_split.c\
 				src/parsing/args_split_utils.c\
 				src/parsing/args_count.c \
 				src/parsing/args_wordlen.c\
+				src/parsing/unquote.c\
 
 SRC_READLINE =  src/readline/readline.c\
 				src/readline/multi_line.c

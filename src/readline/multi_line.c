@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 15:09:23 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/20 09:14:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/20 12:36:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ static char	*prompt_join(char *s1, char *s2)
 static t_bool	ends_pipe(char *input, t_bool *squotes, t_bool *dquotes)
 {
 	size_t	len;
+	t_bool	is_pipes;
 
+	len = ft_strlen(input);
+	is_pipes = (input[len - 1] == '|' && input[len - 2] == '|');
 	if (*squotes == TRUE || *dquotes == TRUE)
 		return (FALSE);
-	len = ft_strlen(input);
-	if (input[len - 1] == '|' || (input[len - 1] == '|' && input[len - 2] == '|'))
+	if (input[len - 1] == '|' || is_pipes)
 		return (TRUE);
 	if (input[len - 1] == '&' && input[len - 2] == '&')
 		return (TRUE);
