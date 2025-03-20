@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/20 17:39:41 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/20 18:42:27 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_stack(t_env_node **my_envp)
 	while (current)
 	{
 		next = current->next;
-		// free(current->env_string);
+		free(current->env_string);
 		free(current);
 		current = next;
 	}

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/20 17:41:40 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/20 18:34:30 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void						free_array(char **array);
 int							ft_cd(char *path);
 // void						ft_env(char **envp);
 void						ft_env(t_env_node **env_stack);
-void						ft_export_node(t_env_node **env_stack, char **args);
-void						ft_unset(char **envp, char *input);
+void						ft_export(t_env_node **envp_cp, char **args);
+void						ft_unset(t_env_node **envp_cp, char *input);
 void						get_envp(char **envp, t_env *lst_env);
 void						free_stack(t_env_node **my_envp);
 void						print_env_stack(t_env_node **env_stack);

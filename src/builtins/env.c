@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:38:46 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/20 17:27:02 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/20 17:47:17 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@
 // 	// do env
 // }
 
-void	ft_env(t_env_node **env_stack)
+void	ft_env(t_env_node **envp_cp)
 {
-	print_env_stack(env_stack);
+	print_env_stack(envp_cp);
 }
