@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/19 15:13:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:12:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	line_read(t_env *lst_env)
 
 	while (1)
 	{
-		input = user_input("minishell> ");
+		input = readline("minishell> ");
 		if (input && (ft_strlen(input) > 0))
 		{
 			if (ft_strncmp("exit", input, 4) == 0)

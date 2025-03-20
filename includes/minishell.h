@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/20 12:30:20 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:53:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void			free_struct(t_env *lst_env);
 // parsing.c
 void			parsing(t_env *lst_env, char *input);
 // unquote.c
-void			unquotes(char **tokens);
+char 			**unquotes(char **tokens);
 // arg_split.c
 char			**arg_split(char const *s);
 // arg_split_utils.c

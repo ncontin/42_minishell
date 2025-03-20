@@ -34,7 +34,6 @@ SRC_PARSING = 	src/parsing/args_split.c\
 				src/parsing/unquote.c\
 
 SRC_READLINE =  src/readline/readline.c\
-				src/readline/multi_line.c
 
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft
