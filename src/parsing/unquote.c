@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:39:32 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/21 11:55:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/21 16:04:57 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,37 +37,37 @@ static char	*rm_quotes(char *args, int size)
 	return (args);
 }
 
-static char	*handle_quotes(char *args, t_token *tokens_info)
+static char	*handle_quotes(char *args, t_token *tokens_info, t_bool squotes)
 {
 	int		i;
 	int		size;
-	int		find_quotes;
-	t_bool	squotes;
+	int		find;
 	t_bool	dquotes;
 
-	squotes = FALSE;
-	dquotes = FALSE;
 	i = 0;
 	size = 0;
-	find_quotes = 0;
+	dquotes = FALSE;
+	find = 0;
 	while (args[i] != '\0')
 	{
 		if (args[i] == '\'' && !dquotes)
-		{
-			find_quotes++;
-			if (find_quotes == 1)
-				tokens_info->quotes = SINGLE;
 			squotes = !squotes;
-		}
 		else if (args[i] == '"' && !squotes)
-		{
-			find_quotes++;
-			if (find_quotes == 1)
-				tokens_info->quotes = DOUBLE;
 			dquotes = !dquotes;
-		}
 		else
+		{
+			if (squotes == TRUE && args[i - 1] == '\'' && find == 0)
+			{
+				find++;
+				tokens_info->quotes = SINGLE;
+			}
+			else if (dquotes == TRUE && args[i -1] == '"' && find == 0)
+			{
+				find++;
+				tokens_info->quotes = DOUBLE;
+			}
 			size++;
+		}
 		i++;
 	}
 	if (squotes == TRUE || dquotes == TRUE)
@@ -80,10 +80,9 @@ static char	*handle_quotes(char *args, t_token *tokens_info)
 	return (args);
 }
 
-t_token	*unquotes(char **tokens)
+static t_token	*create_nodes(char **tokens)
 {
 	int		i;
-	char	*new_token;
 	t_token	*tokens_info;
 
 	i = 0;
@@ -95,11 +94,23 @@ t_token	*unquotes(char **tokens)
 		free_array(tokens);
 		return (NULL);
 	}
+	return (tokens_info);
+}
+
+t_token	*unquotes(char **tokens)
+{
+	int		i;
+	char	*new_token;
+	t_token	*tokens_info;
+
 	i = 0;
+	tokens_info = create_nodes(tokens);
+	if (tokens_info == NULL)
+		return (NULL);
 	while (tokens[i] != NULL)
 	{
 		tokens_info[i].quotes = NO_QUOTES;
-		new_token = handle_quotes(tokens[i], &tokens_info[i]);
+		new_token = handle_quotes(tokens[i], &tokens_info[i], FALSE);
 		if (new_token == NULL)
 		{
 			free_array(tokens);
