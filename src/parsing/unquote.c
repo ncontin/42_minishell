@@ -6,41 +6,23 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 18:39:32 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/20 17:27:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/21 11:55:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	is_quotes(char s, t_bool *squotes, t_bool *dquotes, int *size)
+static char	*rm_quotes(char *args, int size)
 {
-	int	i;
-
-	i = 0;
-	if (s == '\'' && !(*dquotes))
-	{
-		*squotes = !(*squotes);
-		(*size)--;
-	}
-	else if (s == '"' && !(*squotes))
-	{
-		*dquotes = !(*dquotes);
-		(*size)--;
-	}
-	i++;
-}
-
-static char	*rm_quotes(char *args, int size, t_bool squotes, t_bool dquotes)
-{
-	char	*new_token;
 	int		i;
 	int		j;
+	t_bool	squotes;
+	t_bool	dquotes;
 
 	i = 0;
 	j = 0;
-	new_token = (char *)malloc(sizeof(char) * (size + 1));
-	if (new_token == NULL)
-		return (NULL);
+	squotes = FALSE;
+	dquotes = FALSE;
 	while (j < size)
 	{
 		if (args[i] == '\'' && !dquotes)
@@ -48,21 +30,18 @@ static char	*rm_quotes(char *args, int size, t_bool squotes, t_bool dquotes)
 		else if (args[i] == '"' && !squotes)
 			dquotes = !dquotes;
 		else
-		{
-			new_token[j] = args[i];
-			j++;
-		}
+			args[j++] = args[i];
 		i++;
 	}
-	new_token[j] = '\0';
-	free(args);
-	return (new_token);
+	args[j] = '\0';
+	return (args);
 }
 
-static char	*handle_quotes(char *args)
+static char	*handle_quotes(char *args, t_token *tokens_info)
 {
 	int		i;
 	int		size;
+	int		find_quotes;
 	t_bool	squotes;
 	t_bool	dquotes;
 
@@ -70,38 +49,65 @@ static char	*handle_quotes(char *args)
 	dquotes = FALSE;
 	i = 0;
 	size = 0;
+	find_quotes = 0;
 	while (args[i] != '\0')
 	{
-		is_quotes(args[i], &squotes, &dquotes, &size);
+		if (args[i] == '\'' && !dquotes)
+		{
+			find_quotes++;
+			if (find_quotes == 1)
+				tokens_info->quotes = SINGLE;
+			squotes = !squotes;
+		}
+		else if (args[i] == '"' && !squotes)
+		{
+			find_quotes++;
+			if (find_quotes == 1)
+				tokens_info->quotes = DOUBLE;
+			dquotes = !dquotes;
+		}
+		else
+			size++;
 		i++;
-		size++;
 	}
 	if (squotes == TRUE || dquotes == TRUE)
 	{
 		write(2, "Error : missing closing quote\n", 30);
-		free(args);
 		return (NULL);
 	}
 	else if (i != size)
-		args = rm_quotes(args, size, FALSE, FALSE);
+		args = rm_quotes(args, size);
 	return (args);
 }
 
-char	**unquotes(char **tokens)
+t_token	*unquotes(char **tokens)
 {
 	int		i;
+	char	*new_token;
+	t_token	*tokens_info;
 
 	i = 0;
 	while (tokens[i] != NULL)
+		i++;
+	tokens_info = (t_token *)malloc(sizeof(t_token) * i);
+	if (tokens_info == NULL)
 	{
-		tokens[i] = handle_quotes(tokens[i]);
-		if (tokens[i] == NULL)
+		free_array(tokens);
+		return (NULL);
+	}
+	i = 0;
+	while (tokens[i] != NULL)
+	{
+		tokens_info[i].quotes = NO_QUOTES;
+		new_token = handle_quotes(tokens[i], &tokens_info[i]);
+		if (new_token == NULL)
 		{
 			free_array(tokens);
-			tokens = NULL;
-			break ;
+			return (NULL);
 		}
+		tokens_info[i].argument = new_token;
+		tokens[i] = new_token;
 		i++;
 	}
-	return (tokens);
+	return (tokens_info);
 }

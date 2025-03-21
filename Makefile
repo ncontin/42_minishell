@@ -21,16 +21,15 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/cd.c\
 				src/builtins/env.c\
 
-SRC_CLEANUP =	src/cleanup/free_array.c\
-				src/cleanup/free.c\
+SRC_CLEANUP =	src/cleanup/free.c\
 
 SRC_ERRORS = 	src/errors/error.c\
 
-SRC_PARSING = 	src/parsing/args_split.c\
+SRC_PARSING =	src/parsing/split_args/args_count.c\
+				src/parsing/split_args/args_split.c\
+				src/parsing/split_args/args_split_utils.c\
+				src/parsing/split_args/args_wordlen.c\
 				src/parsing/parsing.c\
-				src/parsing/args_split_utils.c\
-				src/parsing/args_count.c \
-				src/parsing/args_wordlen.c\
 				src/parsing/unquote.c\
 
 SRC_READLINE =  src/readline/readline.c\
