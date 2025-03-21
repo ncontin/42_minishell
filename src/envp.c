@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/20 18:42:27 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/21 12:41:48 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_env_stack(t_env_node **env_stack)
 	}
 }
 
-static t_env_node	*find_last(t_env_node **my_envp)
+t_env_node	*find_last(t_env_node **my_envp)
 {
 	t_env_node	*last;
 
@@ -50,37 +50,41 @@ void	free_stack(t_env_node **my_envp)
 		current = next;
 	}
 	*my_envp = NULL;
+	free(my_envp);
 }
 
-void	get_envp(char **envp, t_env *lst_env)
+t_env_node	**copy_envp(char **envp)
 {
-	t_env_node	**my_envp;
+	t_env_node	**ft_envp;
 	t_env_node	*node;
 	t_env_node	*last;
 	int			i;
 
-	my_envp = malloc(sizeof(t_env_node *));
-	if (!my_envp)
-		return ;
-	*my_envp = NULL;
+	ft_envp = malloc(sizeof(t_env_node *));
+	if (!ft_envp)
+		return (NULL);
+	*ft_envp = NULL;
 	i = 0;
 	while (envp[i])
 	{
 		node = malloc(sizeof(t_env_node));
 		if (!node)
-			return ;
+			return (NULL);
 		node->env_string = ft_strdup(envp[i]);
 		node->next = NULL;
-		if (!(*my_envp))
-			*my_envp = node;
+		if (!(*ft_envp))
+			*ft_envp = node;
 		else
 		{
-			last = find_last(my_envp);
+			last = find_last(ft_envp);
 			last->next = node;
 		}
 		i++;
 	}
-	print_env_stack(my_envp);
-	lst_env->envp_cp = *my_envp;
-	free(my_envp);
+	return (ft_envp);
+}
+
+void	init_envp(t_env *lst_env)
+{
+	lst_env->envp_cp = copy_envp(lst_env->envp);
 }
