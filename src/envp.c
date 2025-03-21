@@ -6,23 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/21 12:41:48 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/21 14:28:01 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_env_stack(t_env_node **env_stack)
-{
-	t_env_node	*current;
-
-	current = *env_stack;
-	while (current)
-	{
-		printf("%s\n", current->env_string);
-		current = current->next;
-	}
-}
 
 t_env_node	*find_last(t_env_node **my_envp)
 {
@@ -45,7 +33,8 @@ void	free_stack(t_env_node **my_envp)
 	while (current)
 	{
 		next = current->next;
-		free(current->env_string);
+		free(current->key);
+		free(current->value);
 		free(current);
 		current = next;
 	}
@@ -59,6 +48,7 @@ t_env_node	**copy_envp(char **envp)
 	t_env_node	*node;
 	t_env_node	*last;
 	int			i;
+	int			equal_index;
 
 	ft_envp = malloc(sizeof(t_env_node *));
 	if (!ft_envp)
@@ -70,7 +60,10 @@ t_env_node	**copy_envp(char **envp)
 		node = malloc(sizeof(t_env_node));
 		if (!node)
 			return (NULL);
-		node->env_string = ft_strdup(envp[i]);
+		equal_index = find_equal(envp[i]);
+		node->key = ft_substr(envp[i], 0, equal_index);
+		node->value = ft_substr(envp[i], equal_index, ft_strlen(envp[i])
+				- equal_index);
 		node->next = NULL;
 		if (!(*ft_envp))
 			*ft_envp = node;

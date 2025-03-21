@@ -6,25 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/21 12:53:51 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/21 14:28:08 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	find_equal(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
 
 static int	find_len(char *s1, char *s2)
 {
@@ -42,36 +28,45 @@ static int	find_len(char *s1, char *s2)
 }
 
 // chained list
-// static void	add_export(char **args, t_export_node **env_stack)
-// {
-// 	t_export_node	*env;
-// 	t_export_node	*last;
-// 	int				i;
+static t_env_node	**add_export_stack(char **args)
+{
+	t_env_node	**ft_envp;
+	t_env_node	*env;
+	t_env_node	*last;
+	int			i;
+	int			equal_index;
 
-// 	i = 1;
-// 	while (args[i])
-// 	{
-// 		env = malloc(sizeof(t_export_node));
-// 		if (!env)
-// 			return ;
-// 		env->string = ft_strdup(args[i]);
-// 		env->next = NULL;
-// 		if (!(*env_stack))
-// 		{
-// 			*env_stack = env;
-// 		}
-// 		else
-// 		{
-// 			last = *env_stack;
-// 			while (last->next)
-// 			{
-// 				last = last->next;
-// 			}
-// 			last->next = env;
-// 		}
-// 		i++;
-// 	}
-// }
+	i = 1;
+	ft_envp = malloc(sizeof(t_env_node *));
+	if (!ft_envp)
+		return (NULL);
+	*ft_envp = NULL;
+	while (args[i])
+	{
+		env = malloc(sizeof(t_env_node));
+		if (!env)
+			return (NULL);
+		equal_index = find_equal(args[i]);
+		if (equal_index)
+		{
+			env->key = ft_substr(args[i], 0, equal_index);
+			env->value = ft_substr(args[i], equal_index, ft_strlen(args[i])
+					- equal_index);
+		}
+		else
+			env->key = ft_strdup(args[i]);
+		env->next = NULL;
+		if (!(*ft_envp))
+			*ft_envp = env;
+		else
+		{
+			last = find_last(ft_envp);
+			last->next = env;
+		}
+		i++;
+	}
+	return (ft_envp);
+}
 
 // static char	**add_env(char **args)
 // {
@@ -96,26 +91,15 @@ static int	find_len(char *s1, char *s2)
 // 	return (env_added);
 // }
 
-// static void	print_export(char **sorted_env, char **args,
-// 		t_export_node **env_stack)
-// {
-// 	int		i;
-// 	char	*substr;
-
-// 	i = 0;
-// 	if (args[0] && !args[1])
-// 	{
-// 		while (sorted_env[i])
-// 		{
-// 			substr = ft_substr(sorted_env[i], 0, find_equal(sorted_env[i]));
-// 			printf("declare -x %s=\"%s\"\n", substr, (ft_strchr(sorted_env[i],
-// 						'=') + 1));
-// 			free(substr);
-// 			i++;
-// 		}
-// 		print_env_stack(env_stack);
-// 	}
-// }
+static void	print_export(t_env_node **sorted_envp_cp, t_env_node **envp_export,
+		char **args)
+{
+	if (args[0] && !args[1])
+	{
+		print_env_stack(sorted_envp_cp);
+		print_env_stack(envp_export);
+	}
+}
 
 // void	ft_export_node(char **args, char **envp)
 // {
@@ -147,7 +131,8 @@ t_env_node	**copy_envp_list(t_env_node **envp_cp)
 		node = malloc(sizeof(t_env_node));
 		if (!node)
 			return (NULL);
-		node->env_string = ft_strdup(current->env_string);
+		node->key = ft_strdup(current->key);
+		node->value = ft_strdup(current->value);
 		node->next = NULL;
 		if (!(*ft_envp))
 			*ft_envp = node;
@@ -165,8 +150,6 @@ t_env_node	*find_min(t_env_node **envp_cp)
 {
 	t_env_node	*current;
 	t_env_node	*min;
-	char		*substr1;
-	char		*substr2;
 
 	if (!*envp_cp)
 		return (NULL);
@@ -174,25 +157,35 @@ t_env_node	*find_min(t_env_node **envp_cp)
 	current = (*envp_cp)->next;
 	while (current)
 	{
-		substr1 = ft_substr(min->env_string, 0, find_equal(min->env_string));
-		substr2 = ft_substr(current->env_string, 0,
-				find_equal(current->env_string));
-		if (ft_strncmp(substr1, substr2, find_len(substr1, substr2)) > 0)
+		if (ft_strncmp(min->key, current->key, find_len(min->key,
+					current->key)) > 0)
 			min = current;
-		free(substr1);
-		free(substr2);
 		current = current->next;
 	}
 	return (min);
+}
+
+static void	swap_nodes(t_env_node *current, t_env_node *temp)
+{
+	char	*temp_key;
+	char	*temp_value;
+
+	if (ft_strncmp(current->key, temp->key, find_len(current->key,
+				temp->key)) > 0)
+	{
+		temp_key = current->key;
+		temp_value = current->value;
+		current->key = temp->key;
+		current->value = temp->value;
+		temp->key = temp_key;
+		temp->value = temp_value;
+	}
 }
 
 static void	sort_env(t_env_node **envp_cp)
 {
 	t_env_node	*current;
 	t_env_node	*temp;
-	char		*substr1;
-	char		*substr2;
-	char		*temp_str;
 
 	if (!envp_cp || !*envp_cp)
 		return ;
@@ -202,18 +195,7 @@ static void	sort_env(t_env_node **envp_cp)
 		temp = current->next;
 		while (temp)
 		{
-			substr1 = ft_substr(current->env_string, 0,
-					find_equal(current->env_string));
-			substr2 = ft_substr(temp->env_string, 0,
-					find_equal(temp->env_string));
-			if (ft_strncmp(substr1, substr2, find_len(substr1, substr2)) > 0)
-			{
-				temp_str = current->env_string;
-				current->env_string = temp->env_string;
-				temp->env_string = temp_str;
-			}
-			free(substr1);
-			free(substr2);
+			swap_nodes(current, temp);
 			temp = temp->next;
 		}
 		current = current->next;
@@ -221,19 +203,10 @@ static void	sort_env(t_env_node **envp_cp)
 }
 void	ft_export(t_env *lst_env, char **args)
 {
-	t_export_node	*env_stack;
-	char			**sorted_env;
-
-	(void)args;
-	env_stack = NULL;
-	sorted_env = NULL;
 	// You might need to implement a function to convert env_node to char**
 	lst_env->sorted_envp_cp = copy_envp_list(lst_env->envp_cp);
 	sort_env(lst_env->sorted_envp_cp);
-	// add_export(args, &env_stack);
-	print_env_stack(lst_env->sorted_envp_cp);
-	// print_export(sorted_env, args, &env_stack);
+	lst_env->envp_export = add_export_stack(args);
+	print_export(lst_env->sorted_envp_cp, lst_env->envp_export, args);
 	free_stack(lst_env->sorted_envp_cp);
-	// 	if (sorted_env)
-	// 		free_array(sorted_env);
 }

@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/21 14:36:42 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/21 14:20:11 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	print_env_stack(t_env_node **env_stack)
 {
-	t_env	lst_env;
+	t_env_node	*current;
 
-	(void)argc;
-	(void)argv;
-	get_path(envp, &lst_env);
-	init_envp(&lst_env);
-	line_read(&lst_env);
-	free_struct(&lst_env);
-	free_stack(lst_env.envp_cp);
-	free_stack(lst_env.envp_export);
+	current = *env_stack;
+	while (current)
+	{
+		printf("%s=%s\n", current->key, current->value + 1);
+		current = current->next;
+	}
+}
+
+int	find_equal(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
 }
