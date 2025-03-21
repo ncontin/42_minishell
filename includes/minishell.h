@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/21 14:18:35 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/21 15:53:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void					free_stack(t_env_node **my_envp);
 void					print_env_stack(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
 int						find_equal(char *str);
+char					*get_key(char *str);
+char					*get_value(char *str);
 
 // path.c
 void					get_path(char **envp, t_env *lst_env);

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/21 14:28:01 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/21 15:53:49 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ t_env_node	**copy_envp(char **envp)
 	t_env_node	*node;
 	t_env_node	*last;
 	int			i;
-	int			equal_index;
 
 	ft_envp = malloc(sizeof(t_env_node *));
 	if (!ft_envp)
@@ -60,10 +59,8 @@ t_env_node	**copy_envp(char **envp)
 		node = malloc(sizeof(t_env_node));
 		if (!node)
 			return (NULL);
-		equal_index = find_equal(envp[i]);
-		node->key = ft_substr(envp[i], 0, equal_index);
-		node->value = ft_substr(envp[i], equal_index, ft_strlen(envp[i])
-				- equal_index);
+		node->key = get_key(envp[i]);
+		node->value = get_value(envp[i]);
 		node->next = NULL;
 		if (!(*ft_envp))
 			*ft_envp = node;

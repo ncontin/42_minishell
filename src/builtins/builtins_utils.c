@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/21 14:20:11 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/21 16:00:09 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void	print_env_stack(t_env_node **env_stack)
 	current = *env_stack;
 	while (current)
 	{
-		printf("%s=%s\n", current->key, current->value + 1);
+		printf("%s", current->key);
+		if (current->value)
+			printf("=\"%s\"\n", current->value);
 		current = current->next;
 	}
 }
@@ -36,4 +38,24 @@ int	find_equal(char *str)
 		i++;
 	}
 	return (-1);
+}
+
+char	*get_key(char *str)
+{
+	char	*key;
+	int		equal_index;
+
+	equal_index = find_equal(str);
+	key = ft_substr(str, 0, equal_index);
+	return (key);
+}
+
+char	*get_value(char *str)
+{
+	char	*value;
+	int		equal_index;
+
+	equal_index = find_equal(str);
+	value = ft_substr(str, equal_index + 1, ft_strlen(str) - (equal_index + 1));
+	return (value);
 }
