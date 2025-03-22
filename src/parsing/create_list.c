@@ -6,52 +6,43 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/22 12:43:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/22 14:55:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_multi_strings(char *args)
+static int	str_count(char *args, t_bool *quotes, int *i, char c)
 {
-	int		i;
+	if (args[*i + 1] == c)
+		(*i)++;
+	else
+	{
+		*quotes = !(*quotes);
+		if (*quotes == FALSE)
+			return (1);
+	}
+	return (0);
+}
+
+static int	is_multi_strings(char *args, int i, t_bool dquotes, t_bool squotes)
+{
 	int		nb_strings;
-	t_bool	dquotes;
-	t_bool	squotes;
 	t_bool	no_quotes;
 
-	i = 0;
 	nb_strings = 0;
-	dquotes = FALSE;
-	squotes = FALSE;
 	no_quotes = FALSE;
 	while (args[i] != '\0')
 	{
 		if (args[i] == '\'' && !dquotes)
 		{
-			if (no_quotes == TRUE)
-				no_quotes = FALSE;
-			if (args[i + 1] == '\'')
-				i++;
-			else
-			{	
-				squotes = !squotes;
-				if (squotes == FALSE)
-					nb_strings++;
-			}
+			no_quotes = FALSE;
+			nb_strings += str_count(args, &squotes, &i, '\'');
 		}
 		else if (args[i] == '"' && !squotes)
 		{
-			if (no_quotes == TRUE)
-				no_quotes = FALSE;
-			if (args[i + 1] == '"')
-				i++;
-			else
-			{
-				dquotes = !dquotes;
-				if (dquotes == FALSE)
-					nb_strings++;
-			}
+			no_quotes = FALSE;
+			nb_strings += str_count(args, &dquotes, &i, '"');
 		}
 		else if (no_quotes == FALSE && !dquotes && !squotes)
 		{
@@ -66,14 +57,12 @@ static int	is_multi_strings(char *args)
 void	create_list(char **tokens)
 {
 	int	i;
-	int	nb_strings;
+	//int	nb_strings;
 
 	i = 0;
-	/*if (tokens == NULL)
-		return (NULL);*/
 	while (tokens[i] != NULL)
 	{
-		nb_strings = is_multi_strings(tokens[i]);
+		is_multi_strings(tokens[i], 0, FALSE, FALSE);
 		i++;
 	}
 }
