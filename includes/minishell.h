@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/22 12:16:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/22 18:16:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,20 @@ void			ft_env(char **envp);
 char			**arg_split(char const *s);
 // arg_split_utils.c
 t_bool			is_operator(char const *c, int no_space, int *len);
-// count_args
+// check_quotes.c
+void			check_quotes(char *args, t_token *current);
+int				get_size(char *args);
+char			*rm_quotes(char *args, int size);
+// count_args.c
 int				count_args(t_parser *parser);
 //create_list.c
 void			create_list(char **tokens);
 // error.c
 void			error_msg(char *message, int error);
+// even_quotes.c
+t_bool			is_even_quotes(char **tokens);
 // free.c
-void			free_struct(t_env *lst_env);
+void			free_struct(void *lst_env);
 void			free_array(char **array);
 void			free_tokens(t_token *tokens_info);
 // mutil_line.c
@@ -86,8 +92,6 @@ void			parsing(t_env *lst_env, char *input);
 void			get_path(char **envp, t_env *lst_env);
 // readline.c
 void			line_read(t_env *lst_env);
-// unquote.c
-t_bool			is_even_quotes(char **tokens);
 // wordlen.c
 int				wordlen(char const *s, t_bool dquotes, t_bool squotes);
 

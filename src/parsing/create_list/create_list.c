@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/22 14:55:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/22 18:11:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,40 @@ static int	is_multi_strings(char *args, int i, t_bool dquotes, t_bool squotes)
 	return (nb_strings);
 }
 
+static t_token *new_list(char *args, int nb_strings)
+{
+	t_token	*current;
+	t_token	*head;
+	int		size;
+
+	if (nb_strings == 1)
+	{
+		current = (t_token *)malloc(sizeof(t_token));
+		if (current == NULL)
+		{
+			free_struct(head);
+			return (NULL);
+		}
+		check_quotes(args, current);
+		size = get_size(args);
+		current->argument = rm_quotes(args, size);
+	}
+	head = current;
+	/*else
+		handle_multi_str();*/
+}
+
 void	create_list(char **tokens)
 {
-	int	i;
-	//int	nb_strings;
+	int		i;
+	int		nb_strings;
+	t_token	*lst_tokens;
 
 	i = 0;
 	while (tokens[i] != NULL)
 	{
-		is_multi_strings(tokens[i], 0, FALSE, FALSE);
+		nb_strings = is_multi_strings(tokens[i], 0, FALSE, FALSE);
+		lst_tokens = new_list(tokens[i], nb_strings);
 		i++;
 	}
 }
