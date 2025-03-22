@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/21 17:24:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/22 12:16:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ typedef struct s_parser
 
 typedef struct s_token
 {
-	char		*argument;
-	t_quotes	quotes;
-	t_bool		linked;
-	t_token		*next;
+	char			*argument;
+	t_quotes		quotes;
+	t_bool			linked;
+	struct s_token	*next;
 }	t_token;
 
 // builtins
@@ -70,6 +70,8 @@ char			**arg_split(char const *s);
 t_bool			is_operator(char const *c, int no_space, int *len);
 // count_args
 int				count_args(t_parser *parser);
+//create_list.c
+void			create_list(char **tokens);
 // error.c
 void			error_msg(char *message, int error);
 // free.c
@@ -85,7 +87,7 @@ void			get_path(char **envp, t_env *lst_env);
 // readline.c
 void			line_read(t_env *lst_env);
 // unquote.c
-t_token 		*unquotes(char **tokens);
+t_bool			is_even_quotes(char **tokens);
 // wordlen.c
 int				wordlen(char const *s, t_bool dquotes, t_bool squotes);
 
