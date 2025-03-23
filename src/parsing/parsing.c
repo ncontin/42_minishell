@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/22 11:14:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/23 18:07:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	parsing(t_env *lst_env, char *input)
 	int		i;
 	char	**tokens;
 	t_bool	even_quotes;
+	t_token	*lst_tokens;
 
 	(void)lst_env;
 	i = 0;
@@ -26,7 +27,9 @@ void	parsing(t_env *lst_env, char *input)
 	even_quotes = is_even_quotes(tokens);
 	if (even_quotes == FALSE)
 		return ;
-	create_list(tokens);
+	lst_tokens = create_list(tokens);
+	if (lst_tokens == NULL)
+		return ;
 	if (tokens != NULL)
 	{
 		while (tokens[i] != NULL)
@@ -37,5 +40,6 @@ void	parsing(t_env *lst_env, char *input)
 			i++;
 		}
 		free_array(tokens);
+		free_token(lst_tokens);
 	}
 }

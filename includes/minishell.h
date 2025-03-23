@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/23 08:59:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/23 18:04:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ char			*rm_quotes(char *args, int size);
 // count_args.c
 int				count_args(t_parser *parser);
 //create_list.c
-void			create_list(char **tokens);
+t_token			*create_list(char **tokens);
+//create_list_init.c
+t_token  		*init_new_list(t_token *head);
+void			lst_add_new(t_token **head, t_token *new);
 // error.c
 void			error_msg(char *message, int error);
 // even_quotes.c
@@ -85,8 +88,8 @@ void			free_struct(t_env *lst_env);
 void			free_array(char **array);
 void			free_tokens(t_token *tokens_info);
 void			free_token(t_token *token);
-// mutil_line.c
-char			*user_input(char *str);
+// multi_str.c
+void			multi_str(char *args, int nb_strings, t_token **head);
 // parsing.c
 void			parsing(t_env *lst_env, char *input);
 // path.c

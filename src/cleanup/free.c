@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:29:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/23 09:39:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/23 18:11:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	free_token(t_token *token)
 	while (current != NULL)
 	{
 		token = token->next;
+		free(current->argument);
 		free(current);
 		current = token;
 	}
