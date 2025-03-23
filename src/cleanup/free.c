@@ -6,11 +6,24 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:29:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/22 18:20:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/23 09:39:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_token(t_token *token)
+{
+	t_token	*current;
+
+	current = token;
+	while (current != NULL)
+	{
+		token = token->next;
+		free(current);
+		current = token;
+	}
+}
 
 void	free_struct(t_env *lst_env)
 {

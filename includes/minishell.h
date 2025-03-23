@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/22 18:16:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/23 08:59:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,10 @@ void			error_msg(char *message, int error);
 // even_quotes.c
 t_bool			is_even_quotes(char **tokens);
 // free.c
-void			free_struct(void *lst_env);
+void			free_struct(t_env *lst_env);
 void			free_array(char **array);
 void			free_tokens(t_token *tokens_info);
+void			free_token(t_token *token);
 // mutil_line.c
 char			*user_input(char *str);
 // parsing.c

@@ -30,7 +30,7 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_args/args_split_utils.c\
 				src/parsing/split_args/args_wordlen.c\
 				src/parsing/create_list/create_list.c\
-				src/parsing/create_list/check_quotes.c\
+				src/parsing/create_list/create_list_utils.c\
 				src/parsing/parsing.c\
 				src/parsing/even_quotes.c\
 

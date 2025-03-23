@@ -6,19 +6,19 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:24:52 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/22 18:03:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/23 10:07:32 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_quotes	get_quote_type(char *args, char c, t_bool quote, int *i)
+static t_quotes	get_quote_type(char *args, char c, t_bool *quote, int *i)
 {
 	if (args[*i + 1] == c)
 		(*i)++;
 	else
 	{
-		*quote = !(*squotes);
+		*quote = !(*quote);
 		if (c == '\'')
 			return (SINGLE);
 		else if (c == '"')
@@ -41,13 +41,13 @@ void	check_quotes(char *args, t_token *current)
 	{
 		if (args[i] == '\'' && !dquotes)
 		{
-			current->quotes = get_quote_type(args, '\'', squotes, &i);
+			current->quotes = get_quote_type(args, '\'', &squotes, &i);
 			if (current->quotes != NO_QUOTES)
 				break ;
 		}
 		else if (args[i] == '"' && !squotes)
 		{
-			current->quotes = get_quote_type(args, '"', dquotes, &i);
+			current->quotes = get_quote_type(args, '"', &dquotes, &i);
 			if (current->quotes != NO_QUOTES)
 				break ;
 		}
@@ -57,9 +57,15 @@ void	check_quotes(char *args, t_token *current)
 
 int	get_size(char *args)
 {
-	int	size;
+	int		size;
+	int		i;
+	t_bool	squotes;
+	t_bool	dquotes;
 
+	i = 0;
 	size = 0;
+	squotes = FALSE;
+	dquotes = FALSE;
 	while (args[i] != '\0')
 	{
 		if (args[i] == '\'' && !dquotes)
@@ -98,6 +104,6 @@ char	*rm_quotes(char *args, int size)
 			new_arg[j++] = args[i];
 		i++;
 	}
-	args[j] = '\0';
-	return (args);
+	new_arg[j] = '\0';
+	return (new_arg);
 }
