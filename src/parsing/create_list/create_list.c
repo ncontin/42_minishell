@@ -6,17 +6,18 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/24 15:21:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:15:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	str_count(t_bool *quotes, t_bool *in_word, t_bool *no_quotes)
+static int	str_count(t_bool *quotes, t_bool *no_quotes, char c, char next)
 {
+	if ((c == next) && *quotes == FALSE)
+		return (0);
 	*no_quotes = FALSE;
 	*quotes = !(*quotes);
-	*in_word = !(*in_word);
 	if (*quotes == FALSE)
 		return (1);
 	return (0);
@@ -26,27 +27,15 @@ static int	is_multi_strings(char *args, int i, t_bool dquotes, t_bool squotes)
 {
 	int		nb_strings;
 	t_bool	no_quotes;
-	t_bool	in_word;
 
 	nb_strings = 0;
 	no_quotes = FALSE;
-	in_word = FALSE;
 	while (args[i] != '\0')
 	{
 		if (args[i] == '\'' && !dquotes)
-		{
-			if (args[i + 1] == '\'' && in_word == FALSE)
-				i++;
-			else
-				nb_strings += str_count(&squotes, &in_word, &no_quotes);
-		}
+			nb_strings += str_count(&squotes, &no_quotes, '\'', args[i + 1]);
 		else if (args[i] == '"' && !squotes)
-		{
-			if (args[i + 1] == '"' && in_word == FALSE)
-				i++;
-			else
-				nb_strings += str_count(&dquotes, &in_word, &no_quotes);
-		}
+			nb_strings += str_count(&dquotes, &no_quotes, '"', args[i + 1]);
 		else if (no_quotes == FALSE && !dquotes && !squotes)
 		{
 			no_quotes = TRUE;
