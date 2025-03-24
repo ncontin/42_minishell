@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/24 13:02:48 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/24 18:34:57 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	find_len(char *s1, char *s2)
+static int	find_min_len(char *s1, char *s2)
 {
 	int	s1_len;
 	int	s2_len;
@@ -27,40 +27,77 @@ static int	find_len(char *s1, char *s2)
 	return (len);
 }
 
+static void	replace_env(t_env_node *env_to_replace, char *arg)
+{
+	int	equal_index;
+
+	equal_index = find_equal(arg);
+	free(env_to_replace->key);
+	free(env_to_replace->value);
+	if (equal_index > 0)
+	{
+		env_to_replace->key = get_key(arg);
+		env_to_replace->value = get_value(arg);
+	}
+	else
+	{
+		env_to_replace->key = ft_strdup(arg);
+		env_to_replace->value = NULL;
+	}
+}
+
+static t_env_node	*check_existing_env(t_env *lst_env, char *arg)
+{
+	t_env_node	*current;
+
+	current = *lst_env->envp_cp;
+	while (current)
+	{
+		if (ft_strncmp(arg, current->key, ft_strlen(current->key)) == 0)
+			return (current);
+		current = current->next;
+	}
+	if (lst_env->envp_export && *lst_env->envp_export)
+	{
+		current = *lst_env->envp_export;
+		while (current)
+		{
+			if (ft_strncmp(arg, current->key, ft_strlen(current->key)) == 0)
+				return (current);
+			current = current->next;
+		}
+	}
+	return (NULL);
+}
+
 // chained list
-static void	add_export_env(t_env_node **export_env_stack, char **args)
+static void	add_export_env(t_env *lst_env, char *arg)
 {
 	t_env_node	*env;
 	t_env_node	*last;
-	int			i;
 	int			equal_index;
 
-	i = 1;
-	while (args[i])
+	env = malloc(sizeof(t_env_node));
+	if (!env)
+		return ;
+	equal_index = find_equal(arg);
+	if (equal_index > 0)
 	{
-		env = malloc(sizeof(t_env_node));
-		if (!env)
-			return ;
-		equal_index = find_equal(args[i]);
-		if (equal_index > 0)
-		{
-			env->key = get_key(args[i]);
-			env->value = get_value(args[i]);
-		}
-		else
-		{
-			env->key = ft_strdup(args[i]);
-			env->value = NULL;
-		}
-		env->next = NULL;
-		if (!(*export_env_stack))
-			*export_env_stack = env;
-		else
-		{
-			last = find_last(export_env_stack);
-			last->next = env;
-		}
-		i++;
+		env->key = get_key(arg);
+		env->value = get_value(arg);
+	}
+	else
+	{
+		env->key = ft_strdup(arg);
+		env->value = NULL;
+	}
+	env->next = NULL;
+	if (!(*lst_env->envp_export))
+		*lst_env->envp_export = env;
+	else
+	{
+		last = find_last(lst_env->envp_export);
+		last->next = env;
 	}
 }
 
@@ -119,7 +156,7 @@ t_env_node	*find_min(t_env_node **envp_cp)
 	current = (*envp_cp)->next;
 	while (current)
 	{
-		if (ft_strncmp(min->key, current->key, find_len(min->key,
+		if (ft_strncmp(min->key, current->key, find_min_len(min->key,
 					current->key)) > 0)
 			min = current;
 		current = current->next;
@@ -132,7 +169,7 @@ static void	swap_nodes(t_env_node *current, t_env_node *temp)
 	char	*temp_key;
 	char	*temp_value;
 
-	if (ft_strncmp(current->key, temp->key, find_len(current->key,
+	if (ft_strncmp(current->key, temp->key, find_min_len(current->key,
 				temp->key)) > 0)
 	{
 		temp_key = current->key;
@@ -166,15 +203,29 @@ static void	sort_env(t_env_node **envp_cp)
 
 void	ft_export(t_env *lst_env, char **args)
 {
+	int			i;
+	t_env_node	*env_to_replace;
+
+	i = 1;
 	if (!lst_env || !args || !args[0])
 		return ;
-	// might need to implement a function to convert env_node to char**
 	lst_env->sorted_envp_cp = copy_envp_list(lst_env->envp_cp);
 	if (!lst_env->sorted_envp_cp)
 		return ;
 	sort_env(lst_env->sorted_envp_cp);
-	if (args[1])
-		add_export_env(lst_env->envp_export, args);
-	print_export(lst_env->sorted_envp_cp, lst_env->envp_export, args);
+	if (args[0])
+		print_export(lst_env->sorted_envp_cp, lst_env->envp_export, args);
+	if (args[0] && args[1])
+	{
+		while (args[i])
+		{
+			env_to_replace = check_existing_env(lst_env, args[i]);
+			if (env_to_replace != NULL)
+				replace_env(env_to_replace, args[i]);
+			else
+				add_export_env(lst_env, args[i]);
+			i++;
+		}
+	}
 	free_stack(lst_env->sorted_envp_cp);
 }
