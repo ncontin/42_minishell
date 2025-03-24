@@ -34,7 +34,7 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/create_list/create_list_init.c\
 				src/parsing/create_list/multi_str.c\
 				src/parsing/parsing.c\
-				src/parsing/even_quotes.c\
+				src/parsing/is_even_quotes.c\
 
 SRC_READLINE =  src/readline/readline.c\
 

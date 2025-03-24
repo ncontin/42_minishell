@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/23 18:03:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/24 08:19:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,29 @@ static t_token	*new_list(char *args, int nb_strings, t_token *head)
 		lst_add_new(&head, current);
 	}
 	else
-	{
 		multi_str(args, nb_strings, &head);
-		if (head == NULL)
-			return (NULL);
-	}
 	return (head);
 }
 
-t_token *create_list(char **tokens)
+static void	printouff(t_token *head)
+{
+	t_token	*current;
+
+	current = head;
+	while (current != NULL)
+	{
+		printf("%s\n", current->argument);
+		printf("%d\n", current->quotes);
+		printf("%d\n", current->linked);
+		current = current->next;
+	}
+}
+
+t_token	*create_list(char **tokens)
 {
 	int		i;
 	int		nb_strings;
 	t_token	*head;
-	t_token	*current;
 
 	i = 0;
 	head = NULL;
@@ -105,13 +114,6 @@ t_token *create_list(char **tokens)
 		}
 		i++;
 	}
-	current = head;
-	while (current != NULL)
-	{
-		printf("%s\n", current->argument);
-		printf("%d\n", current->quotes);
-		printf("%d\n", current->linked);
-		current = current->next;
-	}
+	printouff(head);
 	return (head);
 }
