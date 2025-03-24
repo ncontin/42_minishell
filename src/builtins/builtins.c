@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/21 12:13:31 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/24 12:22:11 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ void	execute_builtin(t_env *lst_env, char **args)
 	else if (ft_strncmp(args[0], "env", 3) == 0)
 	{
 		// get_path(lst_env->envp, lst_env);
-		ft_env(lst_env->envp_cp);
+		ft_env(lst_env);
 	}
 	else if (ft_strncmp(args[0], "export", 6) == 0)
 		ft_export(lst_env, args);
 	else if (ft_strncmp(args[0], "unset", 5) == 0)
-		ft_unset(lst_env->envp_cp, args[1]);
+		ft_unset(lst_env, args);
 }

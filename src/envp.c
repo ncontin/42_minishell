@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/21 15:53:49 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/24 11:49:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,8 @@ t_env_node	**copy_envp(char **envp)
 void	init_envp(t_env *lst_env)
 {
 	lst_env->envp_cp = copy_envp(lst_env->envp);
+	lst_env->envp_export = malloc(sizeof(t_env_node *));
+	if (!lst_env->envp_export)
+		return ;
+	*(lst_env->envp_export) = NULL;
 }
