@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/23 18:07:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/25 17:44:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	parsing(t_env *lst_env, char *input)
 	lst_tokens = create_list(tokens);
 	if (lst_tokens == NULL)
 		return ;
+	assign_operator(lst_tokens);
 	if (tokens != NULL)
 	{
 		while (tokens[i] != NULL)

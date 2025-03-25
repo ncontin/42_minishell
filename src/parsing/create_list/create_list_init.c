@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 15:52:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/23 15:56:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/25 17:30:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_token	*init_new_list(t_token *head)
 	current->argument = NULL;
 	current->quotes = NO_QUOTES;
 	current->linked = FALSE;
+	current->operator = NONE;
 	current->next = NULL;
 	return (current);
 }

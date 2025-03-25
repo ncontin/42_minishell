@@ -6,45 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/24 16:15:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/25 17:48:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	str_count(t_bool *quotes, t_bool *no_quotes, char c, char next)
-{
-	if ((c == next) && *quotes == FALSE)
-		return (0);
-	*no_quotes = FALSE;
-	*quotes = !(*quotes);
-	if (*quotes == FALSE)
-		return (1);
-	return (0);
-}
-
-static int	is_multi_strings(char *args, int i, t_bool dquotes, t_bool squotes)
-{
-	int		nb_strings;
-	t_bool	no_quotes;
-
-	nb_strings = 0;
-	no_quotes = FALSE;
-	while (args[i] != '\0')
-	{
-		if (args[i] == '\'' && !dquotes)
-			nb_strings += str_count(&squotes, &no_quotes, '\'', args[i + 1]);
-		else if (args[i] == '"' && !squotes)
-			nb_strings += str_count(&dquotes, &no_quotes, '"', args[i + 1]);
-		else if (no_quotes == FALSE && !dquotes && !squotes)
-		{
-			no_quotes = TRUE;
-			nb_strings++;
-		}
-		i++;
-	}
-	return (nb_strings);
-}
 
 static t_token	*new_list(char *args, int nb_strings, t_token *head)
 {
@@ -62,29 +28,14 @@ static t_token	*new_list(char *args, int nb_strings, t_token *head)
 		current->argument = rm_quotes(args, size);
 		if (current->argument == NULL)
 		{
-			write(2, "Memory allocation failed to create arg\n", 39);
-			free_token(head);
+			msg_and_free(head);
 			return (NULL);
 		}
 		lst_add_new(&head, current);
 	}
 	else
-		multi_str(args, nb_strings, &head);
+		multi_str(args, nb_strings, &head, 0);
 	return (head);
-}
-
-static void	printouff(t_token *head)
-{
-	t_token	*current;
-
-	current = head;
-	while (current != NULL)
-	{
-		printf("%s\n", current->argument);
-		printf("%d\n", current->quotes);
-		printf("%d\n", current->linked);
-		current = current->next;
-	}
 }
 
 t_token	*create_list(char **tokens)
@@ -106,6 +57,5 @@ t_token	*create_list(char **tokens)
 		}
 		i++;
 	}
-	printouff(head);
 	return (head);
 }

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/23 18:04:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/25 17:50:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ typedef enum s_quotes
 	DOUBLE
 }	t_quotes;
 
+typedef enum s_operator
+{
+	NONE,
+	OUTPUT,
+	INPUT,
+	PIPE,
+	APPEND,
+	HEREDOC
+}	t_operator;
+
 typedef struct s_env
 {
 	char		**envp;
@@ -52,51 +62,56 @@ typedef struct s_token
 	char			*argument;
 	t_quotes		quotes;
 	t_bool			linked;
+	t_operator		operator;
 	struct s_token	*next;
 }	t_token;
 
 // builtins
-int				is_builtin(char *str);
-void			execute_builtin(t_env *lst_env, char **args);
-void			ft_pwd(void);
-void			ft_echo(char **args);
-void			free_array(char **array);
-int				ft_cd(char *path);
-void			ft_env(char **envp);
+int			is_builtin(char *str);
+void		execute_builtin(t_env *lst_env, char **args);
+void		ft_pwd(void);
+void		ft_echo(char **args);
+void		free_array(char **array);
+int			ft_cd(char *path);
+void		ft_env(char **envp);
 
 // arg_split.c
-char			**arg_split(char const *s);
+char		**arg_split(char const *s);
 // arg_split_utils.c
-t_bool			is_operator(char const *c, int no_space, int *len);
+t_bool		is_operator(char const *c, int no_space, int *len);
 // check_quotes.c
-void			check_quotes(char *args, t_token *current);
-int				get_size(char *args);
-char			*rm_quotes(char *args, int size);
+void		check_quotes(char *args, t_token *current);
+int			get_size(char *args);
+char		*rm_quotes(char *args, int size);
 // count_args.c
-int				count_args(t_parser *parser);
+int			count_args(t_parser *parser);
 //create_list.c
-t_token			*create_list(char **tokens);
+t_token		*create_list(char **tokens);
 //create_list_init.c
-t_token  		*init_new_list(t_token *head);
-void			lst_add_new(t_token **head, t_token *new);
+t_token  	*init_new_list(t_token *head);
+void		lst_add_new(t_token **head, t_token *new);
+//check_operator.c
+void		assign_operator(t_token *tokens);
 // error.c
-void			error_msg(char *message, int error);
+void		error_msg(char *message, int error);
 // even_quotes.c
-t_bool			is_even_quotes(char **tokens);
+t_bool		is_even_quotes(char **tokens);
 // free.c
-void			free_struct(t_env *lst_env);
-void			free_array(char **array);
-void			free_tokens(t_token *tokens_info);
-void			free_token(t_token *token);
+void		free_struct(t_env *lst_env);
+void		free_array(char **array);
+void		free_token(t_token *token);
+void		msg_and_free(t_token *tokens);
+//is_mutil_strings.c
+int			is_multi_strings(char *args, int i, t_bool dquotes, t_bool squotes);
 // multi_str.c
-void			multi_str(char *args, int nb_strings, t_token **head);
+void		multi_str(char *args, int nb_strings, t_token **head, int i);
 // parsing.c
-void			parsing(t_env *lst_env, char *input);
+void		parsing(t_env *lst_env, char *input);
 // path.c
-void			get_path(char **envp, t_env *lst_env);
+void		get_path(char **envp, t_env *lst_env);
 // readline.c
-void			line_read(t_env *lst_env);
+void		line_read(t_env *lst_env);
 // wordlen.c
-int				wordlen(char const *s, t_bool dquotes, t_bool squotes);
+int			wordlen(char const *s, t_bool dquotes, t_bool squotes);
 
 #endif

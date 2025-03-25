@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:29:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/23 18:11:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:27:18 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,8 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	free_tokens(t_token *tokens_info)
+void	msg_and_free(t_token *tokens)
 {
-	int	i;
-
-	i = 0;
-	while (tokens_info[i].argument != NULL)
-	{
-		free(tokens_info[i].argument);
-		i++;
-	}
-	free(tokens_info);
+	write(2, "Memory allocation failed to create arg\n", 39);
+	free_token(tokens);
 }

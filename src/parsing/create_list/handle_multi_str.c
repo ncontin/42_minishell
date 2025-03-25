@@ -1,59 +1,59 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   multi_str.c                                        :+:      :+:    :+:   */
+/*   handle_multi_str.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 14:42:26 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/24 17:06:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/25 16:21:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_str(char *args, int *size, t_token *current)
+static	int	str_found(char c, char *quote, int *i, t_token *current)
+{
+	if (c == *quote)
+	{
+		(*i)++;
+		return (1);
+	}
+	if (current->quotes == NO_QUOTES && (c == '"' || c == '\''))
+		return (1);
+	return (0);
+}
+
+static void	in_quotes(char c, t_bool *in_str, char *quote, t_token *current)
+{
+	*in_str = TRUE;
+	*quote = c;
+	if (c == '\'')
+		current->quotes = SINGLE;
+	else if (c == '"')
+		current->quotes = DOUBLE;
+}
+
+static char	*get_str(char *args, int *size, t_token *current, char quote_char)
 {
 	int		i;
 	t_bool	in_str;
-	char	quote_char;
 
 	i = 0;
 	in_str = FALSE;
 	*size = 0;
-	quote_char = '\0';
 	while (args[i] != '\0')
 	{
-		if (args[i] == '\'' && (in_str == FALSE))
+		if ((args[i] == '\'' || args[i] == '"') && (in_str == FALSE))
 		{
-			if (args[i + 1] == '\'')
+			if (args[i] == args[i + 1])
 				i++;
 			else
-			{
-				in_str = TRUE;
-				quote_char = '\'';
-				current->quotes = SINGLE;
-			}
-		}
-		else if (args[i] == '"' && (in_str == FALSE))
-		{
-			if (args[i + 1] == '"')
-				i++;
-			else
-			{
-				in_str = TRUE;
-				quote_char = '"';
-				current->quotes = DOUBLE;
-			}
+				in_quotes(args[i], &in_str, &quote_char, current);
 		}
 		else
 		{
-			if (args[i] == quote_char)
-			{
-				i++;
-				break ;
-			}
-			if (current->quotes == NO_QUOTES && (args[i] == '"' || args[i] == '\''))
+			if (str_found(args[i], &quote_char, &i, current) == 1)
 				break ;
 			in_str = TRUE;
 			(*size)++;
@@ -63,15 +63,13 @@ static char	*get_str(char *args, int *size, t_token *current)
 	return (args + i);
 }
 
-void	multi_str(char *args, int nb_strings, t_token **head)
+void	multi_str(char *args, int nb_strings, t_token **head, int i)
 {
-	int		i;
 	int		size;
 	char	*next_str;
 	char	*string;
 	t_token	*current;
 
-	i = 0;
 	size = 0;
 	string = args;
 	while (i < nb_strings)
@@ -79,12 +77,11 @@ void	multi_str(char *args, int nb_strings, t_token **head)
 		current = init_new_list(*head);
 		if (current == NULL)
 			return ;
-		next_str = get_str(string, &size, current);
+		next_str = get_str(string, &size, current, '\0');
 		current->argument = rm_quotes(string, size);
 		if (current->argument == NULL)
 		{
-			write(2, "Memory allocation failed to create arg\n", 39);
-			free_token(*head);
+			msg_and_free(*head);
 			return ;
 		}
 		string = next_str;

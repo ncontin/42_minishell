@@ -32,7 +32,9 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/create_list/create_list.c\
 				src/parsing/create_list/create_list_utils.c\
 				src/parsing/create_list/create_list_init.c\
-				src/parsing/create_list/multi_str.c\
+				src/parsing/create_list/handle_multi_str.c\
+				src/parsing/create_list/is_multi_strings.c\
+				src/parsing/check_operator/assign_operator.c\
 				src/parsing/parsing.c\
 				src/parsing/is_even_quotes.c\
 
