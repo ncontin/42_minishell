@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 18:16:30 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/25 18:24:58 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ typedef struct s_parser
 	char				quote_char;
 }						t_parser;
 
+typedef struct s_mini
+{
+	char				*input;
+	char				**args;
+	t_env				*lst_env;
+}						t_mini;
+
 // builtins
 int						is_builtin(char *str);
 void					execute_builtin(t_env *lst_env, char **args);
@@ -65,7 +72,6 @@ void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_env *lst_env);
 void					ft_export(t_env *lst_env, char **args);
 void					ft_unset(t_env *lst_env, char **args);
-t_env_node				**copy_envp(char **envp);
 void					init_envp(t_env *lst_env);
 void					free_stack(t_env_node **my_envp);
 void					print_env_stack(t_env_node **env_stack);
@@ -82,11 +88,11 @@ void					free_struct(t_env *lst_env);
 // path.c
 void					get_path(char **envp, t_env *lst_env);
 // readline.c
-void					line_read(t_env *lst_env);
+void					line_read(t_mini *mini);
 // error.c
 void					error_msg(char *message, int error);
 // parsing.c
-void					parsing(t_env *lst_env, char *input);
+void					parsing(t_mini *mini);
 // arg_split.c
 char					**arg_split(char const *s);
 // arg_split_utils.c

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 18:14:20 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/25 18:29:41 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	lst_env;
+	t_mini	mini;
 
+	mini.lst_env = &lst_env;
 	(void)argc;
 	(void)argv;
 	get_path(envp, &lst_env);
 	init_envp(&lst_env);
-	line_read(&lst_env);
+	line_read(&mini);
 	free_struct(&lst_env);
 	free_stack(lst_env.envp_cp);
 	free_stack(lst_env.envp_export);
