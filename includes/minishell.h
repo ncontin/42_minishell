@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 18:24:58 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/25 19:02:03 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_mini
 
 // builtins
 int						is_builtin(char *str);
-void					execute_builtin(t_env *lst_env, char **args);
+void					execute_builtin(t_mini *mini);
 void					ft_pwd(void);
 void					ft_echo(char **args);
 void					free_array(char **array);
@@ -73,17 +73,18 @@ void					ft_env(t_env *lst_env);
 void					ft_export(t_env *lst_env, char **args);
 void					ft_unset(t_env *lst_env, char **args);
 void					init_envp(t_env *lst_env);
-void					free_stack(t_env_node **my_envp);
 void					print_env_stack(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
 int						find_equal(char *str);
 char					*get_key(char *str);
 char					*get_value(char *str);
+void					ft_exit(t_mini *mini);
 
 // free
 void					free_stack(t_env_node **my_envp);
 void					free_array(char **array);
 void					free_struct(t_env *lst_env);
+void					free_input(t_mini *mini);
 
 // path.c
 void					get_path(char **envp, t_env *lst_env);

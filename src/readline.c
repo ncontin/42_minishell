@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 18:27:37 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/25 19:03:59 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,19 @@
 
 void	line_read(t_mini *mini)
 {
-	
 	while (1)
 	{
 		mini->input = readline("minishell> ");
-		if (mini->input && (ft_strlen(mini->input) > 0))
+		if (ft_strlen(mini->input) > 0)
 		{
-			if (ft_strncmp("exit", mini->input, ft_strlen(mini->input)) == 0)
-			{
-				free(mini->input);
-				break ;
-			}
-			parsing(mini);
 			add_history(mini->input);
+			parsing(mini);
+			free_input(mini);
+		}
+		else
+		{
 			free(mini->input);
+			mini->input = NULL;
 		}
 	}
 	rl_clear_history();

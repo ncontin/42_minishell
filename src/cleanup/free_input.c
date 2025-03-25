@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   free_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/25 19:04:58 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/25 19:00:54 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/25 19:06:25 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// need to decide if keeping it or not
-void	ft_exit(t_mini *mini)
+void	free_input(t_mini *mini)
 {
-	if (mini->input)
-		free(mini->input);
 	if (mini->args)
-		free_array(mini->args);
-	if (mini->lst_env)
 	{
-		if (mini->lst_env->envp_cp)
-			free_stack(mini->lst_env->envp_cp);
-		if (mini->lst_env->envp_export)
-			free_stack(mini->lst_env->envp_export);
-		// if (mini->lst_env->sorted_envp_cp)
-		// 	free_stack(mini->lst_env->sorted_envp_cp);
-		free_struct(mini->lst_env);
+		free_array(mini->args);
+		mini->args = NULL;
 	}
-	rl_clear_history();
-	exit(0);
+	free(mini->input);
+	mini->input = NULL;
 }

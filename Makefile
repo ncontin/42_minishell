@@ -25,10 +25,12 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/unset.c\
 				src/builtins/builtins_utils.c\
 				src/builtins/export_utils.c\
+				src/builtins/exit.c\
 
 SRC_CLEANUP =	src/cleanup/free_array.c\
 				src/cleanup/free_struct.c\
 				src/cleanup/free_stack.c\
+				src/cleanup/free_input.c\
 
 SRC_ERRORS = 	src/errors/error.c\
 
