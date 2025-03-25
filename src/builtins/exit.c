@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/18 16:50:55 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/25 17:36:08 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 // need to decide if keeping it or not
 void	ft_exit(void)
 {
+	
 	rl_clear_history();
 	exit(0);
 }

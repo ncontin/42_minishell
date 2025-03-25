@@ -10,11 +10,11 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
 		src/readline.c\
 		src/path.c\
-		src/envp.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\
 		$(SRC_PARSING)\
+		$(SRC_ENVS)\
 
 SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
@@ -24,9 +24,11 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/export.c\
 				src/builtins/unset.c\
 				src/builtins/builtins_utils.c\
+				src/builtins/export_utils.c\
 
 SRC_CLEANUP =	src/cleanup/free_array.c\
-				src/cleanup/free.c\
+				src/cleanup/free_struct.c\
+				src/cleanup/free_stack.c\
 
 SRC_ERRORS = 	src/errors/error.c\
 
@@ -35,6 +37,9 @@ SRC_PARSING = 	src/parsing/args_split.c\
 				src/parsing/args_split_utils.c\
 				src/parsing/args_count.c \
 				src/parsing/args_wordlen.c\
+
+SRC_ENVS =		src/envs/envp.c\
+				src/envs/envs_utils.c\
 
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft

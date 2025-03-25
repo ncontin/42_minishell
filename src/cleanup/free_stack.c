@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   free_stack.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 18:16:22 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/25 17:43:11 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/25 17:46:24 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parsing(t_env *lst_env, char *input)
+void	free_stack(t_env_node **my_envp)
 {
-	char	**res;
+	t_env_node	*current;
+	t_env_node	*next;
 
-	// int		i;
-	// i = 0;
-	res = arg_split(input);
-	if (is_builtin(res[0]))
-		execute_builtin(lst_env, res);
-	// while (res[i] != NULL)
-	// {
-	// 	// printf("%s\n", res[i]);
-	// 	i++;
-	// }
-	free_array(res);
+	current = *my_envp;
+	while (current)
+	{
+		next = current->next;
+		free(current->key);
+		free(current->value);
+		free(current);
+		current = next;
+	}
+	*my_envp = NULL;
+	free(my_envp);
 }

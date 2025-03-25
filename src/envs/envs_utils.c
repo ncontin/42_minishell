@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   envs_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 18:16:22 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/25 18:04:41 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/25 18:06:15 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parsing(t_env *lst_env, char *input)
+t_env_node	*find_last(t_env_node **my_envp)
 {
-	char	**res;
+	t_env_node	*last;
 
-	// int		i;
-	// i = 0;
-	res = arg_split(input);
-	if (is_builtin(res[0]))
-		execute_builtin(lst_env, res);
-	// while (res[i] != NULL)
-	// {
-	// 	// printf("%s\n", res[i]);
-	// 	i++;
-	// }
-	free_array(res);
+	last = *my_envp;
+	while (last->next)
+		last = last->next;
+	return (last);
 }

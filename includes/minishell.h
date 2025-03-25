@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 16:24:56 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/25 18:16:30 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ void					ft_pwd(void);
 void					ft_echo(char **args);
 void					free_array(char **array);
 int						ft_cd(char *path, t_env *env_lst);
-// void						ft_env(char **envp);
+int						find_min_len(char *s1, char *s2);
+void					print_export(t_env_node **sorted_envp_cp,
+							t_env_node **envp_export, char **args);
+t_env_node				**copy_envp_list(t_env_node **envp_cp);
+void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_env *lst_env);
 void					ft_export(t_env *lst_env, char **args);
 void					ft_unset(t_env *lst_env, char **args);
@@ -70,14 +74,17 @@ int						find_equal(char *str);
 char					*get_key(char *str);
 char					*get_value(char *str);
 
+// free
+void					free_stack(t_env_node **my_envp);
+void					free_array(char **array);
+void					free_struct(t_env *lst_env);
+
 // path.c
 void					get_path(char **envp, t_env *lst_env);
 // readline.c
 void					line_read(t_env *lst_env);
 // error.c
 void					error_msg(char *message, int error);
-// free.c
-void					free_struct(t_env *lst_env);
 // parsing.c
 void					parsing(t_env *lst_env, char *input);
 // arg_split.c
@@ -88,7 +95,5 @@ t_bool					is_operator(char const *c, int no_space, int *len);
 int						count_args(t_parser *parser);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
-// free_array.c
-void					free_array(char **array);
 
 #endif

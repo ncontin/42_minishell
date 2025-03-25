@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/24 12:27:10 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/25 16:55:24 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,19 @@ char	*get_value(char *str)
 	equal_index = find_equal(str);
 	value = ft_substr(str, equal_index + 1, ft_strlen(str) - (equal_index + 1));
 	return (value);
+}
+
+int	find_min_len(char *s1, char *s2)
+{
+	int	s1_len;
+	int	s2_len;
+	int	len;
+
+	s2_len = ft_strlen(s2);
+	s1_len = ft_strlen(s1);
+	if (s1_len < s2_len)
+		len = s1_len;
+	else
+		len = s2_len;
+	return (len);
 }
