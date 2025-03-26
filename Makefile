@@ -30,6 +30,8 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\
 				src/cleanup/free_input.c\
+				src/cleanup/free_array.c\
+				src/cleanup/free_token.c\
 
 SRC_ERRORS = 	src/errors/error.c\
 
@@ -48,9 +50,6 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/is_even_quotes.c\
 
 SRC_READLINE =  src/readline/readline.c\
-
-SRC_ENVS =		src/envs/envp.c\
-				src/envs/envs_utils.c\
 
 SRC_ENVS =		src/envs/envp.c\
 				src/envs/envs_utils.c\
