@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 12:52:13 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/26 17:10:21 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	ft_export(t_env *lst_env, char **args)
 	sort_env(lst_env->sorted_envp_cp);
 	if (args[0])
 		print_export(lst_env->sorted_envp_cp, lst_env->envp_export, args);
-	else if (args[0] && args[1])
+	if (args[0] && args[1])
 	{
 		while (args[i])
 		{
