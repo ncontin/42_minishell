@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:57:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 16:15:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:54:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ static void	operator_type(t_token *current)
 {
 	if (current->argument == NULL)
 		return ;
-	if (strncmp(current->argument, ">", 2) == 0)
+	if (ft_strncmp(current->argument, ">", 2) == 0)
 		current->operator = OUTPUT;
-	else if (strncmp(current->argument, "<", 2) == 0)
+	else if (ft_strncmp(current->argument, "<", 2) == 0)
 		current->operator = INPUT;
-	else if (strncmp(current->argument, "|", 2) == 0)
+	else if (ft_strncmp(current->argument, "|", 2) == 0)
 		current->operator = PIPE;
-	else if (strncmp (current->argument, ">>", 3) == 0)
+	else if (ft_strncmp (current->argument, ">>", 3) == 0)
 		current->operator = APPEND;
-	else if (strncmp (current->argument, "<<", 3) == 0)
+	else if (ft_strncmp (current->argument, "<<", 3) == 0)
 		current->operator = HEREDOC;
 }
 
