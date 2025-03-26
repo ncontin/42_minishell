@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 19:02:03 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/26 16:17:10 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_mini
 {
 	char				*input;
 	char				**args;
+	int					exit_code;
 	t_env				*lst_env;
 }						t_mini;
 
@@ -83,7 +84,7 @@ void					ft_exit(t_mini *mini);
 // free
 void					free_stack(t_env_node **my_envp);
 void					free_array(char **array);
-void					free_struct(t_env *lst_env);
+void					free_path(t_env *lst_env);
 void					free_input(t_mini *mini);
 
 // path.c

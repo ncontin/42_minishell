@@ -6,15 +6,21 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/25 19:04:58 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/26 13:19:19 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// need to decide if keeping it or not
+
+
 void	ft_exit(t_mini *mini)
 {
+	int	exit_code;
+
+	exit_code = 0;
+	if (mini->args[0] && mini->args[1])
+		exit_code = ft_atoi(mini->args[1]);
 	if (mini->input)
 		free(mini->input);
 	if (mini->args)
@@ -25,10 +31,8 @@ void	ft_exit(t_mini *mini)
 			free_stack(mini->lst_env->envp_cp);
 		if (mini->lst_env->envp_export)
 			free_stack(mini->lst_env->envp_export);
-		// if (mini->lst_env->sorted_envp_cp)
-		// 	free_stack(mini->lst_env->sorted_envp_cp);
-		free_struct(mini->lst_env);
+		free_path(mini->lst_env);
 	}
 	rl_clear_history();
-	exit(0);
+	exit(exit_code);
 }
