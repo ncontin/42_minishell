@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/18 16:53:33 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/25 18:48:20 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,44 +17,35 @@ int	is_builtin(char *str)
 	char	*builtins[] = {"pwd", "cd", "exit", "env", "export", "unset",
 			"echo", NULL};
 	int		i;
+	size_t	len;
 
+	if (str == NULL)
+		return (0);
+	len = ft_strlen(str);
 	i = 0;
 	while (builtins[i])
 	{
-		if (ft_strncmp(str, builtins[i], (ft_strlen(str)+1)) == 0)
+		if (ft_strncmp(str, builtins[i], len) == 0)
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-void	execute_builtin(t_env *lst_env, char **args)
+void	execute_builtin(t_mini *mini)
 {
-	(void)lst_env;
-	if (ft_strncmp(args[0], "pwd", 3) == 0)
+	if (ft_strncmp(mini->args[0], "pwd", 3) == 0)
 		ft_pwd();
-	else if (ft_strncmp(args[0], "echo", 4) == 0)
-		ft_echo(args);
-	// else if (ft_strncmp(args[0], "exit", 4) == 0)
-	// {
-	// 	// no options
-	// }
-	else if (ft_strncmp(args[0], "cd", 2) == 0)
-	{
-		ft_cd(args[1]);
-		// only relative or absolute path
-	}
-	else if (ft_strncmp(args[0], "env", 3) == 0)
-	{
-		ft_env(lst_env->envp);
-		// no options
-	}
-	else if (ft_strncmp(args[0], "export", 6) == 0)
-	{
-		// no options
-	}
-	else if (ft_strncmp(args[0], "unset", 5) == 0)
-	{
-		// no options
-	}
+	else if (ft_strncmp(mini->args[0], "echo", 4) == 0)
+		ft_echo(mini->args);
+	else if (ft_strncmp(mini->args[0], "exit", 4) == 0)
+		ft_exit(mini);
+	else if (ft_strncmp(mini->args[0], "cd", 2) == 0)
+		ft_cd(mini->args[1], mini->lst_env);
+	else if (ft_strncmp(mini->args[0], "env", 3) == 0)
+		ft_env(mini->lst_env);
+	else if (ft_strncmp(mini->args[0], "export", 6) == 0)
+		ft_export(mini->lst_env, mini->args);
+	else if (ft_strncmp(mini->args[0], "unset", 5) == 0)
+		ft_unset(mini->lst_env, mini->args);
 }

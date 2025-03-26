@@ -28,7 +28,7 @@ OBJALL = $(SRCS:.c=.o)
 all : $(NAME)
 
 $(NAME) : $(OBJ)
-	ar rcs $(NAME) $(OBJ) 
+	ar rcs $(NAME) $(OBJ)
 
 bonus : $(OBJALL)
 	ar rcs $(NAME) $(OBJALL)

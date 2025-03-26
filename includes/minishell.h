@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 14:21:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:40:43 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef enum s_bool
 {
 	FALSE,
 	TRUE
-}	t_bool;
+}			t_bool;
 
 typedef enum s_quotes
 {
@@ -42,11 +42,21 @@ typedef enum s_operator
 	HEREDOC
 }	t_operator;
 
+typedef struct s_env_node
+{
+	char				*key;
+	char				*value;
+	struct s_env_node	*next;
+}						t_env_node;
+
 typedef struct s_env
 {
-	char		**envp;
-	char		**path;
-}	t_env;
+	char				**envp;
+	char				**path;
+	t_env_node			**envp_cp;
+	t_env_node			**sorted_envp_cp;
+	t_env_node			**envp_export;
+}						t_env;
 
 typedef struct s_parser
 {
@@ -67,13 +77,33 @@ typedef struct s_token
 }	t_token;
 
 // builtins
-int			is_builtin(char *str);
-void		execute_builtin(t_env *lst_env, char **args);
-void		ft_pwd(void);
-void		ft_echo(char **args);
-void		free_array(char **array);
-int			ft_cd(char *path);
-void		ft_env(char **envp);
+int					is_builtin(char *str);
+void				execute_builtin(t_mini *mini);
+void					ft_pwd(void);
+void					ft_echo(char **args);
+void					free_array(char **array);
+int						ft_cd(char *path, t_env *env_lst);
+int						find_min_len(char *s1, char *s2);
+void					print_export(t_env_node **sorted_envp_cp,
+							t_env_node **envp_export, char **args);
+t_env_node			**copy_envp_list(t_env_node **envp_cp);
+void					replace_env(t_env_node *env_to_replace, char *arg);
+void					ft_env(t_env *lst_env);
+void				ft_export(t_env *lst_env, char **args);
+void				ft_unset(t_env *lst_env, char **args);
+void					init_envp(t_env *lst_env);
+void					print_env_stack(t_env_node **env_stack);
+t_env_node				*find_last(t_env_node **my_envp);
+int					find_equal(char *str);
+char					*get_key(char *str);
+char					*get_value(char *str);
+void				ft_exit(t_mini *mini);
+
+// free
+void					free_stack(t_env_node **my_envp);
+void					free_array(char **array);
+void					free_path(t_env *lst_env);
+void					free_input(t_mini *mini);
 
 // arg_split.c
 char		**arg_split(char const *s);
@@ -108,11 +138,13 @@ t_bool		is_valid_token(t_token *tokens);
 // multi_str.c
 void		multi_str(char *args, int nb_strings, t_token **head, int i);
 // parsing.c
-void		parsing(t_env *lst_env, char *input);
-// path.c
-void		get_path(char **envp, t_env *lst_env);
-// readline.c
-void		line_read(t_env *lst_env);
+void					parsing(t_mini *mini);
+// arg_split.c
+char					**arg_split(char const *s);
+// arg_split_utils.c
+t_bool					is_operator(char const *c, int no_space, int *len);
+// count_args
+int						count_args(t_parser *parser);
 // wordlen.c
 int			wordlen(char const *s, t_bool dquotes, t_bool squotes);
 

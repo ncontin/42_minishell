@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   free_stack.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 12:53:48 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/25 17:43:11 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/25 18:47:36 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(char **args)
+void	free_stack(t_env_node **my_envp)
 {
-	int	i;
-	int	newline;
+	t_env_node	*current;
+	t_env_node	*next;
 
-	newline = 1;
-	i = 1;
-	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
+	current = *my_envp;
+	while (current)
 	{
-		newline = 0;
-		i++;
+		next = current->next;
+		free(current->key);
+		free(current->value);
+		free(current);
+		current = next;
 	}
-	while (args[i])
-	{
-		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline == 1)
-		printf("\n");
+	*my_envp = NULL;
+	free(my_envp);
 }

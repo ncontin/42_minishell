@@ -53,4 +53,6 @@ Mkfile.old
 dkms.conf
 vsupp.txt
 
+# Others
 .nfs*
+.vscode

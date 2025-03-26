@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   envs_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 12:53:48 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/25 18:04:41 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/25 18:06:15 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(char **args)
+t_env_node	*find_last(t_env_node **my_envp)
 {
-	int	i;
-	int	newline;
+	t_env_node	*last;
 
-	newline = 1;
-	i = 1;
-	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
-	{
-		newline = 0;
-		i++;
-	}
-	while (args[i])
-	{
-		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline == 1)
-		printf("\n");
+	last = *my_envp;
+	while (last->next)
+		last = last->next;
+	return (last);
 }

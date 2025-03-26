@@ -1,36 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   free_input.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 12:53:48 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/25 19:00:54 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/25 19:06:25 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(char **args)
+void	free_input(t_mini *mini)
 {
-	int	i;
-	int	newline;
-
-	newline = 1;
-	i = 1;
-	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
+	if (mini->args)
 	{
-		newline = 0;
-		i++;
+		free_array(mini->args);
+		mini->args = NULL;
 	}
-	while (args[i])
-	{
-		printf("%s", args[i]);
-		if (args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline == 1)
-		printf("\n");
+	free(mini->input);
+	mini->input = NULL;
 }

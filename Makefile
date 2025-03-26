@@ -14,14 +14,22 @@ SRC =	src/main.c\
 		$(SRC_ERRORS)\
 		$(SRC_PARSING)\
 		$(SRC_READLINE)\
+		$(SRC_ENVS)\
 
 SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
 				src/builtins/echo.c\
 				src/builtins/cd.c\
 				src/builtins/env.c\
+				src/builtins/export.c\
+				src/builtins/unset.c\
+				src/builtins/builtins_utils.c\
+				src/builtins/export_utils.c\
+				src/builtins/exit.c\
 
-SRC_CLEANUP =	src/cleanup/free.c\
+SRC_CLEANUP =	src/cleanup/free_path.c\
+				src/cleanup/free_stack.c\
+				src/cleanup/free_input.c\
 
 SRC_ERRORS = 	src/errors/error.c\
 
@@ -41,6 +49,12 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 
 SRC_READLINE =  src/readline/readline.c\
 
+SRC_ENVS =		src/envs/envp.c\
+				src/envs/envs_utils.c\
+
+SRC_ENVS =		src/envs/envp.c\
+				src/envs/envs_utils.c\
+
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft
 
@@ -58,7 +72,7 @@ $(NAME): $(OBJ)
 	@make -s -C includes/libft all
 	@echo "$(YELLOW)Linking $(NAME)...$(RESET)"
 	@$(CC) $(OBJ) $(CFLAGS) $(INCLUDES) $(LIBRARY) -o $(NAME) -lreadline
-	@echo "$(GREEN)$(NAME) successfully built!"
+	@echo "$(GREEN)$(NAME) successfully built!$(RESET)"
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
