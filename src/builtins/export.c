@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 17:10:36 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/26 17:28:05 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,5 @@ void	ft_export(t_env *lst_env, char **args)
 			i++;
 		}
 	}
-	// free_stack(lst_env->sorted_envp_cp);
+	free_stack(lst_env->sorted_envp_cp);
 }
