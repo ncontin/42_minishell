@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 17:50:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:21:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ void		free_token(t_token *token);
 void		msg_and_free(t_token *tokens);
 //is_mutil_strings.c
 int			is_multi_strings(char *args, int i, t_bool dquotes, t_bool squotes);
+//is_valid_token.c
+t_bool		is_valid_token(t_token *tokens);
 // multi_str.c
 void		multi_str(char *args, int nb_strings, t_token **head, int i);
 // parsing.c
