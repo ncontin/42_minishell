@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline.c                                         :+:      :+:    :+:   */
+/*   free_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 17:40:39 by ncontin          ###   ########.fr       */
+/*   Created: 2025/03/26 17:39:03 by ncontin           #+#    #+#             */
+/*   Updated: 2025/03/26 17:39:15 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	line_read(t_mini *mini)
+void	free_array(char **array)
 {
-	while (1)
+	int	i;
+
+	i = 0;
+	while (array[i])
 	{
-		mini->input = readline("minishell> ");
-		if (ft_strlen(mini->input) > 0)
-		{
-			add_history(mini->input);
-			parsing(mini);
-			free_input(mini);
-		}
-		else
-		{
-			free(mini->input);
-			mini->input = NULL;
-		}
+		free(array[i]);
+		i++;
 	}
-	rl_clear_history();
+	free(array);
 }
