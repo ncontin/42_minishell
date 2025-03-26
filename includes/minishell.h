@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 17:42:36 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/26 18:20:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,6 @@ typedef struct s_parser
 	t_bool				in_quotes;
 }						t_parser;
 
-typedef struct s_mini
-{
-	char				*input;
-	char				**args;
-	int					exit_code;
-	t_env				*lst_env;
-}						t_mini;
-
 typedef struct s_token
 {
 	char				*argument;
@@ -83,6 +75,15 @@ typedef struct s_token
 	t_operator			operator;
 	struct s_token		*next;
 }						t_token;
+
+typedef struct s_mini
+{
+	char				*input;
+	char				**args;
+	int					exit_code;
+	t_env				*lst_env;
+	t_token				*tokens;
+}						t_mini;
 
 // builtins
 int						is_builtin(char *str);
