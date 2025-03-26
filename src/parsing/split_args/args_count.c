@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 11:06:22 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/18 15:37:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/24 08:00:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,16 @@ static void	count_parse(t_parser *parser, int *j)
 		parser->in_quotes = TRUE;
 		parser->in_word = TRUE;
 		parser->quote_char = parser->s[i];
+	}
+	else if (parser->s[i] == '\'' && parser->s[i + 1] == '"')
+	{
+		parser->quote_char = '"';
+		i++;
+	}
+	else if (parser->s[i] == '"' && parser->s[i + 1] == '\'')
+	{
+		parser->quote_char = '\'';
+		i++;
 	}
 	else
 		handle_inquotes(parser, &i);

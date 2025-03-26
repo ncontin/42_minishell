@@ -8,12 +8,12 @@ RM = rm -f
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
-		src/readline.c\
 		src/path.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\
 		$(SRC_PARSING)\
+		$(SRC_READLINE)\
 		$(SRC_ENVS)\
 
 SRC_BUILTINS =	src/builtins/builtins.c\
@@ -27,18 +27,30 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/export_utils.c\
 				src/builtins/exit.c\
 
-SRC_CLEANUP =	src/cleanup/free_array.c\
-				src/cleanup/free_path.c\
+SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\
 				src/cleanup/free_input.c\
 
 SRC_ERRORS = 	src/errors/error.c\
 
-SRC_PARSING = 	src/parsing/args_split.c\
+SRC_PARSING =	src/parsing/split_args/args_count.c\
+				src/parsing/split_args/args_split.c\
+				src/parsing/split_args/args_split_utils.c\
+				src/parsing/split_args/args_wordlen.c\
+				src/parsing/create_list/create_list.c\
+				src/parsing/create_list/create_list_utils.c\
+				src/parsing/create_list/create_list_init.c\
+				src/parsing/create_list/handle_multi_str.c\
+				src/parsing/create_list/is_multi_strings.c\
+				src/parsing/check_operator/assign_operator.c\
+				src/parsing/check_operator/is_valid_token.c\
 				src/parsing/parsing.c\
-				src/parsing/args_split_utils.c\
-				src/parsing/args_count.c \
-				src/parsing/args_wordlen.c\
+				src/parsing/is_even_quotes.c\
+
+SRC_READLINE =  src/readline/readline.c\
+
+SRC_ENVS =		src/envs/envp.c\
+				src/envs/envs_utils.c\
 
 SRC_ENVS =		src/envs/envp.c\
 				src/envs/envs_utils.c\
