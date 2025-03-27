@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 18:19:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/27 09:09:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	parsing(t_mini *mini)
 {
-	int		i;
 	t_bool	even_quotes;
 
-	i = 0;
 	mini->args = arg_split(mini->input);
 	if (mini->args == NULL)
 		return ;

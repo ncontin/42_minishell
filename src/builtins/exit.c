@@ -6,13 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 18:25:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/27 08:57:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 void	ft_exit(t_mini *mini)
 {

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:38:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 15:42:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/27 08:56:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static t_bool	is_both_operator(t_token *tokens)
 	current = tokens;
 	while (current != NULL)
 	{
-		if ((current->operator > 0) &&
-				(current->next != NULL && current->next->operator != NONE))
+		if ((current->operator > 0)
+			&& (current->next != NULL && current->next->operator != NONE))
 		{
 			current = current->next;
 			write(2, "syntax error near unexpected token `", 36);

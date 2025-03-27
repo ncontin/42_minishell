@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 18:20:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/27 09:09:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int						is_builtin(char *str);
 void					execute_builtin(t_mini *mini);
 void					ft_pwd(void);
 void					ft_echo(char **args);
-void					free_array(char **array);
 int						ft_cd(char *path, t_env *env_lst);
 int						find_min_len(char *s1, char *s2);
 void					print_export(t_env_node **sorted_envp_cp,
@@ -138,7 +137,6 @@ void					error_msg(char *message, int error);
 t_bool					is_even_quotes(char **tokens);
 // free.c
 void					free_struct(t_env *lst_env);
-void					free_array(char **array);
 void					free_token(t_token *token);
 void					msg_and_free(t_token *tokens);
 // is_mutil_strings.c
@@ -151,12 +149,6 @@ void					multi_str(char *args, int nb_strings, t_token **head,
 							int i);
 // parsing.c
 void					parsing(t_mini *mini);
-// arg_split.c
-char					**arg_split(char const *s);
-// arg_split_utils.c
-t_bool					is_operator(char const *c, int no_space, int *len);
-// count_args
-int						count_args(t_parser *parser);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
 void					get_path(char **envp, t_env *lst_env);

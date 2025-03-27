@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/25 18:48:20 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/27 08:59:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_builtin(char *str)
 {
 	char	*builtins[] = {"pwd", "cd", "exit", "env", "export", "unset",
-			"echo", NULL};
+		"echo", NULL};
 	int		i;
 	size_t	len;
 

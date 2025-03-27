@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/25 16:31:24 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/27 08:58:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	update_pwd(t_env_node **env_stack)
 		current = current->next;
 	}
 }
+
 static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
 {
 	t_env_node	*current;
