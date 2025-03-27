@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/27 13:27:22 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/27 15:39:57 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ void	ft_exit(t_mini *mini)
 		free(mini->input);
 	if (mini->args)
 		free_array(mini->args);
+	if (mini->tokens)
+		free_token(mini->tokens);
 	if (mini->lst_env)
 	{
 		if (mini->lst_env->envp_cp)
