@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/27 09:09:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/27 14:25:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,18 @@ typedef enum s_operator
 	HEREDOC
 }						t_operator;
 
+typedef enum s_arg_type
+{
+	ARGUMENT,
+	COMMAND,
+	OPTION,
+	FILENAME,
+	HERE_DOC_LIMITER,
+	REDIRECTION,
+	PIPE_OPERATOR,
+	ENV_VAR
+}	t_arg_type;
+
 typedef struct s_env_node
 {
 	char				*key;
@@ -73,7 +85,9 @@ typedef struct s_token
 	t_quotes			quotes;
 	t_bool				linked;
 	t_operator			operator;
+	t_arg_type			arg_type;
 	struct s_token		*next;
+	struct s_token		*prev;
 }						t_token;
 
 typedef struct s_mini
@@ -112,7 +126,8 @@ void					free_stack(t_env_node **my_envp);
 void					free_array(char **array);
 void					free_path(t_env *lst_env);
 void					free_input(t_mini *mini);
-
+//assign_type_argument
+void					assign_type_argument(t_token *tokens);
 void					line_read(t_mini *mini);
 // arg_split.c
 char					**arg_split(char const *s);

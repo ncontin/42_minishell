@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 15:52:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 17:30:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/27 15:19:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_token	*init_new_list(t_token *head)
 	current->linked = FALSE;
 	current->operator = NONE;
 	current->next = NULL;
+	current->prev = NULL;
 	return (current);
 }
 
@@ -43,6 +44,7 @@ void	lst_add_new(t_token **head, t_token *new)
 			while (current->next != NULL)
 				current = current->next;
 			current->next = new;
+			new->prev = current;
 		}
 		else
 			*head = new;

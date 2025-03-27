@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/27 09:09:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/27 14:23:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	parsing(t_mini *mini)
 		free_token(mini->tokens);
 		return ;
 	}
+	assign_type_argument(mini->tokens);
 	if (is_builtin(mini->args[0]))
 		execute_builtin(mini);
 	free_token(mini->tokens);
