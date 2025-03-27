@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/27 15:39:47 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/27 18:11:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_mini
 {
 	char				*input;
 	char				**args;
-	int					exit_code;
+	long long int		exit_code;
 	t_env				*lst_env;
 	t_token				*tokens;
 }						t_mini;

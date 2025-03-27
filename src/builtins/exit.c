@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/27 15:39:57 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/27 18:12:54 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	check_overflow(const char *nptr)
 	return (0);
 }
 
-long int	ft_atoll(const char *nptr)
+long long int	ft_atoll(const char *nptr)
 {
 	int				i;
 	int				sign;
@@ -70,21 +70,26 @@ exit
 1
  */
 
-void	ft_exit(t_mini *mini)
+static int	check_digit(char *str)
 {
-	long long int	exit_code;
+	int	i;
 
-	exit_code = 0;
-	if (mini->args[0] && mini->args[1] && check_overflow(mini->args[1]) != 1)
-		exit_code = ft_atoll(mini->args[1]);
-	else if (check_overflow(mini->args[1]) == 1)
+	if (!str)
+		return (0);
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
 	{
-		printf("minishell: exit: %s: numeric argument required\n",
-			mini->args[1]);
-		exit_code = 2;
+		if (!ft_isdigit(str[i]))
+			return (1);
+		i++;
 	}
-	else
-		exit_code = exit_code % 256;
+	return (0);
+}
+
+static void	free_all(t_mini *mini)
+{
 	if (mini->input)
 		free(mini->input);
 	if (mini->args)
@@ -99,6 +104,29 @@ void	ft_exit(t_mini *mini)
 			free_stack(mini->lst_env->envp_export);
 		free_path(mini->lst_env);
 	}
+}
+
+void	ft_exit(t_mini *mini)
+{
+	if (!mini->exit_code)
+		mini->exit_code = 0;
+	if (check_overflow(mini->args[1]) == 1 || check_digit(mini->args[1]) == 1)
+	{
+		ft_putstr_fd("exit\nminishell: exit: ", 2);
+		ft_putstr_fd(mini->args[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		mini->exit_code = 2;
+	}
+	else if (mini->args[0] && mini->args[1] && mini->args[2])
+	{
+		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
+		mini->exit_code = 1;
+		return ;
+	}
+	if (mini->args[0] && mini->args[1] && check_overflow(mini->args[1]) != 1)
+		mini->exit_code = ft_atoll(mini->args[1]);
+	mini->exit_code = mini->exit_code % 256;
+	free_all(mini);
 	rl_clear_history();
-	exit(exit_code);
+	exit(mini->exit_code);
 }
