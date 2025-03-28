@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/27 18:12:54 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/28 16:04:29 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	check_overflow(const char *nptr)
 		return (0);
 	if (ft_strlen(nptr) > 20)
 		return (1);
-	else if (nptr[0] == '-' && ft_strlen(nptr) > 19)
+	else if (nptr[0] == '-' && ft_strlen(nptr) > 21)
 		return (1);
 	return (0);
 }
@@ -47,28 +47,6 @@ long long int	ft_atoll(const char *nptr)
 	}
 	return (result *= sign);
 }
-
-/* ➜  42_minishell git:(builtins) ✗ bash
-ncontin@1D6:~/42/common_core/42_minishell$ exit -2
-exit
-➜  42_minishell git:(builtins) ✗ echo $?
-254
-➜  42_minishell git:(builtins) ✗ bash
-ncontin@1D6:~/42/common_core/42_minishell$ exit -256
-exit
-➜  42_minishell git:(builtins) ✗ echo $?
-0
-➜  42_minishell git:(builtins) ✗ bash
-ncontin@1D6:~/42/common_core/42_minishell$ exit -257
-exit
-➜  42_minishell git:(builtins) ✗ echo $?
-255
-➜  42_minishell git:(builtins) ✗ bash
-ncontin@1D6:~/42/common_core/42_minishell$ exit 257
-exit
-➜  42_minishell git:(builtins) ✗ echo $?
-1
- */
 
 static int	check_digit(char *str)
 {
@@ -108,7 +86,7 @@ static void	free_all(t_mini *mini)
 
 void	ft_exit(t_mini *mini)
 {
-	if (!mini->exit_code)
+	if (!mini->exit_code || !mini->args[1])
 		mini->exit_code = 0;
 	if (check_overflow(mini->args[1]) == 1 || check_digit(mini->args[1]) == 1)
 	{
