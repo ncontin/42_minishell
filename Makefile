@@ -47,8 +47,9 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/check_operator/assign_operator.c\
 				src/parsing/check_operator/is_valid_token.c\
 				src/parsing/check_operator/assign_type_argument.c\
+				src/parsing/check_operator/is_even_quotes.c\
+				src/parsing/check_operator/get_env_argument.c\
 				src/parsing/parsing.c\
-				src/parsing/is_even_quotes.c\
 
 SRC_READLINE =  src/readline/readline.c\
 

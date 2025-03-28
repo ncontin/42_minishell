@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/27 15:24:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/28 10:12:38 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	assign_type_argument(t_token *tokens)
 				|| current->prev->operator == INPUT
 				|| current->prev->operator == APPEND))
 			current->arg_type = FILENAME;
-		assign_next(current);
+		else 
+			assign_next(current);
 		current = current->next;
 	}
 }

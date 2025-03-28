@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/27 14:25:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/28 11:31:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,8 @@ t_bool					is_even_quotes(char **tokens);
 void					free_struct(t_env *lst_env);
 void					free_token(t_token *token);
 void					msg_and_free(t_token *tokens);
+//get_env_argument.c
+void					get_env_argument(t_mini *mini);
 // is_mutil_strings.c
 int						is_multi_strings(char *args, int i, t_bool dquotes,
 							t_bool squotes);
