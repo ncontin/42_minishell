@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/25 18:48:20 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/28 16:20:51 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ void	execute_builtin(t_mini *mini)
 	if (ft_strncmp(mini->args[0], "pwd", 3) == 0)
 		ft_pwd();
 	else if (ft_strncmp(mini->args[0], "echo", 4) == 0)
-		ft_echo(mini->args);
+		ft_echo(mini);
 	else if (ft_strncmp(mini->args[0], "exit", 4) == 0)
 		ft_exit(mini);
 	else if (ft_strncmp(mini->args[0], "cd", 2) == 0)
-		ft_cd(mini->args[1], mini->lst_env);
+		ft_cd(mini);
 	else if (ft_strncmp(mini->args[0], "env", 3) == 0)
-		ft_env(mini->lst_env);
+		ft_env(mini);
 	else if (ft_strncmp(mini->args[0], "export", 6) == 0)
-		ft_export(mini->lst_env, mini->args);
+		ft_export(mini);
 	else if (ft_strncmp(mini->args[0], "unset", 5) == 0)
-		ft_unset(mini->lst_env, mini->args);
+		ft_unset(mini);
 }

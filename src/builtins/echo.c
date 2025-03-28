@@ -6,28 +6,28 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 12:53:48 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/28 16:20:39 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(char **args)
+void	ft_echo(t_mini *mini)
 {
 	int	i;
 	int	newline;
 
 	newline = 1;
 	i = 1;
-	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
+	while (mini->args[i] && mini->args[i][0] == '-' && mini->args[i][1] == 'n')
 	{
 		newline = 0;
 		i++;
 	}
-	while (args[i])
+	while (mini->args[i])
 	{
-		printf("%s", args[i]);
-		if (args[i + 1])
+		printf("%s", mini->args[i]);
+		if (mini->args[i + 1])
 			printf(" ");
 		i++;
 	}

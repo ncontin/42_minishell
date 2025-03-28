@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/27 18:11:26 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/28 16:20:31 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,17 @@ typedef struct s_mini
 int						is_builtin(char *str);
 void					execute_builtin(t_mini *mini);
 void					ft_pwd(void);
-void					ft_echo(char **args);
+void					ft_echo(t_mini *mini);
 void					free_array(char **array);
-int						ft_cd(char *path, t_env *env_lst);
+int						ft_cd(t_mini *mini);
 int						find_min_len(char *s1, char *s2);
 void					print_export(t_env_node **sorted_envp_cp,
 							t_env_node **envp_export, char **args);
 t_env_node				**copy_envp_list(t_env_node **envp_cp);
 void					replace_env(t_env_node *env_to_replace, char *arg);
-void					ft_env(t_env *lst_env);
-void					ft_export(t_env *lst_env, char **args);
-void					ft_unset(t_env *lst_env, char **args);
+void					ft_env(t_mini *mini);
+void					ft_export(t_mini *mini);
+void					ft_unset(t_mini *mini);
 void					init_envp(t_env *lst_env);
 void					print_env_stack(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
