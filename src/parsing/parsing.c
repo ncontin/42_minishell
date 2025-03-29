@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/28 14:23:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/29 15:23:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,7 @@ void	parsing(t_mini *mini)
 	}
 	assign_type_argument(mini->tokens);
 	get_env_argument(mini);
-	t_token  *current;
-	current = mini->tokens;
-	while (current != NULL)
-	{
-		printf("%s\n", current->argument);
-		current = current->next;
-	}
+	split_pipes(mini->tokens);
 	if (is_builtin(mini->args[0]))
 		execute_builtin(mini);
 	free_token(mini->tokens);

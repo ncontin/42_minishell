@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/28 11:31:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/29 17:26:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,14 @@ typedef struct s_token
 	struct s_token		*next;
 	struct s_token		*prev;
 }						t_token;
+
+typedef struct	s_command
+{
+	int					argc;
+	char 				**argv;
+	t_operator			operator;
+	struct s_command	*next;
+}	t_command;
 
 typedef struct s_mini
 {
