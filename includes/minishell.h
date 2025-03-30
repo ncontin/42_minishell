@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/30 17:04:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/30 19:06:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ t_bool					is_even_quotes(char **tokens);
 void					free_struct(t_env *lst_env);
 void					free_token(t_token *token);
 void					msg_and_free(t_token *tokens);
+void					free_commands(t_command *cmds);
 //get_env_argument.c
 void					get_env_argument(t_mini *mini);
 // is_mutil_strings.c
@@ -179,5 +180,11 @@ int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
 void					get_path(char **envp, t_env *lst_env);
 //merge_args.c
 t_token					*merge_args(t_token *tokens);
+//split_pipes.c
+t_command				*split_pipes(t_token *tokens);
+//split_pipes_init.c
+t_command				*create_cmd_list(t_command *cmds, t_token *tokens);
+//create_argv.c
+void					create_argv(t_command *new, t_token *tokens);
 
 #endif

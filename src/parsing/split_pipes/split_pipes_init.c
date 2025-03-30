@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 15:52:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/30 10:33:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/30 19:00:57 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	cmd_add_new(t_command **head, t_command *new)
 	}
 }
 
-t_command	create_cmd_list(t_command *cmds, t_token *tokens)
+t_command	*create_cmd_list(t_command *cmds, t_token *tokens)
 {
 	t_command	*new_cmds;
 

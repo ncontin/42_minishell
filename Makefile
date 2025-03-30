@@ -32,6 +32,8 @@ SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_input.c\
 				src/cleanup/free_array.c\
 				src/cleanup/free_token.c\
+				src/cleanup/free_commands.c\
+
 
 SRC_ERRORS = 	src/errors/error.c\
 
@@ -50,6 +52,9 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/check_operator/is_even_quotes.c\
 				src/parsing/check_operator/get_env_argument.c\
 				src/parsing/merge_args/merge_args.c\
+				src/parsing/split_pipes/create_argv.c\
+				src/parsing/split_pipes/split_pipes.c\
+				src/parsing/split_pipes/split_pipes_init.c\
 				src/parsing/parsing.c\
 
 SRC_READLINE =  src/readline/readline.c\

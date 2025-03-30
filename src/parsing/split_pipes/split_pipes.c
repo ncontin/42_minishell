@@ -6,45 +6,47 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/30 18:00:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/30 19:04:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	add_to_argv(t_command *new, t_token *current) 
-{
-	int		i;
-	char	*src;
-
-	i = 0;
-	src = current->argument;
-	new->argv[i] = (char *)malloc(sizeof(char) * (ft_strlen(src) + 1));
-	if (argv[i] == NULL)
-		return (NULL);
-
-}
-
-void	split_pipes(t_token *tokens)
+t_command	*split_pipes(t_token *tokens)
 {
 	t_token		*current;
 	t_command	*cmds;
 	t_command	*new;
-	t_arg_type	*arg;
+	t_arg_type	arg;
+	int			i;
 
+	i = 0;
 	current = tokens;
-	arg = current->arg_type;
 	cmds = NULL;
 	new = NULL;
 	while (current != NULL)
 	{
-		if (cmds == NULL)
+		arg = current->arg_type;
+		if (new == NULL)
 		{
 			new = create_cmd_list(cmds, tokens);
 			if (new == NULL)
+			{
+				free(tokens);
 				return (NULL);
+			}
 		}
-		if (arg == COMMAND || arg == OPTION || arg == ARGUMENT || arg = ENV_VAR)
-			add_to_argv(new, current);
+		if (arg == COMMAND || arg == OPTION || arg == ARGUMENT || arg == ENV_VAR)
+		{
+			new->argv[i] = current->argument; 
+			i++;
+		}
+		else if (current->operator == PIPE)
+		{
+			i = 0;
+			new = new->next;
+		}
+		current = current->next;
 	}
+	return (cmds);
 }
