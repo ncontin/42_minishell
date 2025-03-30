@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 17:42:04 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/29 18:26:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/30 10:48:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	arg_count(t_token *tokens)
 	{
 		type = current->arg_type;
 		if (current->operator == NONE
-				&& (type == COMMAND || type == OPTION || type == ARGUMENT
+			&& (type == COMMAND || type == OPTION || type == ARGUMENT
 				|| type == ENV_VAR))
 			count++;
 		current->current->next;
@@ -46,4 +46,5 @@ void	create_argv(t_command *new, t_token *tokens)
 			return ;
 		}
 	}
+	new->argc = nb_args;
 }

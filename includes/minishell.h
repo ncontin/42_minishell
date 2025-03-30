@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/29 17:26:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/30 17:04:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,5 +177,7 @@ void					parsing(t_mini *mini);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
 void					get_path(char **envp, t_env *lst_env);
+//merge_args.c
+t_token					*merge_args(t_token *tokens);
 
 #endif
