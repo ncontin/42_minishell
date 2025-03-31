@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/30 19:04:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:07:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_command	*split_pipes(t_token *tokens)
 		arg = current->arg_type;
 		if (new == NULL)
 		{
-			new = create_cmd_list(cmds, tokens);
+			new = create_cmd_list(&cmds, tokens);
 			if (new == NULL)
 			{
 				free(tokens);
@@ -41,6 +41,9 @@ t_command	*split_pipes(t_token *tokens)
 			new->argv[i] = current->argument; 
 			i++;
 		}
+		else if (current->operator == OUTPUT || current->operator == INPUT
+				|| current->operator == APPEND || current->operator == HEREDOC)
+			new->operator = current->operator;
 		else if (current->operator == PIPE)
 		{
 			i = 0;

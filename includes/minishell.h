@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/30 19:06:03 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/31 11:57:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ t_token					*merge_args(t_token *tokens);
 //split_pipes.c
 t_command				*split_pipes(t_token *tokens);
 //split_pipes_init.c
-t_command				*create_cmd_list(t_command *cmds, t_token *tokens);
+t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 //create_argv.c
 void					create_argv(t_command *new, t_token *tokens);
 

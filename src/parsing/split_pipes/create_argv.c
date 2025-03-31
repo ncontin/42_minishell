@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 17:42:04 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/30 18:58:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/31 11:53:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,4 @@ void	create_argv(t_command *new, t_token *tokens)
 		}
 	}
 	new->argc = nb_args;
-	new->operator = tokens->operator;
 }
