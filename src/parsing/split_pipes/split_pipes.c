@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/31 12:07:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:51:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ t_command	*split_pipes(t_token *tokens)
 	int			i;
 
 	i = 0;
-	current = tokens;
 	cmds = NULL;
 	new = NULL;
+	current = tokens;
 	while (current != NULL)
 	{
 		arg = current->arg_type;
@@ -38,11 +38,11 @@ t_command	*split_pipes(t_token *tokens)
 		}
 		if (arg == COMMAND || arg == OPTION || arg == ARGUMENT || arg == ENV_VAR)
 		{
-			new->argv[i] = current->argument; 
+			new->argv[i] = current->argument;
 			i++;
 		}
 		else if (current->operator == OUTPUT || current->operator == INPUT
-				|| current->operator == APPEND || current->operator == HEREDOC)
+			|| current->operator == APPEND || current->operator == HEREDOC)
 			new->operator = current->operator;
 		else if (current->operator == PIPE)
 		{
