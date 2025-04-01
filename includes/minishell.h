@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/28 16:20:31 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 10:50:06 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ int						find_equal(char *str);
 char					*get_key(char *str);
 char					*get_value(char *str);
 void					ft_exit(t_mini *mini);
+void					free_all(t_mini *mini);
+long long				ft_atoll(const char *nptr, int *overflow);
 
 // free
 void					free_stack(t_env_node **my_envp);

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 12:41:26 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/03/31 10:45:43 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(int argc, char **argv, char **envp)
 	t_env	lst_env;
 	t_mini	mini;
 
+	mini.exit_code = 0;
 	mini.lst_env = &lst_env;
 	(void)argc;
 	(void)argv;

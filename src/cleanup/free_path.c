@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:29:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/26 17:39:32 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 10:53:08 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,3 @@ void	free_path(t_env *lst_env)
 	}
 	free(lst_env->path);
 }
-
-

@@ -6,46 +6,28 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/28 16:04:29 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 10:52:04 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_overflow(const char *nptr)
+static int	check_overflow(const char *nptr, int *overflow)
 {
+	int	len;
+
 	if (!nptr)
 		return (0);
-	if (ft_strlen(nptr) > 20)
+	len = ft_strlen(nptr);
+	if ((nptr[0] == '-' || nptr[0] == '+') && len > 20)
 		return (1);
-	else if (nptr[0] == '-' && ft_strlen(nptr) > 21)
+	else if ((nptr[0] != '-' && nptr[0] != '+') && len > 19)
+		return (1);
+	if (nptr)
+		ft_atoll(nptr, overflow);
+	if (*overflow == 1)
 		return (1);
 	return (0);
-}
-
-long long int	ft_atoll(const char *nptr)
-{
-	int				i;
-	int				sign;
-	long long int	result;
-
-	result = 0;
-	sign = 1;
-	i = 0;
-	while (nptr[i] == ' ' || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
-	if (nptr[i] == '+' || nptr[i] == '-')
-	{
-		if (nptr[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		result = (result * 10) + (nptr[i] - '0');
-		i++;
-	}
-	return (result *= sign);
 }
 
 static int	check_digit(char *str)
@@ -55,7 +37,8 @@ static int	check_digit(char *str)
 	if (!str)
 		return (0);
 	i = 0;
-	if (str[i] == '-' || str[i] == '+')
+	if ((str[i] == '-' && ft_isdigit(str[i + 1])) || (str[i] == '+'
+			&& ft_isdigit(str[i + 1])))
 		i++;
 	while (str[i])
 	{
@@ -66,43 +49,38 @@ static int	check_digit(char *str)
 	return (0);
 }
 
-static void	free_all(t_mini *mini)
+static char	*parse_arg(char *str)
 {
-	if (mini->input)
-		free(mini->input);
-	if (mini->args)
-		free_array(mini->args);
-	if (mini->tokens)
-		free_token(mini->tokens);
-	if (mini->lst_env)
-	{
-		if (mini->lst_env->envp_cp)
-			free_stack(mini->lst_env->envp_cp);
-		if (mini->lst_env->envp_export)
-			free_stack(mini->lst_env->envp_export);
-		free_path(mini->lst_env);
-	}
+	char	*res;
+
+	if (!str)
+		return (NULL);
+	res = ft_strtrim(ft_strtrim(str, "\""), " ");
+	return (res);
 }
 
 void	ft_exit(t_mini *mini)
 {
-	if (!mini->exit_code || !mini->args[1])
-		mini->exit_code = 0;
-	if (check_overflow(mini->args[1]) == 1 || check_digit(mini->args[1]) == 1)
+	int		overflow;
+	char	*arg;
+
+	overflow = 0;
+	arg = parse_arg(mini->args[1]);
+	if (check_overflow(arg, &overflow) == 1 || check_digit(arg) == 1)
 	{
 		ft_putstr_fd("exit\nminishell: exit: ", 2);
-		ft_putstr_fd(mini->args[1], 2);
+		ft_putstr_fd(arg, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		mini->exit_code = 2;
 	}
-	else if (mini->args[0] && mini->args[1] && mini->args[2])
+	else if (mini->args[0] && arg && mini->args[2])
 	{
 		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
 		mini->exit_code = 1;
 		return ;
 	}
-	if (mini->args[0] && mini->args[1] && check_overflow(mini->args[1]) != 1)
-		mini->exit_code = ft_atoll(mini->args[1]);
+	else if (mini->args[0] && arg)
+		mini->exit_code = ft_atoll(arg, &overflow);
 	mini->exit_code = mini->exit_code % 256;
 	free_all(mini);
 	rl_clear_history();

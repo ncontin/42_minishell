@@ -26,6 +26,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/builtins_utils.c\
 				src/builtins/export_utils.c\
 				src/builtins/exit.c\
+				src/builtins/exit_utils.c\
 
 SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\
@@ -51,7 +52,7 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 
 SRC_READLINE =  src/readline/readline.c\
 
-SRC_ENVS =		src/envs/envp.c\
+SRC_ENVS =		src/envs/envp_init.c\
 				src/envs/envs_utils.c\
 
 LIBRARY = includes/libft/libft.a

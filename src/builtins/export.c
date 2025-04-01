@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/28 16:15:18 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 10:54:21 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	ft_export(t_mini *mini)
 	int			i;
 	t_env_node	*env_to_replace;
 
-	i = 1;
+	i = 0;
 	if (!mini->lst_env || !mini->args || !mini->args[0])
 		return ;
 	mini->lst_env->sorted_envp_cp = copy_envp_list(mini->lst_env->envp_cp);
@@ -119,14 +119,13 @@ void	ft_export(t_mini *mini)
 			mini->args);
 	if (mini->args[0] && mini->args[1])
 	{
-		while (mini->args[i])
+		while (mini->args[++i])
 		{
 			env_to_replace = check_existing_env(mini->lst_env, mini->args[i]);
 			if (env_to_replace != NULL)
 				replace_env(env_to_replace, mini->args[i]);
 			else
 				add_export_env(mini->lst_env, mini->args[i]);
-			i++;
 		}
 	}
 	free_stack(mini->lst_env->sorted_envp_cp);
