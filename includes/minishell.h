@@ -6,19 +6,41 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 10:50:06 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 12:25:29 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// 42 Library
 # include "libft/libft.h"
-# include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdio.h>
-# include <stdlib.h>
+
+// Standard C Library Functions
+# include <stdio.h>  // printf, perror
+# include <stdlib.h> // malloc, free, exit, getenv
+# include <string.h> // strerror
+
+// File & Directory Operations
+# include <dirent.h>   // opendir, readdir, closedir
+# include <limits.h>   // PATH_MAX, other constants
+# include <sys/stat.h> // stat, lstat, fstat
+# include <unistd.h>   // access, open, read, close, unlink, dup, dup2, pipe,
+						// getcwd, chdir, isatty, ttyname, fork, execve
+
+// Process & Signal Handling
+# include <signal.h>   // signal, sigaction, kill, sigemptyset, sigaddset
+# include <sys/wait.h> // wait, waitpid, wait3, wait4
+
+// Readline (Interactive Input)
+# include <readline/history.h>  // add_history, rl_clear_history
+# include <readline/readline.h> // readline, rl_on_new_line, rl_replace_line,
+								// rl_redisplay
+
+// Terminal Control (Optional: Add if using termios/curses)
+// # include <termios.h>  // tcsetattr, tcgetattr
+// # include <curses.h>   // tgetent, tputs, etc. (requires -lncurses)
+// # include <sys/ioctl.h> // ioctl
 
 typedef enum s_bool
 {
@@ -110,6 +132,9 @@ char					*get_value(char *str);
 void					ft_exit(t_mini *mini);
 void					free_all(t_mini *mini);
 long long				ft_atoll(const char *nptr, int *overflow);
+
+// signals
+void					sig_handler(int nbr);
 
 // free
 void					free_stack(t_env_node **my_envp);

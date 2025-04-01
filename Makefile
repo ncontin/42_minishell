@@ -15,6 +15,7 @@ SRC =	src/main.c\
 		$(SRC_PARSING)\
 		$(SRC_READLINE)\
 		$(SRC_ENVS)\
+		$(SRC_SIGNALS)\
 
 SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
@@ -54,6 +55,8 @@ SRC_READLINE =  src/readline/readline.c\
 
 SRC_ENVS =		src/envs/envp_init.c\
 				src/envs/envs_utils.c\
+
+SRC_SIGNALS = 	src/signals/signals.c\
 
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft

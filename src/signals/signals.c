@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 11:44:00 by ncontin          ###   ########.fr       */
+/*   Created: 2025/04/01 11:08:22 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/01 12:44:19 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_env	lst_env;
-	t_mini	mini;
+int		signal_received = 0;
 
-	mini.exit_code = 0;
-	mini.lst_env = &lst_env;
-	(void)argc;
-	(void)argv;
-	signal(SIGINT, sig_handler);
-	get_path(envp, &lst_env);
-	init_envp(&lst_env);
-	line_read(&mini);
+void	sig_handler(int nbr)
+{
+	(void)nbr;
+	printf("\n");
 }
