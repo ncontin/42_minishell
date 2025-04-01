@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/01 14:36:34 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 14:57:39 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@ static t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 		if (ft_strncmp(arg, current->key, ft_strlen(current->key)) == 0)
 			return (current);
 		current = current->next;
-	}
-	if (lst_env->envp_export && *lst_env->envp_export)
-	{
-		current = *lst_env->envp_export;
-		while (current)
-		{
-			if (ft_strncmp(arg, current->key, ft_strlen(current->key)) == 0)
-				return (current);
-			current = current->next;
-		}
 	}
 	return (NULL);
 }
@@ -56,11 +46,11 @@ static void	add_export_env(t_env *lst_env, char *arg)
 		env->value = NULL;
 	}
 	env->next = NULL;
-	if (!(*lst_env->envp_export))
-		*lst_env->envp_export = env;
+	if (!(*lst_env->envp_cp))
+		*lst_env->envp_cp = env;
 	else
 	{
-		last = find_last(lst_env->envp_export);
+		last = find_last(lst_env->envp_cp);
 		last->next = env;
 	}
 }
@@ -115,11 +105,7 @@ void	ft_export(t_mini *mini)
 		return ;
 	sort_env(mini->lst_env->sorted_envp_cp);
 	if (mini->args[0])
-	{
-		sort_env(mini->lst_env->envp_export);
-		print_export(mini->lst_env->sorted_envp_cp, mini->lst_env->envp_export,
-			mini->args);
-	}
+		print_export(mini->lst_env->sorted_envp_cp, mini->args);
 	if (mini->args[0] && mini->args[1])
 	{
 		while (mini->args[++i])

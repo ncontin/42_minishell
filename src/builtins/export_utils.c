@@ -6,21 +6,18 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:47:09 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 12:51:49 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 14:57:47 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_export(t_env_node **sorted_envp_cp, t_env_node **envp_export,
-		char **args)
+void	print_export(t_env_node **sorted_envp_cp, char **args)
 {
 	if (args[0] && !args[1])
 	{
 		if (sorted_envp_cp && *sorted_envp_cp)
 			print_env_stack(sorted_envp_cp);
-		if (envp_export)
-			print_env_stack(envp_export);
 	}
 }
 
@@ -52,7 +49,10 @@ static void	copy_env_node(t_env_node *current, t_env_node **ft_envp)
 	if (!node)
 		return ;
 	node->key = ft_strdup(current->key);
-	node->value = ft_strdup(current->value);
+	if (current->value)
+		node->value = ft_strdup(current->value);
+	else
+		node->value = NULL;
 	node->next = NULL;
 	if (!(*ft_envp))
 		*ft_envp = node;
