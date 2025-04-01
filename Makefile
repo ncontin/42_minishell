@@ -33,6 +33,7 @@ SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_array.c\
 				src/cleanup/free_token.c\
 				src/cleanup/free_commands.c\
+				src/cleanup/close_fd.c\
 
 
 SRC_ERRORS = 	src/errors/error.c\

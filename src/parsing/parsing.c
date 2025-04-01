@@ -6,16 +6,16 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/31 17:56:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/01 14:11:57 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_command	*parsing(t_mini *mini)
+void	parsing(t_mini *mini)
 {
 	t_command	*cmds;
-	
+
 	mini->args = arg_split(mini->input);
 	if (mini->args == NULL)
 		return (NULL);
@@ -35,9 +35,8 @@ t_command	*parsing(t_mini *mini)
 	mini->tokens = merge_args(mini->tokens);
 	if (mini->tokens == NULL)
 		return (NULL);
-	cmds = split_pipes(mini->tokens, NULL, NULL);
+	mini->cmds = split_pipes(mini->tokens, NULL, NULL);
 	//if (is_builtin(mini->args[0]))
 		//execute_builtin(mini);
 	//free_token(mini->tokens);
-	return (cmd);
 }

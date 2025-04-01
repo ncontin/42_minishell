@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/31 17:48:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/01 15:19:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include "libft/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 
@@ -93,8 +96,10 @@ typedef struct s_token
 typedef struct	s_command
 {
 	int					argc;
+	int					pipe_fd[2];
 	char 				**argv;
 	char				*file;
+	pid_t				pid;
 	t_operator			operator;
 	struct s_command	*next;
 }	t_command;
@@ -106,6 +111,7 @@ typedef struct s_mini
 	int					exit_code;
 	t_env				*lst_env;
 	t_token				*tokens;
+	t_command			*cmds;
 }						t_mini;
 
 // builtins
@@ -175,7 +181,7 @@ t_bool					is_valid_token(t_token *tokens);
 void					multi_str(char *args, int nb_strings, t_token **head,
 							int i);
 // parsing.c
-t_command				*parsing(t_mini *mini);
+void					parsing(t_mini *mini);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
 void					get_path(char **envp, t_env *lst_env);
@@ -187,5 +193,7 @@ t_command				*split_pipes(t_token *tokens, t_command *cmds, t_command *new);
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 //create_argv.c
 void					create_argv(t_command *new, t_token *tokens);
+//close_fd.c
+void					close_fd(int *pipe_fd);
 
 #endif
