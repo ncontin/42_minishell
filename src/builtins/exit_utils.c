@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/01 10:51:02 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 16:33:55 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ void	free_all(t_mini *mini)
 	{
 		if (mini->lst_env->envp_cp)
 			free_stack(mini->lst_env->envp_cp);
-		if (mini->lst_env->envp_export)
-			free_stack(mini->lst_env->envp_export);
 		free_path(mini->lst_env);
+		free(mini->lst_env);
 	}
 }

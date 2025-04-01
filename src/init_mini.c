@@ -1,37 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_token.c                                       :+:      :+:    :+:   */
+/*   init_mini.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/01 16:43:53 by ncontin          ###   ########.fr       */
+/*   Created: 2025/04/01 16:08:41 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/01 16:51:15 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_token(t_token *token)
+void	init_mini(t_mini *mini)
 {
-	t_token	*current;
-	t_token	*next;
-
-	if (!token)
+	mini->args = NULL;
+	mini->exit_code = 0;
+	mini->lst_env = malloc(sizeof(t_env));
+	if (!mini->lst_env)
 		return ;
-	current = token;
-	while (current != NULL)
-	{
-		next = current->next;
-		if (current->argument)
-			free(current->argument);
-		free(current);
-		current = next;
-	}
-}
-
-void	msg_and_free(t_token *tokens)
-{
-	write(2, "Memory allocation failed to create arg\n", 39);
-	free_token(tokens);
+	mini->tokens = NULL;
 }

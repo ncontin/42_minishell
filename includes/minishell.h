@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 12:25:29 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 16:09:51 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ typedef struct s_env
 	char				**path;
 	t_env_node			**envp_cp;
 	t_env_node			**sorted_envp_cp;
-	t_env_node			**envp_export;
 }						t_env;
 
 typedef struct s_parser
@@ -108,6 +107,8 @@ typedef struct s_mini
 	t_token				*tokens;
 }						t_mini;
 
+void					init_mini(t_mini *mini);
+
 // builtins
 int						is_builtin(char *str);
 void					execute_builtin(t_mini *mini);
@@ -116,8 +117,7 @@ void					ft_echo(t_mini *mini);
 void					free_array(char **array);
 int						ft_cd(t_mini *mini);
 int						find_min_len(char *s1, char *s2);
-void					print_export(t_env_node **sorted_envp_cp,
-							t_env_node **envp_export, char **args);
+void					print_export(t_env_node **sorted_envp_cp, char **args);
 t_env_node				**copy_envp_list(t_env_node **envp_cp);
 void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini);

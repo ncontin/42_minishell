@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/01 10:52:04 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 16:20:06 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,25 @@ static int	check_digit(char *str)
 	return (0);
 }
 
-static char	*parse_arg(char *str)
+static char	*del_quotes_and_spaces(char *str)
 {
+	char	*quoteless;
 	char	*res;
 
 	if (!str)
 		return (NULL);
-	res = ft_strtrim(ft_strtrim(str, "\""), " ");
+	quoteless = ft_strtrim(str, "\"");
+	res = ft_strtrim(quoteless, " ");
+	free(quoteless);
 	return (res);
+}
+
+static void	print_error(t_mini *mini, char *arg)
+{
+	ft_putstr_fd("exit\nminishell: exit: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	mini->exit_code = 2;
 }
 
 void	ft_exit(t_mini *mini)
@@ -65,23 +76,22 @@ void	ft_exit(t_mini *mini)
 	char	*arg;
 
 	overflow = 0;
-	arg = parse_arg(mini->args[1]);
+	arg = NULL;
+	if (mini->args != NULL && mini->args[1] != NULL)
+		arg = del_quotes_and_spaces(mini->args[1]);
 	if (check_overflow(arg, &overflow) == 1 || check_digit(arg) == 1)
-	{
-		ft_putstr_fd("exit\nminishell: exit: ", 2);
-		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		mini->exit_code = 2;
-	}
-	else if (mini->args[0] && arg && mini->args[2])
+		print_error(mini, arg);
+	else if (mini->args != NULL && mini->args[0] && arg && mini->args[2])
 	{
 		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
 		mini->exit_code = 1;
+		free(arg);
 		return ;
 	}
-	else if (mini->args[0] && arg)
+	else if (mini->args != NULL && mini->args[0] && arg)
 		mini->exit_code = ft_atoll(arg, &overflow);
 	mini->exit_code = mini->exit_code % 256;
+	free(arg);
 	free_all(mini);
 	rl_clear_history();
 	exit(mini->exit_code);

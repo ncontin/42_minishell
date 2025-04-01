@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 10:50:20 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 16:51:28 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	line_read(t_mini *mini)
 		{
 			if (isatty(STDIN_FILENO))
 				write(2, "exit\n", 6);
-			exit(mini->exit_code);
+			ft_exit(mini);
 		}
 		if (ft_strlen(mini->input) > 0)
 		{
