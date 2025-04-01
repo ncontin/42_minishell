@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/01 10:54:21 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 14:36:34 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,11 @@ void	ft_export(t_mini *mini)
 		return ;
 	sort_env(mini->lst_env->sorted_envp_cp);
 	if (mini->args[0])
+	{
+		sort_env(mini->lst_env->envp_export);
 		print_export(mini->lst_env->sorted_envp_cp, mini->lst_env->envp_export,
 			mini->args);
+	}
 	if (mini->args[0] && mini->args[1])
 	{
 		while (mini->args[++i])
