@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:39:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/01 16:57:36 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 18:32:06 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,5 @@ void	free_array(char **array)
 		i++;
 	}
 	free(array);
+	array = NULL;
 }

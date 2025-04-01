@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 16:09:51 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 18:07:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,9 @@ typedef struct s_mini
 	t_token				*tokens;
 }						t_mini;
 
+// init
 void					init_mini(t_mini *mini);
+void					init_envp(t_mini *mini);
 
 // builtins
 int						is_builtin(char *str);
@@ -123,7 +125,6 @@ void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini);
 void					ft_export(t_mini *mini);
 void					ft_unset(t_mini *mini);
-void					init_envp(t_env *lst_env);
 void					print_env_stack(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
 int						find_equal(char *str);
