@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 16:19:19 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 17:26:20 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	init_mini(&mini);
 	get_path(envp, mini.lst_env);
 	init_envp(mini.lst_env);
