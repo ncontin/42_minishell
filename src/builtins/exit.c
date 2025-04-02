@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 15:57:41 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 16:18:50 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_exit(t_mini *mini)
 	}
 	else if (mini->args != NULL && mini->args[0] && arg)
 		mini->exit_code = ft_atoll(arg, &overflow);
-	else if (mini->args[0])
+	else if (mini->args != NULL && mini->args[0])
 		ft_putstr_fd("exit\n", 2);
 	mini->exit_code = mini->exit_code % 256;
 	free(arg);

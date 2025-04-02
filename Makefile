@@ -68,6 +68,7 @@ SRC_ENVS =		src/envs/envp_init.c\
 				src/envs/envs_utils.c\
 
 SRC_EXECUTOR =	src/executor/executor.c\
+
 SRC_SIGNALS = 	src/signals/signals.c\
 
 LIBRARY = includes/libft/libft.a
