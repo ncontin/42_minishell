@@ -6,33 +6,49 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 17:35:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 12:20:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_cmd(t_command *current, char **envp, t_mini *mini)
+static void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 {
 	char	**unix_path;
 	char	*path;
+	int		i;
 
-	if (access(current->argument[0], X_OK) == 0)
+	i = 0;
+	if (access(current->argv[0], X_OK) == 0)
 	{
-		if (execve(current->argument[0], current->argument, envp) == -1)
+		if (execve(current->argv[0], current->argv, envp) == -1)
 		{
-			free_commands(mini->cmds);	
+			free_commands(mini->cmds);
 			exit(errno);
 		}
 	}
 	else
 	{
 		unix_path = get_unix_path(mini->lst_env->envp);
-		
+		while (unix_path[i])
+		{
+			path = copy_command(unix_path[i], current->argv[0]);
+			if (access(path, X_OK) == 0)
+			{
+				if (execve(path, current->argv, envp) == -1)
+				{
+					free_commands(mini->cmds);
+					exit(errno);
+				}
+			}
+			free(path);
+			i++;
+		}
+		exit(127);
 	}
 }
 
-void	handle_redirection(t_command *current, t_mini *mini)
+static void	handle_redirection(t_command *current, t_mini *mini)
 {
 	int	file_fd;
 
@@ -78,16 +94,17 @@ void	handle_redirection(t_command *current, t_mini *mini)
 void	executor(t_mini *mini)
 {
 	t_command	*current;
+	int			status;
 
-	current = mini->cmds; 
+	current = mini->cmds;
 	while (current != NULL)
 	{
 		if (current->next != NULL) //check if there is a pipe
 		{
 			if (pipe(current->pipe_fd) == -1)
 			{
-				close_fd(current);
-				free_commands(cmds);
+				close_fd(current->pipe_fd);
+				free_commands(mini->cmds);
 				return ;
 			}
 		}
@@ -95,7 +112,7 @@ void	executor(t_mini *mini)
 		if (current->pid < 0)
 		{
 			close_fd(current->pipe_fd);
-			free_commands(cmds);
+			free_commands(mini->cmds);
 			write(2, "fork error\n", 10);
 			return ;
 		}
@@ -106,18 +123,35 @@ void	executor(t_mini *mini)
 				if (dup2(current->pipe_fd[1], STDOUT_FILENO) == -1)
 				{
 					close_fd(current->pipe_fd);
-					free_commands(cmds);
+					free_commands(mini->cmds);
 					write(2, "dup2 error\n", 10);
 					return ;
 				}
 				close(current->pipe_fd[1]);
 			}
+			if (current->prev != NULL) //if there was a pipe
+			{
+				if (dup2(current->prev->pipe_fd[0], STDIN_FILENO) == -1)
+				{
+					close_fd(current->pipe_fd);
+					free_commands(mini->cmds);
+					write(2, "dup2 error\n", 10);
+					return ;
+				}
+				close(current->prev->pipe_fd[0]);
+				close(current->prev->pipe_fd[1]);
+			}
 			if (current->operator != NONE) //check if there is a redirection
 				handle_redirection(current, mini);
-			else if (current->next != NULL) //there is a pipe but no redirection 
+			else if (current->next != NULL) //there is a pipe but no redirection
 				close(current->pipe_fd[0]);
-			execute_cmd(current, mini->lst_env->envp, mini); 
+			execute_cmd(current, mini->lst_env->envp, mini);
 		}
-		current = current->next;
+		else if (current->pid > 0)
+		{
+			current = current->next;
+		}
 	}
+	while (wait(&status) > 0)
+		;
 }

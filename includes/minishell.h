@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 15:19:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 11:15:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <errno.h>
 
 typedef enum s_bool
 {
@@ -102,6 +103,7 @@ typedef struct	s_command
 	pid_t				pid;
 	t_operator			operator;
 	struct s_command	*next;
+	struct s_command	*prev;
 }	t_command;
 
 typedef struct s_mini
@@ -184,7 +186,10 @@ void					multi_str(char *args, int nb_strings, t_token **head,
 void					parsing(t_mini *mini);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
+//path.c
 void					get_path(char **envp, t_env *lst_env);
+char					**get_unix_path(char **envp);
+char					*copy_command(char *unix_path, char *commands);
 //merge_args.c
 t_token					*merge_args(t_token *tokens);
 //split_pipes.c
@@ -195,5 +200,7 @@ t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 void					create_argv(t_command *new, t_token *tokens);
 //close_fd.c
 void					close_fd(int *pipe_fd);
+//executor.c
+void					executor(t_mini *mini);
 
 #endif

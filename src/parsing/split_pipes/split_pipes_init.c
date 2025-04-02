@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 15:52:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/31 18:18:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 11:20:20 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	cmd_add_new(t_command **head, t_command *new)
 			while (current->next != NULL)
 				current = current->next;
 			current->next = new;
+			new->prev = current;
 		}
 		else
 			*head = new;
@@ -43,6 +44,7 @@ t_command	*create_cmd_list(t_command **cmds, t_token *tokens)
 	new_cmds->argv = NULL;
 	new_cmds->operator = 0;
 	new_cmds->next = NULL;
+	new_cmds->prev= NULL;
 	new_cmds->file = NULL;
 	cmd_add_new(cmds, new_cmds);
 	create_argv(new_cmds, tokens);

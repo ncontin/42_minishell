@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 14:12:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 10:18:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	line_read(t_mini *mini)
 			add_history(mini->input);
 			parsing(mini);
 			if (mini->cmds != NULL)
-				executor(mini->cmds);
+				executor(mini);
 			free_input(mini);
 		}
 		else
