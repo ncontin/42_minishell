@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 16:47:29 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 18:33:45 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,11 @@ void	ft_exit(t_mini *mini)
 {
 	int		overflow;
 	char	*arg;
-	int	exit_code;
 
-	exit_code = 0;
-	if (mini->cmds->argv[0] && mini->cmds->argv[1])
-	exit_code = ft_atoi(mini->cmds->argv[1]);
 	overflow = 0;
 	arg = NULL;
-
-	if (mini->args != NULL && mini->args[1] != NULL)
-		arg = del_quotes_and_spaces(mini->args[1]);
+	if (mini->cmds && mini->cmds->argv && mini->cmds->argv[1])
+		arg = del_quotes_and_spaces(mini->cmds->argv[1]);
 	if (check_overflow(arg, &overflow) == 1 || check_digit(arg) == 1)
 		print_error(mini, arg);
 	else if (mini->args != NULL && mini->args[0] && arg && mini->args[2])

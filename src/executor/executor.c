@@ -6,11 +6,24 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 17:18:58 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 19:02:20 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	execute_builtin_parent(t_mini *mini, t_command *cmd)
+{
+	int	exec;
+
+	exec = 0;
+	if (is_builtin(cmd->argv[0]))
+	{
+		execute_builtin(mini, cmd->argv);
+		exec = 1;
+	}
+	return (exec);
+}
 
 static void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 {
@@ -106,6 +119,11 @@ void	executor(t_mini *mini)
 	current = mini->cmds;
 	if (ft_strncmp(current->argv[0], "exit", 4) == 0 && current->next == NULL)
 		ft_exit(mini);
+	if (current && !current->next && is_builtin(current->argv[0]))
+	{
+		if (execute_builtin_parent(mini, current) == 1)
+			return ;
+	}
 	while (current != NULL)
 	{
 		if (current->next != NULL) // check if there is a pipe
@@ -180,4 +198,6 @@ void	executor(t_mini *mini)
 	}
 	while (wait(&status) > 0)
 		;
+	if (WIFEXITED(status))
+		mini->exit_code = WEXITSTATUS(status);
 }

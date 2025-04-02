@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 10:12:22 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 18:22:18 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	parsing(t_mini *mini)
 	if (mini->tokens == NULL)
 		return ;
 	mini->cmds = split_pipes(mini->tokens, NULL, NULL);
-	//if (is_builtin(mini->args[0]))
-		//execute_builtin(mini);
-	//free_token(mini->tokens);
+	// if (is_builtin(mini->args[0]) && mini->cmds->next == NULL)
+	// 	execute_builtin(mini, mini->cmds->argv);
+	// // free_token(mini->tokens);
 }
