@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 15:56:31 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 16:48:47 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void					init_envp(t_mini *mini);
 
 // builtins
 int						is_builtin(char *str);
-void					execute_builtin(t_mini *mini);
+void					execute_builtin(t_mini *mini, char **argv);
 void					ft_pwd(void);
 void					ft_echo(t_mini *mini);
 void					free_array(char **array);

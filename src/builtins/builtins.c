@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 15:57:03 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 16:52:57 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ int	is_builtin(char *str)
 	return (0);
 }
 
-void	execute_builtin(t_mini *mini)
+void	execute_builtin(t_mini *mini, char **argv)
 {
-	if (ft_strncmp(mini->args[0], "pwd", 3) == 0)
+	if (ft_strncmp(argv[0], "pwd", 3) == 0)
 		ft_pwd();
-	else if (ft_strncmp(mini->args[0], "echo", 4) == 0)
-		ft_echo(mini);
-	else if (ft_strncmp(mini->args[0], "exit", 4) == 0)
+	else if (ft_strncmp(argv[0], "echo", 4) == 0)
+		ft_echo(argv);
+	else if (ft_strncmp(argv[0], "exit", 4) == 0)
 		ft_exit(mini);
 	else if (ft_strncmp(mini->args[0], "cd", 2) == 0)
 		ft_cd(mini);
