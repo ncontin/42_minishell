@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 16:12:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:26:32 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void	executor(t_mini *mini)
 
 	prev_fd = -1;
 	current = mini->cmds;
+	if (ft_strncmp(current->argv[0], "exit", 4) == 0 && current->next == NULL)
+		ft_exit(mini);
 	while (current != NULL)
 	{
 		if (current->next != NULL) //check if there is a pipe
@@ -162,7 +164,7 @@ void	executor(t_mini *mini)
 				prev_fd = current->pipe_fd[0];
 			}
 			current = current->next;
-			if (current != NULL && ft_strncmp(current->argv[0], "exit", 4) == 0)
+			if (current != NULL && ft_strncmp(current->argv[0], "exit", 4) == 0 && current->next == NULL)
 			{
 				current = mini->cmds;
 				while (ft_strncmp(current->argv[0], "exit", 4) != 0)
