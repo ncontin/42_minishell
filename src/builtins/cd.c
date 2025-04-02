@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 15:57:24 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 20:05:02 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void	update_pwd(t_env_node **env_stack)
 	}
 }
 
-
 static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
 {
 	t_env_node	*current;
@@ -47,14 +46,39 @@ static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
 	}
 }
 
+static char	*get_env_value(t_env_node **envp_cp, char *key)
+{
+	t_env_node	*current;
+
+	current = *envp_cp;
+	while (current)
+	{
+		if (strncmp(current->key, key, strlen(key)) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
+}
+
 int	ft_cd(t_mini *mini)
 {
 	char	*pwd;
+	char	*path;
 
 	pwd = getcwd(NULL, 0);
-	if (!mini->args[1])
-		return (1);
-	if (chdir(mini->args[1]) == -1)
+	if (!mini->args[1] || ft_strncmp(mini->args[1], "~", 1) == 0)
+	{
+		path = get_env_value(mini->lst_env->envp_cp, "HOME");
+		if (!path)
+		{
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			free(pwd);
+			return (1);
+		}
+	}
+	else
+		path = mini->args[1];
+	if (chdir(path) == -1)
 	{
 		perror("cd");
 		return (1);
@@ -63,6 +87,8 @@ int	ft_cd(t_mini *mini)
 	{
 		update_old_pwd(mini->lst_env->envp_cp, pwd);
 		update_pwd(mini->lst_env->envp_cp);
+		return (0);
 	}
+	free(pwd);
 	return (0);
 }
