@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_argument.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:39:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/28 16:40:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:16:00 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	replace_argument(t_token *tokens, t_mini *mini)
 			current = current->next;
 		}
 		i++;
-		current = *mini->lst_env->envp_export;
 	}
 	free(tokens->argument);
 	tokens->argument = NULL;

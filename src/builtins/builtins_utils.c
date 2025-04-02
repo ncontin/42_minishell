@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/26 16:42:04 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 11:04:43 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_env_stack(t_env_node **env_stack)
+void	print_env(t_env_node **env_stack)
 {
 	t_env_node	*current;
 
@@ -24,7 +24,7 @@ void	print_env_stack(t_env_node **env_stack)
 		if (current->key)
 			printf("%s", current->key);
 		if (current->value)
-			printf("=\"%s\"", current->value);
+			printf("=%s", current->value);
 		printf("\n");
 		current = current->next;
 	}

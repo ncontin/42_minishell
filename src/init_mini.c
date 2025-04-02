@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   init_mini.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 17:02:08 by ncontin          ###   ########.fr       */
+/*   Created: 2025/04/01 16:08:41 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/01 18:03:04 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(char **cmd_args)
+void	init_mini(t_mini *mini)
 {
-	int	i;
-	int	newline;
-
-	newline = 1;
-	i = 1;
-	while (cmd_args[i] && cmd_args[i][0] == '-' && cmd_args[i][1] == 'n')
-	{
-		newline = 0;
-		i++;
-	}
-	while (cmd_args[i])
-	{
-		printf("%s", cmd_args[i]);
-		if (cmd_args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline == 1)
-		printf("\n");
+	mini->args = NULL;
+	mini->exit_code = 0;
+	mini->lst_env = malloc(sizeof(t_env));
+	if (!mini->lst_env)
+		return ;
+	mini->tokens = NULL;
 }

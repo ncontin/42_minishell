@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/28 14:17:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:58:12 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,18 @@
 void	free_token(t_token *token)
 {
 	t_token	*current;
+	t_token	*next;
 
+	if (!token)
+		return ;
 	current = token;
 	while (current != NULL)
 	{
-		token = token->next;
-		if (current->argument != NULL)
+		next = current->next;
+		if (current->argument)
 			free(current->argument);
 		free(current);
-		current = token;
+		current = next;
 	}
 }
 

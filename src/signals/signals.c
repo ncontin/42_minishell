@@ -1,36 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 17:02:08 by ncontin          ###   ########.fr       */
+/*   Created: 2025/04/01 11:08:22 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/01 17:27:52 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(char **cmd_args)
+void	sig_handler(int signal)
 {
-	int	i;
-	int	newline;
-
-	newline = 1;
-	i = 1;
-	while (cmd_args[i] && cmd_args[i][0] == '-' && cmd_args[i][1] == 'n')
+	if (signal == SIGINT)
 	{
-		newline = 0;
-		i++;
+		printf("\nminishell> ");
 	}
-	while (cmd_args[i])
-	{
-		printf("%s", cmd_args[i]);
-		if (cmd_args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline == 1)
-		printf("\n");
 }

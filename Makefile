@@ -9,12 +9,14 @@ OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
 		src/path.c\
+		src/init_mini.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\
 		$(SRC_PARSING)\
 		$(SRC_READLINE)\
 		$(SRC_ENVS)\
+		$(SRC_SIGNALS)\
 		$(SRC_EXECUTOR)\
 
 SRC_BUILTINS =	src/builtins/builtins.c\
@@ -27,6 +29,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/builtins_utils.c\
 				src/builtins/export_utils.c\
 				src/builtins/exit.c\
+				src/builtins/exit_utils.c\
 
 SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\
@@ -61,10 +64,12 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 
 SRC_READLINE =  src/readline/readline.c\
 
-SRC_ENVS =		src/envs/envp.c\
+SRC_ENVS =		src/envs/envp_init.c\
 				src/envs/envs_utils.c\
 
-SRC_EXECUTOR = src/executor/executor.c\
+SRC_EXECUTOR =	src/executor/executor.c\
+
+SRC_SIGNALS = 	src/signals/signals.c\
 
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft

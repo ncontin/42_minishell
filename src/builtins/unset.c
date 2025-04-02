@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 11:01:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/25 17:46:34 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/01 14:50:07 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,16 @@ static void	unset_env(t_env_node **env_stack, char *arg)
 	}
 }
 
-void	ft_unset(t_env *lst_env, char **args)
+void	ft_unset(t_mini *mini)
 {
 	int	i;
 
-	if (!lst_env->envp_cp)
+	if (!mini->lst_env->envp_cp)
 		return ;
 	i = 1;
-	while (args[i])
+	while (mini->args[i])
 	{
-		unset_env(lst_env->envp_cp, args[i]);
-		if (lst_env->envp_export && *lst_env->envp_export)
-			unset_env(lst_env->envp_export, args[i]);
+		unset_env(mini->lst_env->envp_cp, mini->args[i]);
 		i++;
 	}
 }
