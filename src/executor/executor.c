@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 12:20:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:12:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ static void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 	int		i;
 
 	i = 0;
+	if (is_builtin(current->argv[0]))
+	{
+		execute_builtin(mini, current->argv);
+		exit (EXIT_SUCCESS);
+	}
 	if (access(current->argv[0], X_OK) == 0)
 	{
 		if (execve(current->argv[0], current->argv, envp) == -1)
@@ -95,7 +100,9 @@ void	executor(t_mini *mini)
 {
 	t_command	*current;
 	int			status;
+	int			prev_fd;
 
+	prev_fd = -1;
 	current = mini->cmds;
 	while (current != NULL)
 	{
@@ -129,17 +136,15 @@ void	executor(t_mini *mini)
 				}
 				close(current->pipe_fd[1]);
 			}
-			if (current->prev != NULL) //if there was a pipe
+			if (prev_fd != -1) //if there was a pipe
 			{
-				if (dup2(current->prev->pipe_fd[0], STDIN_FILENO) == -1)
+				if (dup2(prev_fd, STDIN_FILENO) == -1)
 				{
-					close_fd(current->pipe_fd);
 					free_commands(mini->cmds);
 					write(2, "dup2 error\n", 10);
 					return ;
 				}
-				close(current->prev->pipe_fd[0]);
-				close(current->prev->pipe_fd[1]);
+				close(prev_fd);
 			}
 			if (current->operator != NONE) //check if there is a redirection
 				handle_redirection(current, mini);
@@ -149,7 +154,24 @@ void	executor(t_mini *mini)
 		}
 		else if (current->pid > 0)
 		{
+			if (prev_fd != -1)
+				close(prev_fd);
+			if (current->next != NULL)
+			{
+				close(current->pipe_fd[1]);
+				prev_fd = current->pipe_fd[0];
+			}
 			current = current->next;
+			if (current != NULL && ft_strncmp(current->argv[0], "exit", 4) == 0)
+			{
+				current = mini->cmds;
+				while (ft_strncmp(current->argv[0], "exit", 4) != 0)
+				{
+					kill(current->pid, SIGTERM);
+					current = current->next;
+				}
+				ft_exit(mini);
+			}
 		}
 	}
 	while (wait(&status) > 0)

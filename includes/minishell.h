@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 11:15:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:46:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef struct s_mini
 
 // builtins
 int						is_builtin(char *str);
-void					execute_builtin(t_mini *mini);
+void					execute_builtin(t_mini *mini, char **argv);
 void					ft_pwd(void);
 void					ft_echo(char **args);
 int						ft_cd(char *path, t_env *env_lst);

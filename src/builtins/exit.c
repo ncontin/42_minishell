@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/03/27 08:57:36 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:15:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	ft_exit(t_mini *mini)
 	int	exit_code;
 
 	exit_code = 0;
-	if (mini->args[0] && mini->args[1])
-		exit_code = ft_atoi(mini->args[1]);
+	if (mini->cmds->argv[0] && mini->cmds->argv[1])
+		exit_code = ft_atoi(mini->cmds->argv[1]);
 	if (mini->input)
 		free(mini->input);
 	if (mini->args)
