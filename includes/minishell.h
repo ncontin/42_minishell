@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 17:19:57 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 17:22:28 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,6 @@ void					ft_env(t_mini *mini);
 void					ft_export(t_mini *mini);
 void					ft_unset(t_mini *mini);
 void					print_env(t_env_node **env_stack);
-void					print_export_stack(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
 int						find_equal(char *str);
 char					*get_key(char *str);
@@ -199,7 +198,6 @@ void					error_msg(char *message, int error);
 // even_quotes.c
 t_bool					is_even_quotes(char **tokens);
 // free.c
-void					free_struct(t_env *lst_env);
 void					free_token(t_token *token);
 void					msg_and_free(t_token *tokens);
 void					free_commands(t_command *cmds);
