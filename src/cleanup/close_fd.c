@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   close_fd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 15:59:07 by ncontin          ###   ########.fr       */
+/*   Created: 2025/04/01 14:42:16 by aroullea          #+#    #+#             */
+/*   Updated: 2025/04/02 10:07:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	close_fd(int *pipe_fd)
 {
-	t_mini	mini;
-
-	(void)argc;
-	(void)argv;
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
-	init_mini(&mini);
-	get_path(envp, mini.lst_env);
-	init_envp(&mini);
-	line_read(&mini);
+	if (pipe_fd != NULL)
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
 }

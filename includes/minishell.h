@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 11:00:32 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 15:56:31 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 
 // Process & Signal Handling
 # include <signal.h>   // signal, sigaction, kill, sigemptyset, sigaddset
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <fcntl.h>
 # include <sys/wait.h> // wait, waitpid, wait3, wait4
 
 // Readline (Interactive Input)
@@ -41,6 +44,7 @@
 // # include <termios.h>  // tcsetattr, tcgetattr
 // # include <curses.h>   // tgetent, tputs, etc. (requires -lncurses)
 // # include <sys/ioctl.h> // ioctl
+# include <errno.h>
 
 typedef enum s_bool
 {
@@ -64,6 +68,18 @@ typedef enum s_operator
 	APPEND,
 	HEREDOC
 }						t_operator;
+
+typedef enum s_arg_type
+{
+	ARGUMENT,
+	COMMAND,
+	OPTION,
+	FILENAME,
+	HERE_DOC_LIMITER,
+	REDIRECTION,
+	PIPE_OPERATOR,
+	ENV_VAR
+}	t_arg_type;
 
 typedef struct s_env_node
 {
@@ -95,8 +111,22 @@ typedef struct s_token
 	t_quotes			quotes;
 	t_bool				linked;
 	t_operator			operator;
+	t_arg_type			arg_type;
 	struct s_token		*next;
+	struct s_token		*prev;
 }						t_token;
+
+typedef struct	s_command
+{
+	int					argc;
+	int					pipe_fd[2];
+	char 				**argv;
+	char				*file;
+	pid_t				pid;
+	t_operator			operator;
+	struct s_command	*next;
+	struct s_command	*prev;
+}	t_command;
 
 typedef struct s_mini
 {
@@ -105,6 +135,7 @@ typedef struct s_mini
 	long long int		exit_code;
 	t_env				*lst_env;
 	t_token				*tokens;
+	t_command			*cmds;
 }						t_mini;
 
 // init
@@ -143,7 +174,8 @@ void					free_stack(t_env_node **my_envp);
 void					free_array(char **array);
 void					free_path(t_env *lst_env);
 void					free_input(t_mini *mini);
-
+//assign_type_argument
+void					assign_type_argument(t_token *tokens);
 void					line_read(t_mini *mini);
 // arg_split.c
 char					**arg_split(char const *s);
@@ -168,9 +200,11 @@ void					error_msg(char *message, int error);
 t_bool					is_even_quotes(char **tokens);
 // free.c
 void					free_struct(t_env *lst_env);
-void					free_array(char **array);
 void					free_token(t_token *token);
 void					msg_and_free(t_token *tokens);
+void					free_commands(t_command *cmds);
+//get_env_argument.c
+void					get_env_argument(t_mini *mini);
 // is_mutil_strings.c
 int						is_multi_strings(char *args, int i, t_bool dquotes,
 							t_bool squotes);
@@ -181,14 +215,23 @@ void					multi_str(char *args, int nb_strings, t_token **head,
 							int i);
 // parsing.c
 void					parsing(t_mini *mini);
-// arg_split.c
-char					**arg_split(char const *s);
-// arg_split_utils.c
-t_bool					is_operator(char const *c, int no_space, int *len);
-// count_args
-int						count_args(t_parser *parser);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
+//path.c
 void					get_path(char **envp, t_env *lst_env);
+char					**get_unix_path(char **envp);
+char					*copy_command(char *unix_path, char *commands);
+//merge_args.c
+t_token					*merge_args(t_token *tokens);
+//split_pipes.c
+t_command				*split_pipes(t_token *tokens, t_command *cmds, t_command *new);
+//split_pipes_init.c
+t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
+//create_argv.c
+void					create_argv(t_command *new, t_token *tokens);
+//close_fd.c
+void					close_fd(int *pipe_fd);
+//executor.c
+void					executor(t_mini *mini);
 
 #endif

@@ -1,0 +1,4 @@
+    PID TTY          TIME CMD
+  69907 pts/2    00:00:00 zsh
+  80192 pts/2    00:00:00 minishell
+  80238 pts/2    00:00:00 ps

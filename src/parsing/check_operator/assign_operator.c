@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:57:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 17:28:23 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 15:58:21 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,6 @@ static void	operator_type(t_token *current)
 		current->operator = HEREDOC;
 }
 
-/*void	printouf(t_token *tokens)
-{
-	t_token	*current;
-
-	current = tokens;
-	while (current != NULL)
-	{
-		printf("%s\n", current->argument);
-		printf("%d\n", current->quotes);
-		printf("%d\n", current->linked);
-		printf("%d\n", current->operator);
-		current = current->next;
-	}
-}*/
-
 void	assign_operator(t_token *tokens)
 {
 	t_token	*current;
@@ -54,5 +39,4 @@ void	assign_operator(t_token *tokens)
 			operator_type(current);
 		current = current->next;
 	}
-	//printouf(tokens);
 }

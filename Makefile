@@ -17,6 +17,7 @@ SRC =	src/main.c\
 		$(SRC_READLINE)\
 		$(SRC_ENVS)\
 		$(SRC_SIGNALS)\
+		$(SRC_EXECUTOR)\
 
 SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
@@ -35,6 +36,9 @@ SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_input.c\
 				src/cleanup/free_array.c\
 				src/cleanup/free_token.c\
+				src/cleanup/free_commands.c\
+				src/cleanup/close_fd.c\
+
 
 SRC_ERRORS = 	src/errors/error.c\
 
@@ -49,14 +53,21 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/create_list/is_multi_strings.c\
 				src/parsing/check_operator/assign_operator.c\
 				src/parsing/check_operator/is_valid_token.c\
+				src/parsing/check_operator/assign_type_argument.c\
+				src/parsing/check_operator/is_even_quotes.c\
+				src/parsing/check_operator/get_env_argument.c\
+				src/parsing/merge_args/merge_args.c\
+				src/parsing/split_pipes/create_argv.c\
+				src/parsing/split_pipes/split_pipes.c\
+				src/parsing/split_pipes/split_pipes_init.c\
 				src/parsing/parsing.c\
-				src/parsing/is_even_quotes.c\
 
 SRC_READLINE =  src/readline/readline.c\
 
 SRC_ENVS =		src/envs/envp_init.c\
 				src/envs/envs_utils.c\
 
+SRC_EXECUTOR =	src/executor/executor.c\
 SRC_SIGNALS = 	src/signals/signals.c\
 
 LIBRARY = includes/libft/libft.a
