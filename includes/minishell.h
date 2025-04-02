@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 16:48:47 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 17:19:57 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@
 						// getcwd, chdir, isatty, ttyname, fork, execve
 
 // Process & Signal Handling
-# include <signal.h>   // signal, sigaction, kill, sigemptyset, sigaddset
+# include <fcntl.h>
+# include <signal.h> // signal, sigaction, kill, sigemptyset, sigaddset
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <fcntl.h>
 # include <sys/wait.h> // wait, waitpid, wait3, wait4
 
 // Readline (Interactive Input)
@@ -79,7 +79,7 @@ typedef enum s_arg_type
 	REDIRECTION,
 	PIPE_OPERATOR,
 	ENV_VAR
-}	t_arg_type;
+}						t_arg_type;
 
 typedef struct s_env_node
 {
@@ -116,17 +116,17 @@ typedef struct s_token
 	struct s_token		*prev;
 }						t_token;
 
-typedef struct	s_command
+typedef struct s_command
 {
 	int					argc;
 	int					pipe_fd[2];
-	char 				**argv;
+	char				**argv;
 	char				*file;
 	pid_t				pid;
 	t_operator			operator;
 	struct s_command	*next;
 	struct s_command	*prev;
-}	t_command;
+}						t_command;
 
 typedef struct s_mini
 {
@@ -141,12 +141,12 @@ typedef struct s_mini
 // init
 void					init_mini(t_mini *mini);
 void					init_envp(t_mini *mini);
-
+char					**get_envp_array(t_env *lst_env);
 // builtins
 int						is_builtin(char *str);
 void					execute_builtin(t_mini *mini, char **argv);
 void					ft_pwd(void);
-void					ft_echo(t_mini *mini);
+void					ft_echo(char **cmd_args);
 void					free_array(char **array);
 int						ft_cd(t_mini *mini);
 int						find_min_len(char *s1, char *s2);
@@ -174,7 +174,7 @@ void					free_stack(t_env_node **my_envp);
 void					free_array(char **array);
 void					free_path(t_env *lst_env);
 void					free_input(t_mini *mini);
-//assign_type_argument
+// assign_type_argument
 void					assign_type_argument(t_token *tokens);
 void					line_read(t_mini *mini);
 // arg_split.c
@@ -203,7 +203,7 @@ void					free_struct(t_env *lst_env);
 void					free_token(t_token *token);
 void					msg_and_free(t_token *tokens);
 void					free_commands(t_command *cmds);
-//get_env_argument.c
+// get_env_argument.c
 void					get_env_argument(t_mini *mini);
 // is_mutil_strings.c
 int						is_multi_strings(char *args, int i, t_bool dquotes,
@@ -217,21 +217,22 @@ void					multi_str(char *args, int nb_strings, t_token **head,
 void					parsing(t_mini *mini);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
-//path.c
+// path.c
 void					get_path(char **envp, t_env *lst_env);
 char					**get_unix_path(char **envp);
 char					*copy_command(char *unix_path, char *commands);
-//merge_args.c
+// merge_args.c
 t_token					*merge_args(t_token *tokens);
-//split_pipes.c
-t_command				*split_pipes(t_token *tokens, t_command *cmds, t_command *new);
-//split_pipes_init.c
+// split_pipes.c
+t_command				*split_pipes(t_token *tokens, t_command *cmds,
+							t_command *new);
+// split_pipes_init.c
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
-//create_argv.c
+// create_argv.c
 void					create_argv(t_command *new, t_token *tokens);
-//close_fd.c
+// close_fd.c
 void					close_fd(int *pipe_fd);
-//executor.c
+// executor.c
 void					executor(t_mini *mini);
 
 #endif
