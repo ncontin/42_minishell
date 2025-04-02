@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/01 18:07:26 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/02 11:00:32 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,8 @@ void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini);
 void					ft_export(t_mini *mini);
 void					ft_unset(t_mini *mini);
-void					print_env_stack(t_env_node **env_stack);
+void					print_env(t_env_node **env_stack);
+void					print_export_stack(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
 int						find_equal(char *str);
 char					*get_key(char *str);
