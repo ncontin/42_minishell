@@ -9,13 +9,12 @@ OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
 		src/path.c\
-		src/init_mini.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\
 		$(SRC_PARSING)\
 		$(SRC_READLINE)\
-		$(SRC_ENVS)\
+		$(SRC_INIT)\
 		$(SRC_SIGNALS)\
 		$(SRC_EXECUTOR)\
 
@@ -64,10 +63,14 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 
 SRC_READLINE =  src/readline/readline.c\
 
-SRC_ENVS =		src/envs/envp_init.c\
-				src/envs/envs_utils.c\
+SRC_INIT =		src/init/envp_init.c\
+				src/init/init_utils.c\
+				src/init/mini_init.c\
 
 SRC_EXECUTOR =	src/executor/executor.c\
+				src/executor/handle_redirection.c\
+				src/executor/execute_commands.c\
+				src/executor/dup_create_pipe.c
 
 SRC_SIGNALS = 	src/signals/signals.c\
 
