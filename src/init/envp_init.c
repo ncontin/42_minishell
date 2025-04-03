@@ -6,11 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-<<<<<<< HEAD:src/init/envp_init.c
-/*   Updated: 2025/04/02 19:30:56 by ncontin          ###   ########.fr       */
-=======
-/*   Updated: 2025/04/02 10:52:04 by ncontin          ###   ########.fr       */
->>>>>>> origin/aroullea:src/envs/envp_init.c
+/*   Updated: 2025/04/03 13:07:23 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
