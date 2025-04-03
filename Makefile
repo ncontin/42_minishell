@@ -9,6 +9,7 @@ OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
 		src/path.c\
+		src/init_mini.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\

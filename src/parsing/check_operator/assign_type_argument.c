@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/28 16:52:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/03 12:12:02 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	assign_next(t_token *current)
 	else if (!current->prev
 		|| (current->prev && current->prev->operator == PIPE))
 		current->arg_type = COMMAND;
-	else if (current->argument[0] == '-')
+	else if (current->argument != NULL && current->argument[0] == '-')
 		current->arg_type = OPTION;
 	else
 		current->arg_type = ARGUMENT;
@@ -36,7 +36,7 @@ void	assign_type_argument(t_token *tokens)
 	{
 		if (current->operator == PIPE)
 			current->arg_type = PIPE_OPERATOR;
-		else if (current->argument[0] == '$')
+		else if (current->argument != NULL && current->argument[0] == '$')
 			current->arg_type = ENV_VAR;
 		else if (current->operator == OUTPUT || current->operator == INPUT
 			|| current->operator == APPEND || current->operator == HEREDOC)

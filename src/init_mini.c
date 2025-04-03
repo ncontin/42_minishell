@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_input.c                                       :+:      :+:    :+:   */
+/*   init_mini.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/25 19:00:54 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 12:50:08 by ncontin          ###   ########.fr       */
+/*   Created: 2025/04/01 16:08:41 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/01 18:03:04 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_input(t_mini *mini)
+void	init_mini(t_mini *mini)
 {
-	if (mini->input)
-	{
-		free(mini->input);
-		mini->input = NULL;
-	}
-	if (mini->tokens)
-		mini->tokens = NULL;
+	mini->args = NULL;
+	mini->exit_code = 0;
+	mini->lst_env = malloc(sizeof(t_env));
+	if (!mini->lst_env)
+		return ;
+	mini->tokens = NULL;
 }
