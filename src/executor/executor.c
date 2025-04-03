@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 17:18:58 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 11:24:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,17 +165,6 @@ void	executor(t_mini *mini)
 				prev_fd = current->pipe_fd[0];
 			}
 			current = current->next;
-			if (current != NULL && ft_strncmp(current->argv[0], "exit", 4) == 0
-				&& current->next == NULL)
-			{
-				current = mini->cmds;
-				while (ft_strncmp(current->argv[0], "exit", 4) != 0)
-				{
-					kill(current->pid, SIGTERM);
-					current = current->next;
-				}
-				ft_exit(mini);
-			}
 		}
 	}
 	while (wait(&status) > 0)

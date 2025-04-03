@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 19:00:54 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/01 16:57:34 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 11:28:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 void	free_input(t_mini *mini)
 {
-	if (mini->args)
-	{
-		free_array(mini->args);
-		mini->args = NULL;
-	}
 	if (mini->input)
 	{
 		free(mini->input);

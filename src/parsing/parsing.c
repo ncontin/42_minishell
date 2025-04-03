@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 19:10:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/03 12:03:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	parsing(t_mini *mini)
 	if (is_even_quotes(mini->args) == FALSE)
 		return ;
 	mini->tokens = create_list(mini->args);
+	free_array(mini->args);
 	if (mini->tokens == NULL)
 		return ;
 	assign_operator(mini->tokens);
@@ -35,7 +36,4 @@ void	parsing(t_mini *mini)
 		return ;
 	mini->cmds = split_pipes(mini->tokens, NULL, NULL);
 	free_token(mini->tokens);
-	//if (is_builtin(mini->args[0]))
-		//execute_builtin(mini);
-	//free_token(mini->tokens);
 }

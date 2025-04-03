@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 19:10:36 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/03 11:18:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void	free_all(t_mini *mini)
 {
 	if (mini->input)
 		free(mini->input);
-	if (mini->args)
-		free_array(mini->args);
 	if (mini->cmds)
 		free_commands(mini->cmds);
 	if (mini->lst_env)

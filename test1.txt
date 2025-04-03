@@ -1,4 +1,5 @@
     PID TTY          TIME CMD
-  69907 pts/2    00:00:00 zsh
-  80192 pts/2    00:00:00 minishell
-  80238 pts/2    00:00:00 ps
+  35366 pts/1    00:00:00 zsh
+  46450 pts/1    00:00:00 memcheck-amd64-
+  46453 pts/1    00:00:00 memcheck-amd64-
+  46454 pts/1    00:00:00 memcheck-amd64-
