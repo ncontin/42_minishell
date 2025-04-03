@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 11:05:15 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 13:17:01 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,23 +98,24 @@ void	ft_export(t_mini *mini)
 	t_env_node	*env_to_replace;
 
 	i = 0;
-	if (!mini->lst_env || !mini->args || !mini->args[0])
+	if (!mini->lst_env || !mini->cmds || !mini->cmds->argv[0])
 		return ;
 	mini->lst_env->sorted_envp_cp = copy_envp_list(mini->lst_env->envp_cp);
 	if (!mini->lst_env->sorted_envp_cp)
 		return ;
 	sort_env(mini->lst_env->sorted_envp_cp);
-	if (mini->args[0])
-		print_export(mini->lst_env->sorted_envp_cp, mini->args);
-	if (mini->args[0] && mini->args[1])
+	if (mini->cmds->argv[0])
+		print_export(mini->lst_env->sorted_envp_cp, mini->cmds->argv);
+	if (mini->cmds->argv[0] && mini->cmds->argv[1])
 	{
-		while (mini->args[++i])
+		while (mini->cmds->argv[++i])
 		{
-			env_to_replace = check_existing_env(mini->lst_env, mini->args[i]);
+			env_to_replace = check_existing_env(mini->lst_env,
+					mini->cmds->argv[i]);
 			if (env_to_replace != NULL)
-				replace_env(env_to_replace, mini->args[i]);
+				replace_env(env_to_replace, mini->cmds->argv[i]);
 			else
-				add_export_env(mini->lst_env, mini->args[i]);
+				add_export_env(mini->lst_env, mini->cmds->argv[i]);
 		}
 	}
 	free_stack(mini->lst_env->sorted_envp_cp);
