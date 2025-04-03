@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 13:18:37 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 15:18:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ long long	ft_atoll(const char *nptr, int *overflow)
 	}
 	return (result *= sign);
 }
-
 void	free_all(t_mini *mini)
 {
 	if (mini->input)
