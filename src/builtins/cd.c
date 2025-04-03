@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 12:46:30 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 15:29:34 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	update_pwd(t_env_node **env_stack)
 		current = current->next;
 	}
 }
-
 
 static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
 {
@@ -67,7 +66,7 @@ int	ft_cd(t_mini *mini)
 	char	*path;
 
 	pwd = getcwd(NULL, 0);
-	if (!mini->args[1] || ft_strncmp(mini->args[1], "~", 1) == 0)
+	if (!mini->cmds->argv[1] || ft_strncmp(mini->cmds->argv[1], "~", 1) == 0)
 	{
 		path = get_env_value(mini->lst_env->envp_cp, "HOME");
 		if (!path)
@@ -78,7 +77,7 @@ int	ft_cd(t_mini *mini)
 		}
 	}
 	else
-		path = mini->args[1];
+		path = mini->cmds->argv[1];
 	if (chdir(path) == -1)
 	{
 		perror("cd");
