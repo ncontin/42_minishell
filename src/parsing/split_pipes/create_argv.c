@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 17:42:04 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/31 11:53:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:27:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	create_argv(t_command *new, t_token *tokens)
 	nb_args = arg_count(tokens);
 	if (nb_args > 0)
 	{
-		new->argv = (char **)malloc(sizeof(char *) * (nb_args + 1));
+		new->argv = (char **)malloc(sizeof(char *) * (nb_args + 2));
 		if (new->argv == NULL)
 		{
 			free(tokens);

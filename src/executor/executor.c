@@ -6,107 +6,43 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 12:45:15 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 19:35:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	execute_builtin_parent(t_mini *mini, t_command *cmd)
+static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 {
-	int	exec;
-
-	exec = 0;
-	if (is_builtin(cmd->argv[0]))
-	{
-		execute_builtin(mini, cmd->argv);
-		exec = 1;
-	}
-	return (exec);
+	duplicate_pipes(current, prev_fd, mini);
+	if (current->operator != NONE)
+		handle_redirection(current, mini);
+	else if (current->next != NULL)
+		close(current->pipe_fd[0]);
+	execute_cmd(current, get_envp_array(mini->lst_env), mini);
 }
 
-static void	execute_cmd(t_command *current, char **envp, t_mini *mini)
+static void	parent_process(int *prev_fd, t_command *current)
 {
-	char	**unix_path;
-	char	*path;
-	int		i;
-
-	i = 0;
-	if (is_builtin(current->argv[0]))
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	if (current->next != NULL)
 	{
-		execute_builtin(mini, current->argv);
-		exit(EXIT_SUCCESS);
-	}
-	if (access(current->argv[0], X_OK) == 0)
-	{
-		if (execve(current->argv[0], current->argv, envp) == -1)
-		{
-			free_commands(mini->cmds);
-			exit(errno);
-		}
-	}
-	else
-	{
-		unix_path = get_unix_path(mini->lst_env->envp);
-		while (unix_path[i])
-		{
-			path = copy_command(unix_path[i], current->argv[0]);
-			if (access(path, X_OK) == 0)
-			{
-				if (execve(path, current->argv, envp) == -1)
-				{
-					free_commands(mini->cmds);
-					exit(errno);
-				}
-			}
-			free(path);
-			i++;
-		}
-		exit(127);
+		close(current->pipe_fd[1]);
+		*prev_fd = current->pipe_fd[0];
 	}
 }
 
-static void	handle_redirection(t_command *current, t_mini *mini)
+static t_bool	handle_start(t_command *current, t_mini *mini)
 {
-	int	file_fd;
-
-	if (current->operator== INPUT)
+	if (ft_strncmp(current->argv[0], "exit", 4) == 0 && current->next == NULL)
+		ft_exit(mini);
+	if (current && !current->next && is_builtin(current->argv[0]))
 	{
-		if (access(current->file, F_OK | R_OK) == 0)
-		{
-			file_fd = open(current->file, O_RDONLY);
-			if (file_fd == -1)
-			{
-				close_fd(current->pipe_fd);
-				free_commands(mini->cmds);
-				exit(errno);
-			}
-			if (dup2(file_fd, STDIN_FILENO) == -1)
-			{
-				close_fd(current->pipe_fd);
-				free_commands(mini->cmds);
-				exit(errno);
-			}
-			close(file_fd);
-		}
+		if (execute_builtin_parent(mini, current) == TRUE)
+			return (TRUE);
 	}
-	if (current->operator== OUTPUT)
-	{
-		file_fd = open(current->file, O_WRONLY | O_TRUNC | O_CREAT, 0664);
-		if (file_fd == -1)
-		{
-			close_fd(current->pipe_fd);
-			free_commands(mini->cmds);
-			exit(errno);
-		}
-		if (dup2(file_fd, STDOUT_FILENO) == -1)
-		{
-			close_fd(current->pipe_fd);
-			free_commands(mini->cmds);
-			exit(errno);
-		}
-		close(file_fd);
-	}
+	return (FALSE);
 }
 
 void	executor(t_mini *mini)
@@ -117,71 +53,22 @@ void	executor(t_mini *mini)
 
 	prev_fd = -1;
 	current = mini->cmds;
-	if (ft_strncmp(current->argv[0], "exit", 4) == 0 && current->next == NULL)
-		ft_exit(mini);
-	if (current && !current->next && is_builtin(current->argv[0]))
-	{
-		if (execute_builtin_parent(mini, current) == 1)
-			return ;
-	}
+	if (handle_start(current, mini) == TRUE)
+		return ;
 	while (current != NULL)
 	{
-		if (current->next != NULL) // check if there is a pipe
-		{
-			if (pipe(current->pipe_fd) == -1)
-			{
-				close_fd(current->pipe_fd);
-				free_commands(mini->cmds);
-				return ;
-			}
-		}
+		create_pipe(current, mini);
 		current->pid = fork();
 		if (current->pid < 0)
 		{
-			close_fd(current->pipe_fd);
-			free_commands(mini->cmds);
-			write(2, "fork error\n", 10);
-			return ;
+			error_pid(current, mini);
+			break ;
 		}
-		if (current->pid == 0) // child process
-		{
-			if (current->next != NULL) // if there is a pipe
-			{
-				if (dup2(current->pipe_fd[1], STDOUT_FILENO) == -1)
-				{
-					close_fd(current->pipe_fd);
-					free_commands(mini->cmds);
-					write(2, "dup2 error\n", 10);
-					return ;
-				}
-				close(current->pipe_fd[1]);
-			}
-			if (prev_fd != -1) // if there was a pipe
-			{
-				if (dup2(prev_fd, STDIN_FILENO) == -1)
-				{
-					free_commands(mini->cmds);
-					write(2, "dup2 error\n", 10);
-					return ;
-				}
-				close(prev_fd);
-			}
-			if (current->operator!= NONE) // check if there is a redirection
-				handle_redirection(current, mini);
-			else if (current->next != NULL)
-				// there is a pipe but no redirection
-				close(current->pipe_fd[0]);
-			execute_cmd(current, get_envp_array(mini->lst_env), mini);
-		}
+		else if (current->pid == 0)
+			child_process(current, &prev_fd, mini);
 		else if (current->pid > 0)
 		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			if (current->next != NULL)
-			{
-				close(current->pipe_fd[1]);
-				prev_fd = current->pipe_fd[0];
-			}
+			parent_process(&prev_fd, current);
 			current = current->next;
 		}
 	}

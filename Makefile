@@ -68,6 +68,9 @@ SRC_INIT =		src/init/envp_init.c\
 				src/init/mini_init.c\
 
 SRC_EXECUTOR =	src/executor/executor.c\
+				src/executor/handle_redirection.c\
+				src/executor/execute_commands.c\
+				src/executor/dup_create_pipe.c
 
 SRC_SIGNALS = 	src/signals/signals.c\
 
