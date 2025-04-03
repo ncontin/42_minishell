@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 11:57:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/03 23:12:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	free_commands(t_command *cmds)
 				current->argv[i] = NULL;
 				i++;
 			}
+			i = 0;
 		}
 		free(current->argv);
 		current->argv = NULL;

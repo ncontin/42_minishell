@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 15:26:03 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/30 17:53:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/03 22:48:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,22 @@ static t_bool	concat_args(t_token *token, t_token *following, char *str)
 	return (TRUE);
 }
 
-t_token	*merge_args(t_token *tokens)
+t_bool	merge_args(t_token **tokens)
 {
 	t_token	*current;
 
-	current = tokens;
+	current = *tokens;
 	while (current != NULL)
 	{
 		if (current->linked == TRUE)
 		{
 			if (concat_args(current, current->next, NULL) == FALSE)
 			{
-				free(tokens);
-				return (NULL);
+				free(*tokens);
+				return (FALSE);
 			}
 		}
 		current = current->next;
 	}
-	return (tokens);
+	return (TRUE);
 }

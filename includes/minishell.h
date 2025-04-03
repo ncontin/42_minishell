@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 19:23:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/03 23:02:00 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ void					get_path(char **envp, t_env *lst_env);
 char					**get_unix_path(char **envp);
 char					*copy_command(char *unix_path, char *commands);
 // merge_args.c
-t_token					*merge_args(t_token *tokens);
+t_bool					merge_args(t_token **tokens);
 // split_pipes.c
 t_command				*split_pipes(t_token *tokens, t_command *cmds,
 							t_command *new);

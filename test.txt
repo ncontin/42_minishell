@@ -1,4 +1,0 @@
-    PID TTY          TIME CMD
- 112615 pts/2    00:00:00 zsh
- 112767 pts/2    00:00:00 minishell
- 112813 pts/2    00:00:00 ps
