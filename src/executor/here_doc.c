@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 17:17:32 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:36:12 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ void	setup_here_doc(t_command *current, t_mini *mini)
 	char	*dest;
 	char	*limiter;
 
-	create_pipe(current, mini);
+	if (pipe(current->pipe_fd) == -1)
+		free_all(mini);
 	limiter = add_line_return(current->file, mini, current->pipe_fd);
 	dest = get_str(limiter, mini, NULL);
 	if (write(current->pipe_fd[1], dest, ft_strlen(dest)) == -1)
@@ -109,8 +110,7 @@ void	setup_here_doc(t_command *current, t_mini *mini)
 		free(dest);
 		free(limiter);
 	}
-	if ((dup2(current->pipe_fd[0], STDOUT_FILENO) == -1) ||
-		(dup2(current->pipe_fd[1], STDIN_FILENO) == -1))
+	if (dup2(current->pipe_fd[1], STDIN_FILENO) == -1)
 	{
 		write(2, "dup2 error\n", 11);
 		free_all(mini);
