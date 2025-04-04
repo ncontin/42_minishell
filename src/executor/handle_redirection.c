@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 19:03:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:38:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,6 @@ void	handle_redirection(t_command *current, t_mini *mini)
 		}
 		close(file_fd);
 	}
+	if (current->operator == HEREDOC)
+		setup_here_doc(current, mini);
 }
