@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 16:27:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 15:38:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_command	*split_pipes(t_token *tokens, t_command *cmds, t_command *new)
 		else if (current->operator == OUTPUT || current->operator == INPUT
 			|| current->operator == APPEND || current->operator == HEREDOC)
 			new->operator = current->operator;
-		else if (current->arg_type == FILENAME)
+		else if (current->arg_type == FILENAME || current->arg_type == HERE_DOC_LIMITER)
 			new->file = current->argument;
 		else if (current->operator == PIPE)
 			new = handle_pipe(new, &i);

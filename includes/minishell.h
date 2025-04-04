@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 11:08:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 15:19:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,4 +241,6 @@ void					execute_cmd(t_command *current, char **envp, t_mini *mini);
 //dup_create_pipe.c
 void					duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini);
 void					create_pipe(t_command *current, t_mini *mini);
+//here_doc.c
+void					setup_here_doc(t_command *current, t_mini *data);
 #endif

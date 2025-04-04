@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:23:49 by aroullea          #+#    #+#             */
-/*   Updated: 2024/11/15 16:22:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:02:02 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char *s1, char const *s2, size_t k, size_t l)
+char	*strings_join(char *s1, char const *s2, size_t k, size_t l)
 {
 	size_t	i;
 	char	*str;
@@ -50,7 +50,7 @@ char	*ft_strjoin(char *s1, char const *s2, size_t k, size_t l)
 	return (str);
 }
 
-size_t	ft_strlen(const char *s)
+/*size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
@@ -60,9 +60,9 @@ size_t	ft_strlen(const char *s)
 	while (s[i] != '\0')
 		i++;
 	return (i);
-}
+}*/
 
-void	ft_copy(size_t size, char *new_rem, char *end)
+void	ft_cpy(size_t size, char *new_rem, char *end)
 {
 	size_t	i;
 
@@ -96,7 +96,7 @@ char	*ft_small_buf(int fd, char *rem, int nb)
 		end = ft_strchr(buffer, '\n');
 		if ((tot + BUFFER_SIZE > 1024) || ((nb == 0) && (buffer[0])) || (end))
 		{
-			rem = ft_strjoin(rem, buffer, ft_strlen(rem), ft_strlen(buffer));
+			rem = strings_join(rem, buffer, ft_strlen(rem), ft_strlen(buffer));
 			tot = 0;
 			buffer[0] = '\0';
 		}

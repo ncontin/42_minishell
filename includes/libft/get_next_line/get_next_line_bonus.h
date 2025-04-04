@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:41:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/01/18 16:57:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:01:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ char	*ft_big_buf(int fd, char *buffer, char *rem);
 char	*check_buf_size(int fd, char *remaining);
 char	*ft_add_line(char *line);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strjoin(char *s1, char const *s2, size_t k, size_t l);
+char	*strings_join(char *s1, char const *s2, size_t k, size_t l);
 size_t	ft_strlen(const char *s);
 char	*ft_add_remain(char *remain);
-void	ft_copy(size_t size, char *new_rem, char *end);
+void	ft_cpy(size_t size, char *new_rem, char *end);
 char	*ft_small_buf(int fd, char *rem, int nb);
 
 #endif
