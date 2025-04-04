@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/04 11:34:56 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/04 16:50:42 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,18 @@ static int	check_digit(char *str)
 	return (0);
 }
 
-// static char	*del_quotes_and_spaces(char *str)
-// {
-// 	char	*quoteless;
-// 	char	*res;
+static char	*del_quotes_and_spaces(char *str)
+{
+	char	*quoteless;
+	char	*res;
 
-// 	if (!str)
-// 		return (NULL);
-// 	quoteless = ft_strtrim(str, "\"");
-// 	res = ft_strtrim(quoteless, " ");
-// 	free(quoteless);
-// 	return (res);
-// }
+	if (!str)
+		return (NULL);
+	quoteless = ft_strtrim(str, "\"");
+	res = ft_strtrim(quoteless, " ");
+	free(quoteless);
+	return (res);
+}
 
 static void	print_error(t_mini *mini, char *arg)
 {
@@ -77,9 +77,9 @@ void	ft_exit(t_mini *mini)
 
 	overflow = 0;
 	arg = NULL;
-	// if (mini->cmds && mini->cmds->argv[0] != NULL
-	// 	&& mini->cmds->argv[1] != NULL)
-	// 	arg = del_quotes_and_spaces(mini->cmds->argv[1]);
+	if (mini->cmds && mini->cmds->argv[0] != NULL
+		&& mini->cmds->argv[1] != NULL)
+		arg = del_quotes_and_spaces(mini->cmds->argv[1]);
 	if (check_overflow(arg, &overflow) == 1 || check_digit(arg) == 1)
 		print_error(mini, arg);
 	else if (mini->cmds->argv != NULL && mini->cmds->argv[0] && arg

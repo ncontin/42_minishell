@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 10:51:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:45:47 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc >= 2)
 	{
-		write(2,"Too many arguments \n", 20);
+		write(2, "Too many arguments \n", 20);
 		return (1);
 	}
 	(void)argv;
