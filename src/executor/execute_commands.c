@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 19:06:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 10:40:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 	if (is_builtin(current->argv[0]))
 	{
 		execute_builtin(mini, current->argv);
+		free_all(mini);
+		free_array(envp);
 		exit(EXIT_SUCCESS);
 	}
 	if (access(current->argv[0], X_OK) == 0)

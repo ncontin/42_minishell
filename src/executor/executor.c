@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 19:35:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 10:57:43 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 {
+	char	**envp;
+
 	duplicate_pipes(current, prev_fd, mini);
 	if (current->operator != NONE)
 		handle_redirection(current, mini);
 	else if (current->next != NULL)
 		close(current->pipe_fd[0]);
-	execute_cmd(current, get_envp_array(mini->lst_env), mini);
+	envp = get_envp_array(mini->lst_env);
+	execute_cmd(current, envp, mini);
 }
 
 static void	parent_process(int *prev_fd, t_command *current)

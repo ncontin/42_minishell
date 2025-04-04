@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 23:02:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 11:08:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void					print_export(t_env_node **sorted_envp_cp, char **args);
 t_env_node				**copy_envp_list(t_env_node **envp_cp);
 void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini);
-void					ft_export(t_mini *mini);
+void					ft_export(t_mini *mini, char **cmd_args);
 void					ft_unset(t_mini *mini);
 void					print_env(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
