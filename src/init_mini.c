@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:08:41 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/01 18:03:04 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 17:18:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,5 @@ void	init_mini(t_mini *mini)
 	if (!mini->lst_env)
 		return ;
 	mini->tokens = NULL;
+	mini->cmds = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 17:22:28 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/04 11:08:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void					print_export(t_env_node **sorted_envp_cp, char **args);
 t_env_node				**copy_envp_list(t_env_node **envp_cp);
 void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini);
-void					ft_export(t_mini *mini);
+void					ft_export(t_mini *mini, char **cmd_args);
 void					ft_unset(t_mini *mini);
 void					print_env(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
@@ -195,6 +195,7 @@ void					lst_add_new(t_token **head, t_token *new);
 void					assign_operator(t_token *tokens);
 // error.c
 void					error_msg(char *message, int error);
+void					error_pid(t_command *current, t_mini *mini);
 // even_quotes.c
 t_bool					is_even_quotes(char **tokens);
 // free.c
@@ -212,7 +213,7 @@ t_bool					is_valid_token(t_token *tokens);
 void					multi_str(char *args, int nb_strings, t_token **head,
 							int i);
 // parsing.c
-void					parsing(t_mini *mini);
+t_command 				*parsing(t_mini *mini);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
 // path.c
@@ -220,7 +221,7 @@ void					get_path(char **envp, t_env *lst_env);
 char					**get_unix_path(char **envp);
 char					*copy_command(char *unix_path, char *commands);
 // merge_args.c
-t_token					*merge_args(t_token *tokens);
+t_bool					merge_args(t_token **tokens);
 // split_pipes.c
 t_command				*split_pipes(t_token *tokens, t_command *cmds,
 							t_command *new);
@@ -232,5 +233,12 @@ void					create_argv(t_command *new, t_token *tokens);
 void					close_fd(int *pipe_fd);
 // executor.c
 void					executor(t_mini *mini);
-
+// handle_redirection.c
+void					handle_redirection(t_command *current, t_mini *mini);
+// execute_commands.c
+int						execute_builtin_parent(t_mini *mini, t_command *cmd);
+void					execute_cmd(t_command *current, char **envp, t_mini *mini);
+//dup_create_pipe.c
+void					duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini);
+void					create_pipe(t_command *current, t_mini *mini);
 #endif
