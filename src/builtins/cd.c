@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/04 11:44:59 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/04 12:14:04 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ int	ft_cd(t_mini *mini)
 	}
 	else
 	{
-		update_old_pwd(mini->lst_env->envp_cp, pwd);
+		printf("pwd: %s\n", pwd);
+		if (pwd)
+			update_old_pwd(mini->lst_env->envp_cp, pwd);
 		update_pwd(mini->lst_env->envp_cp);
 		return (0);
 	}

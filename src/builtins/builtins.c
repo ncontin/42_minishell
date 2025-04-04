@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:50:03 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/04 11:05:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 12:20:34 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,5 @@ void	execute_builtin(t_mini *mini, char **cmd_args)
 	else if (ft_strncmp(cmd_args[0], "export", 6) == 0)
 		ft_export(mini, cmd_args);
 	else if (ft_strncmp(cmd_args[0], "unset", 5) == 0)
-		ft_unset(mini);
+		ft_unset(mini, cmd_args);
 }
