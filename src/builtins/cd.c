@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/04 12:14:04 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/04 15:26:51 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	update_pwd(t_env_node **env_stack)
 	t_env_node	*current;
 
 	pwd = getcwd(NULL, 0);
+	printf("after pwd: %s\n", pwd);
 	current = *env_stack;
 	while (current)
 	{
@@ -25,22 +26,6 @@ static void	update_pwd(t_env_node **env_stack)
 		{
 			free(current->value);
 			current->value = pwd;
-		}
-		current = current->next;
-	}
-}
-
-static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
-{
-	t_env_node	*current;
-
-	current = *env_stack;
-	while (current)
-	{
-		if (strncmp(current->key, "OLDPWD", 6) == 0)
-		{
-			free(current->value);
-			current->value = old_pwd;
 		}
 		current = current->next;
 	}
@@ -59,6 +44,27 @@ static char	*get_env_value(t_env_node **envp_cp, char *key)
 	}
 	return (NULL);
 }
+static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
+{
+	t_env_node	*current;
+	char		*temp;
+
+	if (old_pwd == NULL)
+	{
+		temp = get_env_value(env_stack, "PWD");
+		old_pwd = ft_strdup(temp);
+	}
+	current = *env_stack;
+	while (current)
+	{
+		if (strncmp(current->key, "OLDPWD", 6) == 0)
+		{
+			free(current->value);
+			current->value = old_pwd;
+		}
+		current = current->next;
+	}
+}
 
 int	ft_cd(t_mini *mini)
 {
@@ -66,6 +72,7 @@ int	ft_cd(t_mini *mini)
 	char	*path;
 
 	pwd = getcwd(NULL, 0);
+	printf("before pwd: %s\n", pwd);
 	if (!mini->cmds->argv[1] || ft_strncmp(mini->cmds->argv[1], "~", 1) == 0)
 	{
 		path = get_env_value(mini->lst_env->envp_cp, "HOME");
@@ -80,15 +87,13 @@ int	ft_cd(t_mini *mini)
 		path = mini->cmds->argv[1];
 	if (chdir(path) == -1)
 	{
-		// free(pwd);
+		free(pwd);
 		perror("cd");
 		return (1);
 	}
 	else
 	{
-		printf("pwd: %s\n", pwd);
-		if (pwd)
-			update_old_pwd(mini->lst_env->envp_cp, pwd);
+		update_old_pwd(mini->lst_env->envp_cp, pwd);
 		update_pwd(mini->lst_env->envp_cp);
 		return (0);
 	}
