@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 12:48:57 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 15:41:15 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,18 @@ static int	check_digit(char *str)
 	return (0);
 }
 
-static char	*del_quotes_and_spaces(char *str)
-{
-	char	*quoteless;
-	char	*res;
+// static char	*del_quotes_and_spaces(char *str)
+// {
+// 	char	*quoteless;
+// 	char	*res;
 
-	if (!str)
-		return (NULL);
-	quoteless = ft_strtrim(str, "\"");
-	res = ft_strtrim(quoteless, " ");
-	free(quoteless);
-	return (res);
-}
+// 	if (!str)
+// 		return (NULL);
+// 	quoteless = ft_strtrim(str, "\"");
+// 	res = ft_strtrim(quoteless, " ");
+// 	free(quoteless);
+// 	return (res);
+// }
 
 static void	print_error(t_mini *mini, char *arg)
 {
@@ -74,19 +74,16 @@ void	ft_exit(t_mini *mini)
 {
 	int		overflow;
 	char	*arg;
-	int	exit_code;
 
-	exit_code = 0;
-	if (mini->cmds->argv[0] && mini->cmds->argv[1])
-	exit_code = ft_atoi(mini->cmds->argv[1]);
 	overflow = 0;
 	arg = NULL;
-
-	if (mini->cmds->argv != NULL && mini->cmds->argv[1] != NULL)
-		arg = del_quotes_and_spaces(mini->cmds->argv[1]);
+	// if (mini->cmds && mini->cmds->argv[0] != NULL
+	// 	&& mini->cmds->argv[1] != NULL)
+	// 	arg = del_quotes_and_spaces(mini->cmds->argv[1]);
 	if (check_overflow(arg, &overflow) == 1 || check_digit(arg) == 1)
 		print_error(mini, arg);
-	else if (mini->cmds->argv != NULL && mini->cmds->argv[0] && arg && mini->cmds->argv[2])
+	else if (mini->cmds->argv != NULL && mini->cmds->argv[0] && arg
+		&& mini->cmds->argv[2])
 	{
 		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
 		mini->exit_code = 1;
@@ -98,7 +95,8 @@ void	ft_exit(t_mini *mini)
 	else if (mini->cmds->argv != NULL && mini->cmds->argv[0])
 		ft_putstr_fd("exit\n", 2);
 	mini->exit_code = mini->exit_code % 256;
-	free(arg);
+	if (arg != NULL)
+		free(arg);
 	free_all(mini);
 	rl_clear_history();
 	exit(mini->exit_code);

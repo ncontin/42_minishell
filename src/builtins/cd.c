@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 15:29:34 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/03 16:32:38 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	ft_cd(t_mini *mini)
 		path = mini->cmds->argv[1];
 	if (chdir(path) == -1)
 	{
+		// free(pwd);
 		perror("cd");
 		return (1);
 	}
