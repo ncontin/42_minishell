@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 16:15:06 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/04 10:51:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_mini	mini;
 
-	(void)argc;
+	if (argc >= 2)
+	{
+		write(2,"Too many arguments \n", 20);
+		return (1);
+	}
 	(void)argv;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
