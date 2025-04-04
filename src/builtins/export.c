@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/04 11:10:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 11:44:44 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 	current = *lst_env->envp_cp;
 	while (current)
 	{
-		if (ft_strncmp(arg, current->key, ft_strlen(current->key)) == 0)
+		if (ft_strncmp(arg, current->key, ft_strlen(arg)) == 0)
 			return (current);
 		current = current->next;
 	}
@@ -110,8 +110,7 @@ void	ft_export(t_mini *mini, char **cmd_args)
 	{
 		while (cmd_args[++i])
 		{
-			env_to_replace = check_existing_env(mini->lst_env,
-					cmd_args[i]);
+			env_to_replace = check_existing_env(mini->lst_env, cmd_args[i]);
 			if (env_to_replace != NULL)
 				replace_env(env_to_replace, cmd_args[i]);
 			else
