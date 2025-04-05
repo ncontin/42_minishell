@@ -98,29 +98,35 @@ void	setup_here_doc(t_command *current, t_mini *mini)
 {
 	char	*dest;
 	char	*limiter;
+	int		tmp_fd;
 
-	if (pipe(current->pipe_fd) == -1)
+	tmp_fd = open("tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	if (tmp_fd == -1)
+	{
+		write(2, "here_doc : open error\n", 21);
 		free_all(mini);
+	}
 	limiter = add_line_return(current->file, mini, current->pipe_fd);
 	dest = get_str(limiter, mini, NULL);
-	if (write(current->pipe_fd[1], dest, ft_strlen(dest)) == -1)
+	write(tmp_fd, dest, ft_strlen(dest));
+	close(tmp_fd);
+	tmp_fd = open("tmp_file", O_RDONLY);
+	if (tmp_fd == -1)
 	{
-		write(2, "here_doc error\n", 15);
+		write(2, "here_doc : open error\n", 21);
 		free_all(mini);
 		free(dest);
 		free(limiter);
 	}
-	if (dup2(current->pipe_fd[1], STDIN_FILENO) == -1)
+	if (dup2(tmp_fd, STDIN_FILENO) == -1)
 	{
-		write(2, "dup2 error\n", 11);
+		write(2, "here_doc : dup2 error\n", 21);
 		free_all(mini);
 		free(dest);
 		free(limiter);
 	}
-	close(current->pipe_fd[0]);
-	close(current->pipe_fd[1]);
-	free_all(mini);
+	close(tmp_fd);
+	//free_all(mini);
 	free(dest);
 	free(limiter);
-	exit(EXIT_SUCCESS);
 }
