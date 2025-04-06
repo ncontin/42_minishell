@@ -12,40 +12,40 @@
 
 #include "minishell.h"
 
-void	handle_redirection(t_command *current, t_mini *mini)
+static void	append_operator(t_command *current, t_mini *mini)
 {
 	int	file_fd;
 
-	if (current->operator == INPUT)
+	file_fd = open(current->file, O_WRONLY | O_APPEND | O_CREAT, 0664);
+	if (file_fd == -1)
 	{
-		if (access(current->file, F_OK | R_OK) == 0)
-		{
-			file_fd = open(current->file, O_RDONLY);
-			if (file_fd == -1)
-			{
-				close_fd(current->pipe_fd);
-				free_commands(mini->cmds);
-				exit(errno);
-			}
-			if (dup2(file_fd, STDIN_FILENO) == -1)
-			{
-				close_fd(current->pipe_fd);
-				free_commands(mini->cmds);
-				exit(errno);
-			}
-			close(file_fd);
-		}
+		close_fd(current->pipe_fd);
+		free_commands(mini->cmds);
+		exit(errno);
 	}
-	if (current->operator == OUTPUT)
+	if (dup2(file_fd, STDOUT_FILENO) == -1)
 	{
-		file_fd = open(current->file, O_WRONLY | O_TRUNC | O_CREAT, 0664);
+		close_fd(current->pipe_fd);
+		free_commands(mini->cmds);
+		exit(errno);
+	}
+	close(file_fd);
+}
+
+static void	input_operator(t_command *current, t_mini *mini)
+{
+	int	file_fd;
+
+	if (access(current->file, F_OK | R_OK) == 0)
+	{
+		file_fd = open(current->file, O_RDONLY);
 		if (file_fd == -1)
 		{
 			close_fd(current->pipe_fd);
 			free_commands(mini->cmds);
 			exit(errno);
 		}
-		if (dup2(file_fd, STDOUT_FILENO) == -1)
+		if (dup2(file_fd, STDIN_FILENO) == -1)
 		{
 			close_fd(current->pipe_fd);
 			free_commands(mini->cmds);
@@ -53,6 +53,36 @@ void	handle_redirection(t_command *current, t_mini *mini)
 		}
 		close(file_fd);
 	}
+}
+
+static void	output_operator(t_command *current, t_mini *mini)
+{
+	int	file_fd;
+
+	file_fd = open(current->file, O_WRONLY | O_TRUNC | O_CREAT, 0664);
+	if (file_fd == -1)
+	{
+		close_fd(current->pipe_fd);
+		free_commands(mini->cmds);
+		exit(errno);
+	}
+	if (dup2(file_fd, STDOUT_FILENO) == -1)
+	{
+		close_fd(current->pipe_fd);
+		free_commands(mini->cmds);
+		exit(errno);
+	}
+	close(file_fd);
+}
+
+void	handle_redirection(t_command *current, t_mini *mini)
+{
+	if (current->operator == INPUT)
+		input_operator(current, mini);
+	if (current->operator == OUTPUT)
+		output_operator(current, mini);
+	if (current->operator == APPEND)
+		append_operator(current, mini);
 	if (current->operator == HEREDOC)
 		setup_here_doc(current, mini);
 }

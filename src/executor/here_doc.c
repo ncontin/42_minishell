@@ -54,10 +54,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 				break ;
 		new = join_strings(new, str, ft_strlen(new), ft_strlen(str));
 		if (new == NULL)
-		{
-			//data_free(fd, str, limiter, data);
-			//handle_error("\nHere doc : memory allocation failed", 1, NULL);
-		}
+			return (NULL);
 		if (str == NULL)
 		{
 			write(1, "\nHere doc : delimited by end of file\n", 37);
@@ -102,31 +99,18 @@ void	setup_here_doc(t_command *current, t_mini *mini)
 
 	tmp_fd = open("tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (tmp_fd == -1)
-	{
 		write(2, "here_doc : open error\n", 21);
-		free_all(mini);
-	}
 	limiter = add_line_return(current->file, mini, current->pipe_fd);
 	dest = get_str(limiter, mini, NULL);
 	write(tmp_fd, dest, ft_strlen(dest));
 	close(tmp_fd);
 	tmp_fd = open("tmp_file", O_RDONLY);
 	if (tmp_fd == -1)
-	{
 		write(2, "here_doc : open error\n", 21);
-		free_all(mini);
-		free(dest);
-		free(limiter);
-	}
 	if (dup2(tmp_fd, STDIN_FILENO) == -1)
-	{
 		write(2, "here_doc : dup2 error\n", 21);
-		free_all(mini);
-		free(dest);
-		free(limiter);
-	}
 	close(tmp_fd);
-	//free_all(mini);
+	unlink("tmp_file");
 	free(dest);
 	free(limiter);
 }

@@ -42,6 +42,8 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 		ft_exit(mini);
 	if (current && !current->next && is_builtin(current->argv[0]))
 	{
+		if (current->file != NULL)
+			return (FALSE);
 		if (execute_builtin_parent(mini, current) == TRUE)
 			return (TRUE);
 	}
