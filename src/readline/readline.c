@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 17:53:05 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/06 15:56:07 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	line_read(t_mini *mini)
 		{
 			if (isatty(STDIN_FILENO))
 				write(2, "exit\n", 6);
-			ft_exit(mini, mini->args);
+			ft_exit(mini, NULL);
 		}
 		if (ft_strlen(mini->input) > 0)
 		{
@@ -30,6 +30,7 @@ void	line_read(t_mini *mini)
 			if (mini->cmds != NULL)
 				executor(mini);
 			free_commands(mini->cmds);
+			mini->cmds = NULL;
 			free(mini->input);
 			mini->input = NULL;
 		}
