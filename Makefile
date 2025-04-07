@@ -54,12 +54,13 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/check_operator/is_valid_token.c\
 				src/parsing/check_operator/assign_type_argument.c\
 				src/parsing/check_operator/is_even_quotes.c\
-				src/parsing/check_operator/get_env_argument.c\
 				src/parsing/merge_args/merge_args.c\
 				src/parsing/split_pipes/str_and_operator.c\
 				src/parsing/split_pipes/split_pipes.c\
 				src/parsing/split_pipes/split_pipes_init.c\
 				src/parsing/parsing.c\
+				src/parsing/expander/get_env_argument.c\
+				src/parsing/expander/expander.c
 
 SRC_READLINE =  src/readline/readline.c\
 

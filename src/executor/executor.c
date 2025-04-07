@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 18:47:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:12:48 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 	{
 		if (ft_strncmp(current->argv[0], "exit", 4) == 0
 			&& current->next == NULL)
-			ft_exit(mini);
+			ft_exit(mini, NULL);
 		if (current && !current->next && is_builtin(current->argv[0]))
 		{
 			if (current->file != NULL)

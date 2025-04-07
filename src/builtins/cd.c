@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 19:33:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/06 15:58:20 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	update_pwd(t_env_node **env_stack)
 	t_env_node	*current;
 
 	pwd = getcwd(NULL, 0);
+	printf("after pwd: %s\n", pwd);
 	current = *env_stack;
 	while (current)
 	{
@@ -25,22 +26,6 @@ static void	update_pwd(t_env_node **env_stack)
 		{
 			free(current->value);
 			current->value = pwd;
-		}
-		current = current->next;
-	}
-}
-
-static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
-{
-	t_env_node	*current;
-
-	current = *env_stack;
-	while (current)
-	{
-		if (strncmp(current->key, "OLDPWD", 6) == 0)
-		{
-			free(current->value);
-			current->value = old_pwd;
 		}
 		current = current->next;
 	}
@@ -60,12 +45,31 @@ static char	*get_env_value(t_env_node **envp_cp, char *key)
 	return (NULL);
 }
 
-int	ft_cd(t_mini *mini)
+static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
 {
-	char	*pwd;
+	t_env_node	*current;
+	char		*temp;
+
+	if (old_pwd == NULL)
+	{
+		temp = get_env_value(env_stack, "PWD");
+		old_pwd = ft_strdup(temp);
+	}
+	current = *env_stack;
+	while (current)
+	{
+		if (strncmp(current->key, "OLDPWD", 6) == 0)
+		{
+			free(current->value);
+			current->value = old_pwd;
+		}
+		current = current->next;
+	}
+}
+static char	*handle_home(t_mini *mini, char *pwd)
+{
 	char	*path;
 
-	pwd = getcwd(NULL, 0);
 	if (!mini->cmds->argv[1] || ft_strncmp(mini->cmds->argv[1], "~", 1) == 0)
 	{
 		path = get_env_value(mini->lst_env->envp_cp, "HOME");
@@ -73,22 +77,32 @@ int	ft_cd(t_mini *mini)
 		{
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			free(pwd);
-			return (1);
+			return (NULL);
 		}
 	}
 	else
 		path = mini->cmds->argv[1];
+	return (path);
+}
+
+int	ft_cd(t_mini *mini)
+{
+	char	*pwd;
+	char	*path;
+
+	pwd = getcwd(NULL, 0);
+	path = handle_home(mini, pwd);
+	if (!path)
+		return (1);
 	if (chdir(path) == -1)
 	{
+		free(pwd);
 		perror("cd");
-		return (1);
+		mini->exit_code = 1;
+		return (mini->exit_code);
 	}
-	else
-	{
-		update_old_pwd(mini->lst_env->envp_cp, pwd);
-		update_pwd(mini->lst_env->envp_cp);
-		return (0);
-	}
+	update_old_pwd(mini->lst_env->envp_cp, pwd);
+	update_pwd(mini->lst_env->envp_cp);
 	free(pwd);
 	return (0);
 }

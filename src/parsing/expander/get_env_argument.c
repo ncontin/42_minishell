@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 15:39:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 16:16:00 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/06 11:17:12 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static void	replace_argument(t_token *tokens, t_mini *mini)
 	int			i;
 
 	i = 0;
-	current = *mini->lst_env->envp_cp;
 	arg = tokens->argument;
 	while (i < 2)
 	{
+		current = *mini->lst_env->envp_cp;
 		while (current)
 		{
 			if (ft_strncmp(arg + 1, current->key, ft_strlen(arg + 1)) == 0)

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 17:40:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:56:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ typedef struct s_mini
 	t_command			*cmds;
 }						t_mini;
 
+// expander
+void					expander(t_mini *mini);
 // init
 void					init_mini(t_mini *mini);
 void					init_envp(t_mini *mini);
@@ -157,13 +159,13 @@ t_env_node				**copy_envp_list(t_env_node **envp_cp);
 void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini);
 void					ft_export(t_mini *mini, char **cmd_args);
-void					ft_unset(t_mini *mini);
+void					ft_unset(t_mini *mini, char **cmd_args);
 void					print_env(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
 int						find_equal(char *str);
 char					*get_key(char *str);
 char					*get_value(char *str);
-void					ft_exit(t_mini *mini);
+void					ft_exit(t_mini *mini, char **cmd_args);
 void					free_all(t_mini *mini);
 long long				ft_atoll(const char *nptr, int *overflow);
 
@@ -215,7 +217,7 @@ t_bool					is_valid_token(t_token *tokens);
 void					multi_str(char *args, int nb_strings, t_token **head,
 							int i);
 // parsing.c
-t_command 				*parsing(t_mini *mini);
+t_command				*parsing(t_mini *mini);
 // wordlen.c
 int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
 // path.c
@@ -241,9 +243,11 @@ void					executor(t_mini *mini);
 void					handle_redirection(t_command *current, t_mini *mini);
 // execute_commands.c
 int						execute_builtin_parent(t_mini *mini, t_command *cmd);
-void					execute_cmd(t_command *current, char **envp, t_mini *mini);
-//dup_create_pipe.c
-void					duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini);
+void					execute_cmd(t_command *current, char **envp,
+							t_mini *mini);
+// dup_create_pipe.c
+void					duplicate_pipes(t_command *current, int *prev_fd,
+							t_mini *mini);
 void					create_pipe(t_command *current, t_mini *mini);
 //here_doc.c
 void					setup_here_doc(t_command *current, t_mini *data, int *j);

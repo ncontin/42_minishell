@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/04 11:10:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/06 16:49:34 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 	current = *lst_env->envp_cp;
 	while (current)
 	{
-		if (ft_strncmp(arg, current->key, ft_strlen(current->key)) == 0)
+		if (ft_strncmp(arg, current->key, ft_strlen(arg)) == 0)
 			return (current);
 		current = current->next;
 	}
@@ -91,6 +91,40 @@ static void	sort_env(t_env_node **envp_cp)
 		current = current->next;
 	}
 }
+static void	print_id_error(t_mini *mini, char **cmd_args)
+{
+	mini->exit_code = 1;
+	ft_putstr_fd("minishell: export: ", 2);
+	ft_putstr_fd(cmd_args[1], 2);
+	ft_putstr_fd(": not a valid identifier\n", 2);
+}
+static int	is_valid_identifier(t_mini *mini, char **cmd_args)
+{
+	int	i;
+	int	equal_index;
+
+	if (!cmd_args[1] || !cmd_args[1][0])
+		return (0);
+	if (!ft_isalpha(cmd_args[1][0]) && cmd_args[1][0] != '_')
+	{
+		print_id_error(mini, cmd_args);
+		return (0);
+	}
+	i = 1;
+	equal_index = find_equal(cmd_args[1]);
+	if (equal_index < 0)
+		equal_index = ft_strlen(cmd_args[1]);
+	while (i < equal_index)
+	{
+		if (!ft_isalnum(cmd_args[1][i]) && cmd_args[1][i] != '_')
+		{
+			print_id_error(mini, cmd_args);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
 
 void	ft_export(t_mini *mini, char **cmd_args)
 {
@@ -99,6 +133,8 @@ void	ft_export(t_mini *mini, char **cmd_args)
 
 	i = 0;
 	if (!mini->lst_env || !mini->cmds || !cmd_args[0])
+		return ;
+	if (cmd_args[1] && !is_valid_identifier(mini, cmd_args))
 		return ;
 	mini->lst_env->sorted_envp_cp = copy_envp_list(mini->lst_env->envp_cp);
 	if (!mini->lst_env->sorted_envp_cp)
@@ -110,8 +146,7 @@ void	ft_export(t_mini *mini, char **cmd_args)
 	{
 		while (cmd_args[++i])
 		{
-			env_to_replace = check_existing_env(mini->lst_env,
-					cmd_args[i]);
+			env_to_replace = check_existing_env(mini->lst_env, cmd_args[i]);
 			if (env_to_replace != NULL)
 				replace_env(env_to_replace, cmd_args[i]);
 			else

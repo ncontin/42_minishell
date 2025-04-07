@@ -1,38 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_commands.c                                    :+:      :+:    :+:   */
+/*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/07 18:57:11 by aroullea         ###   ########.fr       */
+/*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/06 15:32:27 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_commands(t_command *cmds)
+static char	*expand_special_vars(char *arg, t_mini *mini)
 {
-	t_command	*current;
-	int			i;
+	char	*result;
 
-	i = 0;
-	current = cmds;
-	while (current != NULL)
+	if (ft_strncmp(arg, "$?", 2) == 0)
 	{
-		cmds = cmds->next;
-		if (current->argv != NULL)
-			free_array(current->argv);
-		while (i < current->nb_operator)
+		result = ft_itoa(mini->exit_code);
+		free(arg);
+		return (result);
+	}
+	return (arg);
+}
+
+void	expander(t_mini *mini)
+{
+	int			i;
+	t_command	*current;
+
+	current = mini->cmds;
+	while (current)
+	{
+		i = 0;
+		while (current->argv && current->argv[i])
 		{
-			free(current->file[i]);
+			current->argv[i] = expand_special_vars(current->argv[i], mini);
 			i++;
 		}
-		i = 0;
-		free(current->file);
-		free(current->operator);
-		free(current);
-		current = cmds;
+		current = current->next;
 	}
 }
