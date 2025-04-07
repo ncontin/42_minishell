@@ -6,66 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/07 13:25:45 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 15:49:06 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static int	find_dollar(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$')
-// 			return (i);
-// 		i++;
-// 	}
-// 	return (-1);
-// }
-
-// static char	*expand_special_vars(char *arg, t_mini *mini)
-// {
-// 	int		index;
-// 	char	*result;
-// 	char	*full_string;
-// 	char	*partial_string;
-// 	int		len;
-// 	int		i;
-// 	char	*new_arg;
-
-// 	i = 0;
-// 	index = find_dollar(arg);
-// 	len = ft_strlen(arg);
-// 	if (ft_strncmp(arg, "$?", 2) == 0 && len == 2)
-// 	{
-// 		result = ft_itoa(mini->exit_code);
-// 		free(arg);
-// 		return (result);
-// 	}
-// 	else if (ft_strncmp(arg, "$?", 2) == 0 && len > 2)
-// 	{
-// 		while (arg[i + 1])
-// 		{
-// 			if (arg[i] == '$' && arg[i + 1] == '?')
-// 			{
-// 				result == *ft_itoa(mini->exit_code);
-// 			}
-// 			i++;
-// 		}
-// 		result = ft_itoa(mini->exit_code);
-// 		partial_string = ft_substr(arg, 2, ft_strlen(arg) - 2);
-// 		full_string = ft_strjoin(result, partial_string);
-// 		free(arg);
-// 		free(partial_string);
-// 		return (full_string);
-// 	}
-// 	return (arg);
-// }
-
-static char	*expand_special_vars(char *arg, t_mini *mini)
+static char	*expand_exit_status(char *arg, t_mini *mini)
 {
 	int		i;
 	char	*exit_str;
@@ -87,7 +34,7 @@ static char	*expand_special_vars(char *arg, t_mini *mini)
 	else if (ft_strncmp(arg, "$?", 2) == 0 && len > 2)
 	{
 		full_str = ft_strdup(arg);
-		while (arg[i + 1])
+		while (full_str[i])
 		{
 			if (full_str[i] == '$' && full_str[i + 1] == '?')
 			{
@@ -95,22 +42,82 @@ static char	*expand_special_vars(char *arg, t_mini *mini)
 				after_str = ft_substr(full_str, i + 2, ft_strlen(full_str) - i
 						- 2);
 				new_arg = ft_strjoin(before_str, exit_str);
-				temp = full_str;
-				full_str = ft_strjoin(new_arg, after_str);
-				free(temp);
+				temp = ft_strjoin(new_arg, after_str);
+				free(full_str);
+				full_str = temp;
 				free(before_str);
 				free(after_str);
 				free(new_arg);
-				i += ft_strlen(exit_str);
+				i += ft_strlen(exit_str) - 1;
 			}
-			else
-				i++;
+			i++;
 		}
 		free(exit_str);
 		free(arg);
 		return (full_str);
 	}
 	free(exit_str);
+	return (arg);
+}
+
+// static void	replace_argument(t_token *tokens, t_mini *mini)
+// {
+// 	t_env_node	*current;
+// 	char		*arg;
+// 	int			i;
+
+// 	i = 0;
+// 	arg = tokens->argument;
+// 	while (i < 2)
+// 	{
+// 		current = *mini->lst_env->envp_cp;
+// 		while (current)
+// 		{
+// 			if (ft_strncmp(arg + 1, current->key, ft_strlen(arg + 1)) == 0)
+// 			{
+// 				free(tokens->argument);
+// 				tokens->argument = ft_strdup(current->value);
+// 				return ;
+// 			}
+// 			current = current->next;
+// 		}
+// 		i++;
+// 	}
+// 	free(tokens->argument);
+// 	tokens->argument = NULL;
+// }
+
+// void	get_env_argument(t_mini *mini)
+// {
+// 	t_token	*tokens;
+
+// 	tokens = mini->tokens;
+// 	while (tokens != NULL)
+// 	{
+// 		if (tokens->arg_type == ENV_VAR && tokens->quotes != SINGLE)
+// 			replace_argument(tokens, mini);
+// 		tokens = tokens->next;
+// 	}
+// }
+
+// static char	*expand_shell_vars(char *arg, t_mini *mini)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (arg[i])
+// 	{
+// 		if (arg[i] == '$' && arg[i + ft_strlen(arg)])
+// 		{
+// 		}
+// 		i++;
+// 	}
+// }
+
+static char	*expand_special_vars(char *arg, t_mini *mini)
+{
+	arg = expand_exit_status(arg, mini);
+	// get_env_argument(mini);
 	return (arg);
 }
 

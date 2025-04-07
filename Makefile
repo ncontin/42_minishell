@@ -59,7 +59,6 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_pipes/split_pipes.c\
 				src/parsing/split_pipes/split_pipes_init.c\
 				src/parsing/parsing.c\
-				src/parsing/expander/get_env_argument.c\
 				src/parsing/expander/expander.c
 
 SRC_READLINE =  src/readline/readline.c\
