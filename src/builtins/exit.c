@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/07 14:57:03 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:12:23 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	ft_exit(t_mini *mini, char **cmd_args)
 	mini->exit_code = mini->exit_code % 256;
 	if (arg)
 		free(arg);
-	free_all(mini);
+	free_exit(mini);
 	rl_clear_history();
 	exit(mini->exit_code);
 }

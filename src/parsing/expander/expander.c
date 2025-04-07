@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/07 15:49:06 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 16:17:33 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,24 +100,38 @@ static char	*expand_exit_status(char *arg, t_mini *mini)
 // 	}
 // }
 
-// static char	*expand_shell_vars(char *arg, t_mini *mini)
-// {
-// 	int	i;
+static char	*expand_shell_vars(char *arg, t_mini *mini)
+{
+	int			i;
+	t_env_node	*current;
 
-// 	i = 0;
-// 	while (arg[i])
-// 	{
-// 		if (arg[i] == '$' && arg[i + ft_strlen(arg)])
-// 		{
-// 		}
-// 		i++;
-// 	}
-// }
+	i = 0;
+	current = *mini->lst_env->envp_cp;
+	while (arg[i])
+	{
+		if (arg[i] == '$')
+		{
+			i++;
+			while (current)
+			{
+				if (ft_strncmp(&arg[i], current->key, ft_strlen(&arg[i])) == 0)
+				{
+					free(arg);
+					arg = ft_strdup(current->value);
+					return (arg);
+				}
+				current = current->next;
+			}
+		}
+		i++;
+	}
+	return (arg);
+}
 
 static char	*expand_special_vars(char *arg, t_mini *mini)
 {
 	arg = expand_exit_status(arg, mini);
-	// get_env_argument(mini);
+	arg = expand_shell_vars(arg, mini);
 	return (arg);
 }
 

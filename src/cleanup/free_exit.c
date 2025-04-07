@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mini_init.c                                        :+:      :+:    :+:   */
+/*   free_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 16:08:41 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/07 16:48:55 by ncontin          ###   ########.fr       */
+/*   Created: 2025/04/07 17:11:35 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/07 17:11:46 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_mini(t_mini *mini)
+void	free_exit(t_mini *mini)
 {
-	mini->args = NULL;
-	mini->exit_code = 0;
-	mini->lst_env = malloc(sizeof(t_env));
-	if (!mini->lst_env)
-		return ;
-	mini->tokens = NULL;
-	mini->cmds = NULL;
+	if (mini->input)
+		free(mini->input);
+	if (mini->cmds)
+	{
+		free_commands(mini->cmds);
+		mini->cmds = NULL;
+	}
+	if (mini->lst_env)
+	{
+		if (mini->lst_env->envp_cp)
+			free_stack(mini->lst_env->envp_cp);
+		free_path(mini->lst_env);
+		free(mini->lst_env);
+		mini->lst_env = NULL;
+	}
 }

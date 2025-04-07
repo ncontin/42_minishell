@@ -32,6 +32,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 
 SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\
+				src/cleanup/free_exit.c\
 				src/cleanup/free_input.c\
 				src/cleanup/free_array.c\
 				src/cleanup/free_token.c\
