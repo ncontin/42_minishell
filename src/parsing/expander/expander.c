@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/06 15:32:27 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 11:49:31 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,23 @@
 static char	*expand_special_vars(char *arg, t_mini *mini)
 {
 	char	*result;
+	char	*full_string;
+	char	*partial_string;
 
-	if (ft_strncmp(arg, "$?", 2) == 0)
+	if (ft_strncmp(arg, "$?", 2) == 0 && !arg[2])
 	{
 		result = ft_itoa(mini->exit_code);
 		free(arg);
 		return (result);
+	}
+	else if (ft_strncmp(arg, "$?", 2) == 0 && arg[2])
+	{
+		result = ft_itoa(mini->exit_code);
+		partial_string = ft_substr(arg, 2, ft_strlen(arg) - 2);
+		full_string = ft_strjoin(result, partial_string);
+		free(arg);
+		free(partial_string);
+		return (full_string);
 	}
 	return (arg);
 }

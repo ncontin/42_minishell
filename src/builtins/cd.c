@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/06 15:58:20 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 11:10:06 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	update_pwd(t_env_node **env_stack)
 	t_env_node	*current;
 
 	pwd = getcwd(NULL, 0);
-	printf("after pwd: %s\n", pwd);
 	current = *env_stack;
 	while (current)
 	{
