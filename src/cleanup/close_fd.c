@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 14:42:16 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/02 10:07:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:31:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	close_fd(int *pipe_fd)
 {
 	if (pipe_fd != NULL)
 	{
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
+		if (pipe_fd[0] > 0)
+			close(pipe_fd[0]);
+		if (pipe_fd[1] > 0)
+			close(pipe_fd[1]);
 	}
 }

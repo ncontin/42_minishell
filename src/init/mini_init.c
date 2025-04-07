@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:08:41 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/06 11:10:37 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 18:58:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,5 @@ void	init_mini(t_mini *mini)
 		return ;
 	mini->tokens = NULL;
 	mini->cmds = NULL;
+	mini->error = 0;
 }

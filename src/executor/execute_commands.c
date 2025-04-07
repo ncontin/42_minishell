@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 10:40:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:48:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 	int		i;
 
 	i = 0;
+	if (current->argv == NULL)
+	{
+		free_all(mini);
+		free_array(envp);
+		exit (EXIT_SUCCESS);
+	}
 	if (is_builtin(current->argv[0]))
 	{
 		execute_builtin(mini, current->argv);
@@ -64,6 +70,11 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 			free(path);
 			i++;
 		}
-		exit(127);
+		write(2, current->argv[0], ft_strlen(current->argv[0]));
+		write(2, ": command not found\n", 20);
+		free_array(unix_path);
+		free_all(mini);
+		free_array(envp);
+		exit(errno);
 	}
 }

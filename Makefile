@@ -55,7 +55,7 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/check_operator/assign_type_argument.c\
 				src/parsing/check_operator/is_even_quotes.c\
 				src/parsing/merge_args/merge_args.c\
-				src/parsing/split_pipes/create_argv.c\
+				src/parsing/split_pipes/str_and_operator.c\
 				src/parsing/split_pipes/split_pipes.c\
 				src/parsing/split_pipes/split_pipes_init.c\
 				src/parsing/parsing.c\
@@ -71,7 +71,8 @@ SRC_INIT =		src/init/envp_init.c\
 SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/handle_redirection.c\
 				src/executor/execute_commands.c\
-				src/executor/dup_create_pipe.c
+				src/executor/dup_create_pipe.c\
+				src/executor/here_doc.c\
 
 SRC_SIGNALS = 	src/signals/signals.c\
 

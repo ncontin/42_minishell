@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 18:11:02 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 18:56:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,18 +118,20 @@ typedef struct s_token
 
 typedef struct s_command
 {
-	int					argc;
+	int					nb_operator;
 	int					pipe_fd[2];
 	char				**argv;
-	char				*file;
+	char				**file;
 	pid_t				pid;
-	t_operator			operator;
+	t_operator			*operator;
+	t_quotes			quotes;
 	struct s_command	*next;
 	struct s_command	*prev;
 }						t_command;
 
 typedef struct s_mini
 {
+	int					error;
 	char				*input;
 	char				**args;
 	long long int		exit_code;
@@ -225,12 +227,14 @@ char					*copy_command(char *unix_path, char *commands);
 // merge_args.c
 t_bool					merge_args(t_token **tokens);
 // split_pipes.c
-t_command				*split_pipes(t_token *tokens, t_command *cmds,
-							t_command *new);
+t_command				*split_pipe(t_token *tokens, t_command *cmds,
+							t_command *new, int i);
 // split_pipes_init.c
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 // create_argv.c
-void					create_argv(t_command *new, t_token *tokens);
+t_bool					str_and_operator(t_command *new, t_token *tokens);
+//create_operator.c
+void					create_operator(t_command *new, t_token *tokens);
 // close_fd.c
 void					close_fd(int *pipe_fd);
 // executor.c
@@ -245,4 +249,6 @@ void					execute_cmd(t_command *current, char **envp,
 void					duplicate_pipes(t_command *current, int *prev_fd,
 							t_mini *mini);
 void					create_pipe(t_command *current, t_mini *mini);
+//here_doc.c
+void					setup_here_doc(t_command *current, t_mini *data, int *j);
 #endif
