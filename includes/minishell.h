@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 18:56:33 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:28:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,12 @@ typedef struct s_command
 {
 	int					nb_operator;
 	int					pipe_fd[2];
+	t_quotes			*arg_quotes;
 	char				**argv;
 	char				**file;
 	pid_t				pid;
 	t_operator			*operator;
-	t_quotes			quotes;
+	t_quotes			limiter_quotes;
 	struct s_command	*next;
 	struct s_command	*prev;
 }						t_command;

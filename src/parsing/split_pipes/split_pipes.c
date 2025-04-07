@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 16:48:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:34:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static void	new_cmd(t_command **new, t_command **cmds, t_token *tokens)
 
 static void	handle_argument(t_command *new, t_token *current, int *i)
 {
-	new->argv[(*i)++] = current->argument;
+	new->argv[*i] = current->argument;
+	new->arg_quotes[(*i)++] = current->quotes;
 	new->argv[*i] = NULL;
 }
 
@@ -37,7 +38,7 @@ static void	handle_operator(t_command *new, t_token *current, int *j)
 {
 	new->operator[*j] = current->operator;
 	if (current->operator == HEREDOC)
-		new->quotes = current->quotes;
+		new->limiter_quotes = current->quotes;
 }
 
 static t_command	*handle_pipe(t_command *new, int *i, int *j)

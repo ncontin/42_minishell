@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 17:42:04 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 16:57:57 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:35:43 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,23 @@ static void	arg_count(t_token *tokens, int *count_arg, int *count_operator)
 			(*count_operator)++;
 		current = current->next;
 	}
+}
+
+static t_bool	alloc_argv(t_command *new, int nb_args, t_token *tokens)
+{
+	new->argv = (char **)malloc(sizeof(char *) * (nb_args + 2));
+	if (new->argv == NULL)
+	{
+		free(tokens);
+		return (FALSE);
+	}
+	new->arg_quotes = (t_quotes *)malloc(sizeof(t_quotes *) * (nb_args));
+	if (new->argv == NULL)
+	{
+		free(tokens);
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
 static t_bool	alloc_operator(t_command *new, int nb_operator, t_token *tokens)
@@ -58,12 +75,8 @@ t_bool	str_and_operator(t_command *new, t_token *tokens)
 	arg_count(tokens, &nb_args, &nb_operator);
 	if (nb_args > 0)
 	{
-		new->argv = (char **)malloc(sizeof(char *) * (nb_args + 2));
-		if (new->argv == NULL)
-		{
-			free(tokens);
+		if (alloc_argv(new, nb_args, tokens) == FALSE)
 			return (FALSE);
-		}
 	}
 	if (nb_operator > 0)
 	{
