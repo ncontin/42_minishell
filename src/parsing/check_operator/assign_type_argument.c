@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 12:12:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:14:27 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	assign_next(t_token *current)
 			|| current->prev->operator == INPUT
 			|| current->prev->operator == APPEND))
 		current->arg_type = FILENAME;
-	else if (!current->prev
+	else if (!current->prev || current->prev->arg_type != FILENAME
 		|| (current->prev && current->prev->operator == PIPE))
 		current->arg_type = COMMAND;
 	else if (current->argument != NULL && current->argument[0] == '-')

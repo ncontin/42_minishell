@@ -1,4 +1,10 @@
-test
-bidule
-truc
-chose
+en.subject.minishell.pdf
+includes
+Makefile
+minishell
+obj
+parsing.txt
+README.md
+result.txt
+src
+vsupp

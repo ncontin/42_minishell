@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 15:52:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 15:32:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:19:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ t_command	*create_cmd_list(t_command **cmds, t_token *tokens)
 	new_cmds->prev = NULL;
 	new_cmds->file = NULL;
 	cmd_add_new(cmds, new_cmds);
-	str_and_operator(new_cmds, tokens);
-	if (new_cmds->argv == NULL)
+	if (str_and_operator(new_cmds, tokens) == FALSE)
 	{
 		free_commands(*cmds);
 		return (NULL);
