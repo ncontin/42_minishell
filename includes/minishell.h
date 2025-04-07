@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 15:19:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 12:07:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ typedef struct s_command
 	char				**argv;
 	char				*file;
 	pid_t				pid;
-	t_operator			operator;
+	t_operator			*operator;
+	t_quotes			quotes;
 	struct s_command	*next;
 	struct s_command	*prev;
 }						t_command;
@@ -229,6 +230,8 @@ t_command				*split_pipes(t_token *tokens, t_command *cmds,
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 // create_argv.c
 void					create_argv(t_command *new, t_token *tokens);
+//create_operator.c
+void					create_operator(t_command *new, t_token *tokens);
 // close_fd.c
 void					close_fd(int *pipe_fd);
 // executor.c

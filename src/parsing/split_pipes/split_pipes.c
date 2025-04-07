@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/06 22:06:32 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 12:10:57 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,14 @@ static void	handle_argument(t_command *new, t_token *current, int *i)
 	new->argv[*i] = NULL;
 }
 
-static void	new_cmd(t_command **new, t_command **cmds, t_token *tokens, int *i)
+static void	handle_operator(t_command *new, t_token *current, int *j)
+{
+	new->operator[(*j)++] = current->operator;
+	if (current->operator == HEREDOC)
+		new->quotes = current->quotes;
+}
+
+static void	new_cmd(t_command **new, t_command **cmds, t_token *tokens)
 {
 	if (*new == NULL)
 	{
@@ -30,13 +37,13 @@ static void	new_cmd(t_command **new, t_command **cmds, t_token *tokens, int *i)
 			free_token(tokens);
 			return ;
 		}
-		*i = 0;
 	}
 }
 
-static t_command	*handle_pipe(t_command *new, int *i)
+static t_command	*handle_pipe(t_command *new, int *i, int *j)
 {
 	*i = 0;
+	*j = 0;
 	new = new->next;
 	return (new);
 }
@@ -45,8 +52,10 @@ t_command	*split_pipes(t_token *tokens, t_command *cmds, t_command *new)
 {
 	t_token		*current;
 	int			i;
+	int			j;
 
 	i = 0;
+	j = 0;
 	current = tokens;
 	while (current != NULL)
 	{
@@ -58,12 +67,12 @@ t_command	*split_pipes(t_token *tokens, t_command *cmds, t_command *new)
 			handle_argument(new, current, &i);
 		else if (current->operator == OUTPUT || current->operator == INPUT
 			|| current->operator == APPEND || current->operator == HEREDOC)
-			new->operator = current->operator;
+			handle_operator(new, current, &j);
 		else if (current->arg_type == FILENAME
 			|| current->arg_type == HERE_DOC_LIMITER)
 			new->file = current->argument;
 		else if (current->operator == PIPE)
-			new = handle_pipe(new, &i);
+			new = handle_pipe(new, &i, &j);
 		current = current->next;
 	}
 	return (cmds);
