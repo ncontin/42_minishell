@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 14:48:12 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:40:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct s_command
 
 typedef struct s_mini
 {
+	int					error;
 	char				*input;
 	char				**args;
 	long long int		exit_code;
@@ -224,8 +225,8 @@ char					*copy_command(char *unix_path, char *commands);
 // merge_args.c
 t_bool					merge_args(t_token **tokens);
 // split_pipes.c
-t_command				*split_pipes(t_token *tokens, t_command *cmds,
-							t_command *new);
+t_command				*split_pipe(t_token *tokens, t_command *cmds,
+							t_command *new, int i);
 // split_pipes_init.c
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 // create_argv.c

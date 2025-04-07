@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 16:38:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:48:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 
 	i = 0;
 	if (current->argv == NULL)
-	{	
+	{
 		free_all(mini);
 		free_array(envp);
 		exit (EXIT_SUCCESS);

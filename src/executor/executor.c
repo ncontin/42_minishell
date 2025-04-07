@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 16:23:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 18:47:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 {
 	if (current->argv != NULL && current->argv[0] != NULL)
 	{
-		if (ft_strncmp(current->argv[0], "exit", 4) == 0 && current->next == NULL)
+		if (ft_strncmp(current->argv[0], "exit", 4) == 0
+			&& current->next == NULL)
 			ft_exit(mini);
 		if (current && !current->next && is_builtin(current->argv[0]))
 		{
@@ -53,14 +54,42 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 	return (FALSE);
 }
 
+void	wait_children(t_mini *mini, int fork_count)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	while (i < fork_count)
+	{
+		if (waitpid(-1, &status, 0) == -1)
+		{
+			write(2, "waitpid error\n", 14);
+			mini->error = 1;
+		}
+		i++;
+	}
+	if (i > 0)
+	{
+		if (WIFEXITED(status))
+			mini->exit_code = WEXITSTATUS(status);
+	}
+	if (mini->error > 0)
+	{
+		free_all(mini);
+		exit(mini->error);
+	}
+}
+
 void	executor(t_mini *mini)
 {
 	t_command	*current;
-	int			status;
 	int			prev_fd;
+	int			fork_count;
 
-	prev_fd = -1;
 	current = mini->cmds;
+	prev_fd = -1;
+	fork_count = 0;
 	if (handle_start(current, mini) == TRUE)
 		return ;
 	while (current != NULL)
@@ -69,7 +98,8 @@ void	executor(t_mini *mini)
 		current->pid = fork();
 		if (current->pid < 0)
 		{
-			error_pid(current, mini);
+			mini->error = errno;
+			write(2, "fork error\n", 11);
 			break ;
 		}
 		else if (current->pid == 0)
@@ -79,9 +109,7 @@ void	executor(t_mini *mini)
 			parent_process(&prev_fd, current);
 			current = current->next;
 		}
+		fork_count++;
 	}
-	while (wait(&status) > 0)
-		;
-	if (WIFEXITED(status))
-		mini->exit_code = WEXITSTATUS(status);
+	wait_children(mini, fork_count);
 }

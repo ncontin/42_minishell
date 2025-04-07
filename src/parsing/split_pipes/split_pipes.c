@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 15:45:19 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:48:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,11 @@ static t_command	*handle_pipe(t_command *new, int *i, int *j)
 	return (new);
 }
 
-t_command	*split_pipes(t_token *tokens, t_command *cmds, t_command *new)
+t_command	*split_pipe(t_token *tokens, t_command *cmds, t_command *new, int i)
 {
 	t_token		*current;
-	int			i;
 	int			j;
 
-	i = 0;
 	j = 0;
 	current = tokens;
 	while (current != NULL)

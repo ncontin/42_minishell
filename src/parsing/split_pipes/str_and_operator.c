@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 17:42:04 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 15:01:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:57:57 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void arg_count(t_token *tokens, int *count_arg, int *count_operator)
+static void	arg_count(t_token *tokens, int *count_arg, int *count_operator)
 {
 	t_token		*current;
 	t_arg_type	type;
@@ -29,6 +29,23 @@ static void arg_count(t_token *tokens, int *count_arg, int *count_operator)
 			(*count_operator)++;
 		current = current->next;
 	}
+}
+
+static t_bool	alloc_operator(t_command *new, int nb_operator, t_token *tokens)
+{
+	new->operator = (t_operator *)malloc(sizeof(t_operator *) * nb_operator);
+	if (new->operator == NULL)
+	{
+		free(tokens);
+		return (FALSE);
+	}
+	new->file = (char **)malloc(sizeof(char *) * nb_operator);
+	if (new->operator == NULL)
+	{
+		free(tokens);
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
 t_bool	str_and_operator(t_command *new, t_token *tokens)
@@ -50,18 +67,8 @@ t_bool	str_and_operator(t_command *new, t_token *tokens)
 	}
 	if (nb_operator > 0)
 	{
-		new->operator = (t_operator *)malloc(sizeof(t_operator *) * nb_operator);
-		if (new->operator == NULL)
-		{
-			free(tokens);
+		if (alloc_operator(new, nb_operator, tokens) == FALSE)
 			return (FALSE);
-		}
-		new->file = (char **)malloc(sizeof(char *) * nb_operator);
-		if (new->operator == NULL)
-		{
-			free(tokens);
-			return (FALSE);
-		}
 	}
 	new->nb_operator = nb_operator;
 	return (TRUE);
