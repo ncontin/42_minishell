@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 17:36:12 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:39:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,18 @@ static char	*add_line_return(char *source, t_mini *mini, int *fd)
 	return (limiter);
 }
 
-void	setup_here_doc(t_command *current, t_mini *mini)
+void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 {
 	char	*dest;
 	char	*limiter;
 	int		tmp_fd;
+	int		i;
 
+	i = *j;
 	tmp_fd = open("tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (tmp_fd == -1)
 		write(2, "here_doc : open error\n", 21);
-	limiter = add_line_return(current->file, mini, current->pipe_fd);
+	limiter = add_line_return(current->file[i], mini, current->pipe_fd);
 	dest = get_str(limiter, mini, NULL);
 	write(tmp_fd, dest, ft_strlen(dest));
 	close(tmp_fd);

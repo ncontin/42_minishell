@@ -6,24 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 12:10:57 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 15:45:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	handle_argument(t_command *new, t_token *current, int *i)
-{
-	new->argv[(*i)++] = current->argument;
-	new->argv[*i] = NULL;
-}
-
-static void	handle_operator(t_command *new, t_token *current, int *j)
-{
-	new->operator[(*j)++] = current->operator;
-	if (current->operator == HEREDOC)
-		new->quotes = current->quotes;
-}
 
 static void	new_cmd(t_command **new, t_command **cmds, t_token *tokens)
 {
@@ -38,6 +25,19 @@ static void	new_cmd(t_command **new, t_command **cmds, t_token *tokens)
 			return ;
 		}
 	}
+}
+
+static void	handle_argument(t_command *new, t_token *current, int *i)
+{
+	new->argv[(*i)++] = current->argument;
+	new->argv[*i] = NULL;
+}
+
+static void	handle_operator(t_command *new, t_token *current, int *j)
+{
+	new->operator[*j] = current->operator;
+	if (current->operator == HEREDOC)
+		new->quotes = current->quotes;
 }
 
 static t_command	*handle_pipe(t_command *new, int *i, int *j)
@@ -59,7 +59,7 @@ t_command	*split_pipes(t_token *tokens, t_command *cmds, t_command *new)
 	current = tokens;
 	while (current != NULL)
 	{
-		new_cmd(&new, &cmds, tokens, &i);
+		new_cmd(&new, &cmds, current);
 		if (new == NULL)
 			return (NULL);
 		if (current->arg_type == COMMAND || current->arg_type == OPTION
@@ -70,7 +70,7 @@ t_command	*split_pipes(t_token *tokens, t_command *cmds, t_command *new)
 			handle_operator(new, current, &j);
 		else if (current->arg_type == FILENAME
 			|| current->arg_type == HERE_DOC_LIMITER)
-			new->file = current->argument;
+			new->file[j++] = current->argument;
 		else if (current->operator == PIPE)
 			new = handle_pipe(new, &i, &j);
 		current = current->next;

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 23:12:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/07 15:26:18 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,14 @@ void	free_commands(t_command *cmds)
 		}
 		free(current->argv);
 		current->argv = NULL;
+		while (i < current->nb_operator)
+		{
+			free(current->file[i]);
+			i++;
+		}
 		free(current->file);
+		i = 0;
+		free(current->operator);
 		free(current);
 		current = cmds;
 	}
