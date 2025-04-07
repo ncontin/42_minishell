@@ -1,1 +1,35 @@
-#1 leaks when using cmd minishell> asd asda sds asd
+#############################################
+Issue 1
+leaks when using cmd minishell> asd asda sds asd
+
+#############################################
+Issue 2
+minishell> echo a=$HOME
+a=/nfs/homes/ncontin
+minishell> exit
+exit
+==140314==
+==140314== HEAP SUMMARY:
+==140314==     in use at exit: 208,201 bytes in 223 blocks
+==140314==   total heap usage: 663 allocs, 440 frees, 235,259 bytes allocated
+==140314==
+==140314== 8 bytes in 1 blocks are definitely lost in loss record 3 of 64
+==140314==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==140314==    by 0x40468C: rm_quotes (create_list_utils.c:94)
+==140314==    by 0x40434E: new_list (create_list.c:28)
+==140314==    by 0x40428F: create_list (create_list.c:52)
+==140314==    by 0x405C6E: parsing (parsing.c:22)
+==140314==    by 0x406251: line_read (readline.c:32)
+==140314==    by 0x401343: main (main.c:30)
+==140314==
+==140314== LEAK SUMMARY:
+==140314==    definitely lost: 8 bytes in 1 blocks
+==140314==    indirectly lost: 0 bytes in 0 blocks
+==140314==      possibly lost: 0 bytes in 0 blocks
+==140314==    still reachable: 0 bytes in 0 blocks
+==140314==         suppressed: 208,193 bytes in 222 blocks
+==140314==
+==140314== For lists of detected and suppressed errors, rerun with: -s
+==140314== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+
+#######################################################

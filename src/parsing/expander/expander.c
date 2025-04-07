@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/07 16:17:33 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 18:16:34 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,9 @@ static char	*expand_shell_vars(char *arg, t_mini *mini)
 {
 	int			i;
 	t_env_node	*current;
+	char		*before_str;
+	char		*after_str;
+	char		*full_str;
 
 	i = 0;
 	current = *mini->lst_env->envp_cp;
@@ -111,14 +114,17 @@ static char	*expand_shell_vars(char *arg, t_mini *mini)
 	{
 		if (arg[i] == '$')
 		{
-			i++;
 			while (current)
 			{
-				if (ft_strncmp(&arg[i], current->key, ft_strlen(&arg[i])) == 0)
+				if (ft_strncmp(&arg[i + 1], current->key, ft_strlen(&arg[i
+							+ 1])) == 0)
 				{
-					free(arg);
-					arg = ft_strdup(current->value);
-					return (arg);
+					before_str = ft_substr(arg, 0, i);
+					after_str = ft_strdup(current->value);
+					full_str = ft_strjoin(before_str, after_str);
+					free(before_str);
+					free(after_str);
+					return (full_str);
 				}
 				current = current->next;
 			}
