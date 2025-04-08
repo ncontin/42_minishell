@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/07 18:16:34 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 19:05:41 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*expand_exit_status(char *arg, t_mini *mini)
 		free(arg);
 		return (exit_str);
 	}
-	else if (ft_strncmp(arg, "$?", 2) == 0 && len > 2)
+	else /* if (ft_strncmp(arg, "$?", 2) == 0 && len > 2) */
 	{
 		full_str = ft_strdup(arg);
 		while (full_str[i])
@@ -100,6 +100,15 @@ static char	*expand_exit_status(char *arg, t_mini *mini)
 // 	}
 // }
 
+// static int	find_len(char *arg)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (arg[i] || arg[i] == )
+// 	return (i);
+// }
+
 static char	*expand_shell_vars(char *arg, t_mini *mini)
 {
 	int			i;
@@ -107,13 +116,15 @@ static char	*expand_shell_vars(char *arg, t_mini *mini)
 	char		*before_str;
 	char		*after_str;
 	char		*full_str;
+	int			len;
 
+	len = 0;
 	i = 0;
-	current = *mini->lst_env->envp_cp;
 	while (arg[i])
 	{
-		if (arg[i] == '$')
+		if (arg[i] == '$' && arg[i + 1])
 		{
+			current = *mini->lst_env->envp_cp;
 			while (current)
 			{
 				if (ft_strncmp(&arg[i + 1], current->key, ft_strlen(&arg[i

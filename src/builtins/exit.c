@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/07 17:12:23 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 10:28:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_overflow(const char *nptr, int *overflow)
 	int	len;
 
 	if (!nptr)
-		return (0);
+		return (1);
 	len = ft_strlen(nptr);
 	if ((nptr[0] == '-' || nptr[0] == '+') && len > 20)
 		return (1);
@@ -34,8 +34,8 @@ static int	check_digit(char *str)
 {
 	int	i;
 
-	if (!str)
-		return (0);
+	if (!str || !*str)
+		return (1);
 	i = 0;
 	if ((str[i] == '-' && ft_isdigit(str[i + 1])) || (str[i] == '+'
 			&& ft_isdigit(str[i + 1])))

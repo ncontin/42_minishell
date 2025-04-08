@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/06 11:13:43 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 18:25:52 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_command	*parsing(t_mini *mini)
 	}
 	assign_type_argument(mini->tokens);
 	if (merge_args(&mini->tokens) == FALSE)
-	return (NULL);
+		return (NULL);
 	mini->cmds = split_pipes(mini->tokens, NULL, NULL);
 	// get_env_argument(mini);
 	expander(mini);
