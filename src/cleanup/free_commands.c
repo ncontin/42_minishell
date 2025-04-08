@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/04 17:49:25 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:20:14 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,16 @@ void	free_commands(t_command *cmds)
 	{
 		cmds = cmds->next;
 		if (current->argv != NULL)
+			free_array(current->argv);
+		while (i < current->nb_operator)
 		{
-			while (current->argv[i])
-			{
-				free(current->argv[i]);
-				current->argv[i] = NULL;
-				i++;
-			}
-			i = 0;
+			free(current->file[i]);
+			i++;
 		}
-		free(current->argv);
-		current->argv = NULL;
+		i = 0;
+		free(current->arg_quotes);
 		free(current->file);
+		free(current->operator);
 		free(current);
 		current = cmds;
 	}

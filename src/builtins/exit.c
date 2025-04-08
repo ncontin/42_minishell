@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 12:05:47 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:19:21 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,11 @@ static void	print_error(t_mini *mini, char *arg)
 }
 
 void	ft_exit(t_mini *mini, char **cmd_args)
+void	ft_exit(t_mini *mini, char **cmd_args)
 {
+	int			overflow;
+	char		*arg;
+	static int	exit_try = 0;
 	int			overflow;
 	char		*arg;
 	static int	exit_try = 0;

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:23:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/01/18 16:57:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/04 16:01:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_add_remain(char *remain)
 			free(remain);
 			return (NULL);
 		}
-		ft_copy(size, new_rem, end);
+		ft_cpy(size, new_rem, end);
 		free(remain);
 	}
 	else
@@ -81,7 +81,7 @@ char	*ft_big_buf(int fd, char *buffer, char *rem)
 		buffer[nb_read] = '\0';
 		if (nb_read == 0)
 			break ;
-		rem = ft_strjoin(rem, buffer, ft_strlen(rem), ft_strlen(buffer));
+		rem = strings_join(rem, buffer, ft_strlen(rem), ft_strlen(buffer));
 		if (rem == NULL)
 			break ;
 		end = ft_strchr(buffer, '\n');

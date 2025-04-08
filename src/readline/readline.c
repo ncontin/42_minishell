@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 17:07:18 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:24:16 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	line_read(t_mini *mini)
 			if (mini->cmds != NULL)
 				executor(mini);
 			free_commands(mini->cmds);
+			mini->cmds = NULL;
 			mini->cmds = NULL;
 			free(mini->input);
 			mini->input = NULL;

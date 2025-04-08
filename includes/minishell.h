@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 18:30:47 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:17:33 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@
 // # include <curses.h>   // tgetent, tputs, etc. (requires -lncurses)
 // # include <sys/ioctl.h> // ioctl
 # include <errno.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 typedef enum s_bool
 {
@@ -118,18 +120,21 @@ typedef struct s_token
 
 typedef struct s_command
 {
-	int					argc;
+	int					nb_operator;
 	int					pipe_fd[2];
+	t_quotes			*arg_quotes;
 	char				**argv;
-	char				*file;
+	char				**file;
 	pid_t				pid;
-	t_operator			operator;
+	t_operator			*operator;
+	t_quotes			limiter_quotes;
 	struct s_command	*next;
 	struct s_command	*prev;
 }						t_command;
 
 typedef struct s_mini
 {
+	int					error;
 	char				*input;
 	char				**args;
 	long long int		exit_code;
@@ -158,6 +163,7 @@ t_env_node				**copy_envp_list(t_env_node **envp_cp);
 void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini);
 void					ft_export(t_mini *mini, char **cmd_args);
+void					ft_unset(t_mini *mini, char **cmd_args);
 void					ft_unset(t_mini *mini, char **cmd_args);
 void					print_env(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
@@ -223,12 +229,14 @@ char					*copy_command(char *unix_path, char *commands);
 // merge_args.c
 t_bool					merge_args(t_token **tokens);
 // split_pipes.c
-t_command				*split_pipes(t_token *tokens, t_command *cmds,
-							t_command *new);
+t_command				*split_pipe(t_token *tokens, t_command *cmds,
+							t_command *new, int i);
 // split_pipes_init.c
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 // create_argv.c
-void					create_argv(t_command *new, t_token *tokens);
+t_bool					str_and_operator(t_command *new, t_token *tokens);
+//create_operator.c
+void					create_operator(t_command *new, t_token *tokens);
 // close_fd.c
 void					close_fd(int *pipe_fd);
 // executor.c
@@ -243,4 +251,6 @@ void					execute_cmd(t_command *current, char **envp,
 void					duplicate_pipes(t_command *current, int *prev_fd,
 							t_mini *mini);
 void					create_pipe(t_command *current, t_mini *mini);
+//here_doc.c
+void					setup_here_doc(t_command *current, t_mini *data, int *j);
 #endif
