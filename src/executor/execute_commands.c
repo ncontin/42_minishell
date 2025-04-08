@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/08 12:22:00 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 14:41:23 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 		write(2, ": command not found\n", 20);
 	}
 	free_array(unix_path);
-	free_all(mini);
+	free_exit(mini);
 	free_array(envp);
 	exit(127);
 }
@@ -61,22 +61,21 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 {
 	struct stat	statbuf;
-	char	*msg_err;
+	char		*msg_err;
 
 	if (current->argv == NULL) // > result.txt
 	{
-		free_all(mini);
+		free_exit(mini);
 		free_array(envp);
-		exit (EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	}
 	if (is_builtin(current->argv[0]))
 	{
 		execute_builtin(mini, current->argv);
-		free_all(mini);
+		free_exit(mini);
 		free_array(envp);
 		exit(EXIT_SUCCESS);
 	}
-
 	if (current->argv[0][0] == '.' && current->argv[0][1] == '/')
 	{
 		if (access(current->argv[0], X_OK) == 0)
@@ -97,7 +96,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 			write(STDERR_FILENO, ": ", 2);
 			write(STDERR_FILENO, msg_err, ft_strlen(msg_err));
 			write(STDERR_FILENO, "\n", 1);
-			exit (126);
+			exit(126);
 		}
 		find_path_and_exec(current, envp, mini);
 	}
