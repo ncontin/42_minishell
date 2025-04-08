@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 14:44:31 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 16:02:50 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_overflow(const char *nptr, int *overflow)
 	int	len;
 
 	if (!nptr)
-		return (1);
+		return (0);
 	len = ft_strlen(nptr);
 	if ((nptr[0] == '-' || nptr[0] == '+') && len > 20)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 15:03:59 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 16:35:47 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,28 @@ static char	*get_env_value(t_env_node **envp_cp, char *key)
 static void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
 {
 	t_env_node	*current;
-	char		*temp;
+	char		*old_pwd_copy;
 
 	if (old_pwd == NULL)
 	{
-		temp = get_env_value(env_stack, "PWD");
-		old_pwd = ft_strdup(temp);
+		old_pwd = get_env_value(env_stack, "PWD");
+		if (old_pwd == NULL)
+			return ;
 	}
+	old_pwd_copy = ft_strdup(old_pwd);
+	if (!old_pwd_copy)
+		return ;
 	current = *env_stack;
 	while (current)
 	{
 		if (strncmp(current->key, "OLDPWD", 6) == 0)
 		{
-			free(current->value);
-			current->value = old_pwd;
+			if (current->value)
+			{
+				free(current->value);
+				current->value = NULL;
+			}
+			current->value = old_pwd_copy;
 		}
 		current = current->next;
 	}
@@ -90,6 +98,11 @@ int	ft_cd(t_mini *mini)
 	char	*path;
 
 	pwd = getcwd(NULL, 0);
+	if (mini->cmds->argv[2])
+	{
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		mini->exit_code = 1;
+	}
 	path = handle_home(mini, pwd);
 	if (!path)
 		return (1);

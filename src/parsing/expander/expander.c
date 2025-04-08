@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 12:23:16 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 17:06:59 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,15 @@ static char	*expand_exit_status(char *arg, t_mini *mini)
 // 	}
 // }
 
-// static int	find_len(char *arg)
-// {
-// 	int	i;
+int	find_len(char *arg)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (arg[i] || arg[i] == )
-// 	return (i);
-// }
+	i = 0;
+	while (arg[i] && arg[i] != ' ')
+		i++;
+	return (i);
+}
 
 static char	*expand_shell_vars(char *arg, t_mini *mini)
 {
