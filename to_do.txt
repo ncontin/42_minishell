@@ -33,3 +33,4 @@ exit
 ==140314== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
 
 #######################################################
+infinite loop on minishell> cat <"./test_files/infile_big" | echo hi

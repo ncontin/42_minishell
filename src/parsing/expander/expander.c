@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 17:06:59 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 17:45:13 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static char	*expand_exit_status(char *arg, t_mini *mini)
 // 	}
 // }
 
-int	find_len(char *arg)
+static int	find_len(char *arg)
 {
 	int	i;
 
@@ -155,18 +155,15 @@ static char	*expand_special_vars(char *arg, t_mini *mini)
 
 void	expander(t_mini *mini)
 {
-	int			i;
-	t_command	*current;
+	t_token	*tokens;
 
-	current = mini->cmds;
-	while (current)
+	tokens = mini->tokens;
+	while (tokens != NULL)
 	{
-		i = 0;
-		while (current->argv && current->argv[i])
+		if (tokens->arg_type == ENV_VAR && tokens->quotes != SINGLE)
 		{
-			current->argv[i] = expand_special_vars(current->argv[i], mini);
-			i++;
+			tokens->argument = expand_special_vars(tokens->argument, mini);
 		}
-		current = current->next;
+		tokens = tokens->next;
 	}
 }
