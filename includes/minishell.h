@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 19:28:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/08 09:52:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@
 // # include <curses.h>   // tgetent, tputs, etc. (requires -lncurses)
 // # include <sys/ioctl.h> // ioctl
 # include <errno.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 typedef enum s_bool
 {
