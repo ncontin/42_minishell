@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/08 17:46:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/08 21:45:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,13 @@ static void	input_operator(t_command *current, t_mini *mini, int *j)
 		}
 		close(file_fd);
 	}
+	else
+	{
+		write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
+		write(STDERR_FILENO, ": No such file or directory\n", 28);
+		exit(EXIT_FAILURE);
+	}
+		
 }
 
 static void	output_operator(t_command *current, t_mini *mini, int *j)
