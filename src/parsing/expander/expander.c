@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 17:45:13 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 18:34:57 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,50 +100,57 @@ static char	*expand_exit_status(char *arg, t_mini *mini)
 // 	}
 // }
 
-static int	find_len(char *arg)
+static int	find_word_len(char *arg, int len)
 {
-	int	i;
-
-	i = 0;
-	while (arg[i] && arg[i] != ' ')
-		i++;
-	return (i);
+	len = 0;
+	while (arg[len] && arg[len] != ' ' && arg[len] != '\t' && arg[len] != '\n')
+		len++;
+	return (len);
 }
 
 static char	*expand_shell_vars(char *arg, t_mini *mini)
 {
-	int			i;
-	t_env_node	*current;
-	char		*before_str;
-	char		*after_str;
-	char		*full_str;
-	int			len;
+	int				i;
+	t_env_node		*current;
+	char			*before_str;
+	char			*after_str;
+	char			*full_str;
+	unsigned long	len;
+	char			*temp;
 
 	len = 0;
 	i = 0;
-	while (arg[i])
+	full_str = ft_strdup(arg);
+	while (full_str[i])
 	{
-		if (arg[i] == '$' && arg[i + 1])
+		if (full_str[i] == '$' && full_str[i + 1])
 		{
 			current = *mini->lst_env->envp_cp;
 			while (current)
 			{
-				if (ft_strncmp(&arg[i + 1], current->key, ft_strlen(&arg[i
-							+ 1])) == 0)
+				len = find_word_len(&full_str[i + 1], i);
+				if (ft_strncmp(&full_str[i + 1], current->key, len) == 0
+					&& ft_strlen(current->key) == len)
 				{
-					before_str = ft_substr(arg, 0, i);
-					after_str = ft_strdup(current->value);
-					full_str = ft_strjoin(before_str, after_str);
+					before_str = ft_substr(full_str, 0, i);
+					after_str = ft_substr(full_str, i + len + 1,
+							ft_strlen(full_str) - i - len - 1);
+					temp = ft_strjoin(before_str, current->value);
+					free(full_str);
+					full_str = ft_strjoin(temp, after_str);
 					free(before_str);
 					free(after_str);
-					return (full_str);
+					free(temp);
+					i += ft_strlen(current->value) - 1;
+					break ;
 				}
 				current = current->next;
 			}
 		}
 		i++;
 	}
-	return (arg);
+	free(arg);
+	return (full_str);
 }
 
 static char	*expand_special_vars(char *arg, t_mini *mini)
@@ -160,7 +167,7 @@ void	expander(t_mini *mini)
 	tokens = mini->tokens;
 	while (tokens != NULL)
 	{
-		if (tokens->arg_type == ENV_VAR && tokens->quotes != SINGLE)
+		if (/* tokens->arg_type == ENV_VAR &&  */ tokens->quotes != SINGLE)
 		{
 			tokens->argument = expand_special_vars(tokens->argument, mini);
 		}
