@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 10:28:26 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:05:47 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ static int	check_digit(char *str)
 {
 	int	i;
 
-	if (!str || !*str)
+	if (!str)
+		return (0); // NULL is valid (no argument provided)
+	if (!*str)
 		return (1);
 	i = 0;
 	if ((str[i] == '-' && ft_isdigit(str[i + 1])) || (str[i] == '+'
@@ -82,27 +84,46 @@ void	ft_exit(t_mini *mini, char **cmd_args)
 
 	overflow = 0;
 	arg = NULL;
-	if (cmd_args && cmd_args[0])
+	if (!exit_try)
+		ft_putstr_fd("exit\n", 1);
+	if (cmd_args && cmd_args[1])
 	{
-		if (!exit_try)
-			ft_putstr_fd("exit\n", 1);
-		if (cmd_args && cmd_args[1] && cmd_args[1][0] != '\0')
-			arg = del_spaces(cmd_args[1]);
-		if (check_overflow(arg, &overflow) == 1 || check_digit(arg) == 1)
-			print_error(mini, arg);
-		else if (arg && cmd_args[2])
+		// Handle empty string case before trimming
+		if (cmd_args[1][0] == '\0')
 		{
-			if (!exit_try)
-			{
-				ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-				exit_try = 1;
-				mini->exit_code = 1;
-				free(arg);
-				return ;
-			}
+			print_error(mini, "");
+			mini->exit_code = 2;
 		}
-		else if (arg)
-			mini->exit_code = ft_atoll(arg, &overflow);
+		else
+		{
+			arg = del_spaces(cmd_args[1]);
+			if (arg && !*arg)
+			{
+				print_error(mini, "");
+				free(arg);
+				arg = NULL;
+			}
+			else if (arg && (check_overflow(arg, &overflow) == 1
+					|| check_digit(arg) == 1))
+			{
+				print_error(mini, arg);
+				free(arg);
+				arg = NULL;
+			}
+			else if (arg && cmd_args[2])
+			{
+				if (!exit_try)
+				{
+					ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+					exit_try = 1;
+					mini->exit_code = 1;
+					free(arg);
+					return ;
+				}
+			}
+			else if (arg)
+				mini->exit_code = ft_atoll(arg, &overflow);
+		}
 	}
 	mini->exit_code = mini->exit_code % 256;
 	if (arg)
