@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 12:20:02 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/09 12:04:08 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 	while (current)
 	{
 		if (ft_strncmp(arg, current->key, ft_strlen(arg)) == 0)
-		if (ft_strncmp(arg, current->key, ft_strlen(arg)) == 0)
-			return (current);
+			if (ft_strncmp(arg, current->key, ft_strlen(arg)) == 0)
+				return (current);
 		current = current->next;
 	}
 	return (NULL);
