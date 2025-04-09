@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 13:21:36 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/09 14:10:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ typedef enum s_operator
 	NONE,
 	OUTPUT,
 	INPUT,
-	PIPE,
 	APPEND,
-	HEREDOC
+	HEREDOC,
+	PIPE
 }						t_operator;
 
 typedef enum s_arg_type

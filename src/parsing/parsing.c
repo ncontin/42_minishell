@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 11:41:27 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/09 14:17:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_command	*parsing(t_mini *mini)
 	assign_operator(mini->tokens);
 	if (is_valid_token(mini->tokens) == FALSE)
 	{
+		mini->exit_code = 2;
 		free_token(mini->tokens);
 		return (NULL);
 	}
