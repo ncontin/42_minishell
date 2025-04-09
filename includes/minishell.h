@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 11:39:33 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/09 13:21:36 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,8 +176,8 @@ void					ft_exit(t_mini *mini, char **cmd_args);
 long long				ft_atoll(const char *nptr, int *overflow);
 
 // signals
-void					sig_handler(int nbr);
-
+// void					sig_handler(int nbr);
+void					handle_signals(void);
 // free
 void					free_stack(t_env_node **my_envp);
 void					free_array(char **array);
