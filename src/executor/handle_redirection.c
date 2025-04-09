@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 09:41:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 22:26:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,32 @@ static void	append_operator(t_command *current, t_mini *mini, int *j)
 	int	i;
 
 	i = *j;
-	file_fd = open(current->file[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
-	if (file_fd == -1)
+
+	if (access(current->file[i], F_OK) != 0) 
 	{
-		close_fd(current->pipe_fd);
-		free_commands(mini->cmds);
-		exit(errno);
+		file_fd = open(current->file[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
+		if (file_fd == -1)
+		{
+			close_fd(current->pipe_fd);
+			free_commands(mini->cmds);
+			exit(errno);
+		}
+	}
+	else if (access(current->file[i], W_OK) == 0)
+	{
+		file_fd = open(current->file[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
+		if (file_fd == -1)
+		{
+			close_fd(current->pipe_fd);
+			free_commands(mini->cmds);
+			exit(errno);
+		}
+	}
+	else
+	{
+		write(STDERR_FILENO, current->argv[0], ft_strlen(current->argv[0]));
+		write(STDERR_FILENO, ": Permission denied\n", 20);
+		exit (EXIT_FAILURE);
 	}
 	if (dup2(file_fd, STDOUT_FILENO) == -1)
 	{
@@ -71,12 +91,31 @@ static void	output_operator(t_command *current, t_mini *mini, int *j)
 	int	i;
 
 	i = *j;
-	file_fd = open(current->file[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
-	if (file_fd == -1)
+	if (access(current->file[i], F_OK) != 0) 
 	{
-		close_fd(current->pipe_fd);
-		free_commands(mini->cmds);
-		exit(errno);
+		file_fd = open(current->file[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
+		if (file_fd == -1)
+		{
+			close_fd(current->pipe_fd);
+			free_commands(mini->cmds);
+			exit(errno);
+		}
+	}
+	else if (access(current->file[i], W_OK) == 0)
+	{
+		file_fd = open(current->file[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
+		if (file_fd == -1)
+		{
+			close_fd(current->pipe_fd);
+			free_commands(mini->cmds);
+			exit(errno);
+		}
+	}
+	else
+	{
+		write(STDERR_FILENO, current->argv[0], ft_strlen(current->argv[0]));
+		write(STDERR_FILENO, ": Permission denied\n", 20);
+		exit (EXIT_FAILURE);
 	}
 	if (dup2(file_fd, STDOUT_FILENO) == -1)
 	{
