@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 14:18:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 22:36:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 
 	i = 0;
 	unix_path = get_unix_path(mini->lst_env->envp);
+	if (unix_path == NULL)
+	{
+		free_exit(mini);
+		free_array(unix_path);
+		free_array(envp);
+		exit(errno);
+	}
 	while (unix_path[i])
 	{
 		path = copy_command(unix_path[i], current->argv[0]);
@@ -40,7 +47,9 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 		{
 			if (execve(path, current->argv, envp) == -1)
 			{
-				free_commands(mini->cmds);
+				free_exit(mini);
+				free_array(unix_path);
+				free_array(envp);
 				exit(errno);
 			}
 		}
@@ -52,7 +61,7 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 		write(2, current->argv[0], ft_strlen(current->argv[0]));
 		write(2, ": command not found\n", 20);
 	}
-	//free_exit(mini);
+	free_exit(mini);
 	free_array(unix_path);
 	free_array(envp);
 	exit(127);
@@ -81,9 +90,16 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 		{
 			if (lstat(current->argv[0], &statbuf) == 0)
 			{
+				if (S_ISDIR(statbuf.st_mode))
+				{
+					write(2, current->argv[0], ft_strlen(current->argv[0]));
+					write(2, " : is a repository\n", 19);
+					exit(126);
+				}
 				if (execve(current->argv[0], current->argv, envp) == -1)
 				{
 					free_array(envp);
+					free_exit(mini);
 					exit(errno);
 				}
 			}
@@ -92,6 +108,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 		{
 			write(STDERR_FILENO, current->argv[0], ft_strlen(current->argv[0]));
 			write(STDERR_FILENO, ": Permission denied\n", 20);
+			free_exit(mini);
 			free_array(envp);
 			exit (126);
 		}

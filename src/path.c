@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:57:25 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 16:47:27 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/09 22:37:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,16 @@ char	**get_unix_path(char **envp)
 			env_path = *envp + 5;
 			mypath = ft_split(env_path, ':');
 			if (mypath == NULL)
-				exit(EXIT_FAILURE);
+			{
+				write(2, "memory allocation failed in unix path", 37);
+				return (NULL);
+			}
 			break ;
 		}
 		envp++;
 	}
+	if (mypath == NULL)
+		write(2, "no PATH found \n",15);
 	return (mypath);
 }
 
@@ -59,7 +64,7 @@ char	*copy_command(char *unix_path, char *commands)
 	if (path == NULL)
 	{
 		write(2, "memory allocation failed in get path", 36);
-		exit(EXIT_FAILURE);
+		return (NULL);
 	}
 	ft_strlcpy(path, unix_path, len_path + 1);
 	ft_strlcat(path, "/", len_path + 2);
