@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_stack.c                                       :+:      :+:    :+:   */
+/*   free_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/25 17:43:11 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 16:03:22 by ncontin          ###   ########.fr       */
+/*   Created: 2025/04/07 17:11:35 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/08 12:21:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_stack(t_env_node **my_envp)
+void	free_exit(t_mini *mini)
 {
-	t_env_node	*current;
-	t_env_node	*next;
-
-	if (!my_envp)
-		return ;
-	current = *my_envp;
-	while (current)
+	if (mini->input)
+		free(mini->input);
+	if (mini->cmds)
 	{
-		next = current->next;
-		if (current->value)
-			free(current->value);
-		free(current->key);
-		free(current);
-		current = next;
+		free_commands(mini->cmds);
+		mini->cmds = NULL;
 	}
-	*my_envp = NULL;
-	free(my_envp);
+	if (mini->lst_env)
+	{
+		if (mini->lst_env->envp_cp)
+			free_stack(mini->lst_env->envp_cp);
+		free_path(mini->lst_env);
+		free(mini->lst_env);
+		mini->lst_env = NULL;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/06 15:32:27 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/09 11:24:30 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,20 @@
 
 static char	*expand_special_vars(char *arg, t_mini *mini)
 {
-	char	*result;
-
-	if (ft_strncmp(arg, "$?", 2) == 0)
-	{
-		result = ft_itoa(mini->exit_code);
-		free(arg);
-		return (result);
-	}
+	arg = expand_exit_status(arg, mini);
+	arg = expand_shell_vars(arg, mini);
 	return (arg);
 }
 
 void	expander(t_mini *mini)
 {
-	int			i;
-	t_command	*current;
+	t_token	*tokens;
 
-	current = mini->cmds;
-	while (current)
+	tokens = mini->tokens;
+	while (tokens != NULL)
 	{
-		i = 0;
-		while (current->argv && current->argv[i])
-		{
-			current->argv[i] = expand_special_vars(current->argv[i], mini);
-			i++;
-		}
-		current = current->next;
+		if (tokens->quotes != SINGLE)
+			tokens->argument = expand_special_vars(tokens->argument, mini);
+		tokens = tokens->next;
 	}
 }

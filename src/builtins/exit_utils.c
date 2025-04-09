@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/06 15:47:47 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 12:18:43 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,4 @@ long long	ft_atoll(const char *nptr, int *overflow)
 	}
 	return (result *= sign);
 }
-void	free_all(t_mini *mini)
-{
-	if (mini->input)
-		free(mini->input);
-	if (mini->cmds)
-	{
-		free_commands(mini->cmds);
-		mini->cmds = NULL;
-	}
-	if (mini->lst_env)
-	{
-		if (mini->lst_env->envp_cp)
-			free_stack(mini->lst_env->envp_cp);
-		free_path(mini->lst_env);
-		free(mini->lst_env);
-		mini->lst_env = NULL;
-	}
-}
+

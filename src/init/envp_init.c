@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 13:07:23 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/07 17:06:20 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void	init_envp(t_mini *mini)
 	// char	**envp_array;
 	// int		size;
 	// int		i;
+	if (!mini)
+		return ;
 	mini->lst_env->envp_cp = convert_envp_to_list(mini->lst_env->envp);
 	// size = find_list_size(mini->lst_env);
 	// envp_array = get_envp_array(mini->lst_env);

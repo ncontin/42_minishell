@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 19:44:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 11:39:33 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@
 // # include <curses.h>   // tgetent, tputs, etc. (requires -lncurses)
 // # include <sys/ioctl.h> // ioctl
 # include <errno.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 
 typedef enum s_bool
 {
@@ -141,8 +143,11 @@ typedef struct s_mini
 	t_command			*cmds;
 }						t_mini;
 
+void					free_exit(t_mini *mini);
 // expander
 void					expander(t_mini *mini);
+char					*expand_exit_status(char *arg, t_mini *mini);
+char					*expand_shell_vars(char *arg, t_mini *mini);
 // init
 void					init_mini(t_mini *mini);
 void					init_envp(t_mini *mini);
@@ -161,13 +166,13 @@ void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini);
 void					ft_export(t_mini *mini, char **cmd_args);
 void					ft_unset(t_mini *mini, char **cmd_args);
+void					ft_unset(t_mini *mini, char **cmd_args);
 void					print_env(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
 int						find_equal(char *str);
 char					*get_key(char *str);
 char					*get_value(char *str);
 void					ft_exit(t_mini *mini, char **cmd_args);
-void					free_all(t_mini *mini);
 long long				ft_atoll(const char *nptr, int *overflow);
 
 // signals
@@ -207,8 +212,6 @@ t_bool					is_even_quotes(char **tokens);
 void					free_token(t_token *token);
 void					msg_and_free(t_token *tokens);
 void					free_commands(t_command *cmds);
-// get_env_argument.c
-void					get_env_argument(t_mini *mini);
 // is_mutil_strings.c
 int						is_multi_strings(char *args, int i, t_bool dquotes,
 							t_bool squotes);
@@ -234,7 +237,7 @@ t_command				*split_pipe(t_token *tokens, t_command *cmds,
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 // create_argv.c
 t_bool					str_and_operator(t_command *new, t_token *tokens);
-//create_operator.c
+// create_operator.c
 void					create_operator(t_command *new, t_token *tokens);
 // close_fd.c
 void					close_fd(int *pipe_fd);
@@ -250,6 +253,7 @@ void					execute_cmd(t_command *current, char **envp,
 void					duplicate_pipes(t_command *current, int *prev_fd,
 							t_mini *mini);
 void					create_pipe(t_command *current, t_mini *mini);
-//here_doc.c
-void					setup_here_doc(t_command *current, t_mini *data, int *j);
+// here_doc.c
+void					setup_here_doc(t_command *current, t_mini *data,
+							int *j);
 #endif
