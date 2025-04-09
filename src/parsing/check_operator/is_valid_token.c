@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:38:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 07:56:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 09:40:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_bool	is_operator_followed_by_arg(t_token *tokens)
 	current = tokens;
 	while (current != NULL)
 	{
-		if ((current->operator > 0) && (current->next == NULL))
+		if ((current->operator > 0) && (current->next->argument == NULL))
 		{
 			current = current->next;
 			write(2, "syntax error near unexpected token `newline'\n", 45);

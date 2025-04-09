@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/25 17:48:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 08:42:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static t_token	*new_list(char *args, int nb_strings, t_token *head)
 	int		size;
 
 	current = NULL;
-	if (nb_strings == 1)
+	if (nb_strings == 0 || nb_strings == 1)
 	{
 		current = init_new_list(head);
 		if (current == NULL)
