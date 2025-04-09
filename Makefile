@@ -32,6 +32,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 
 SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\
+				src/cleanup/free_exit.c\
 				src/cleanup/free_input.c\
 				src/cleanup/free_array.c\
 				src/cleanup/free_token.c\
@@ -59,8 +60,11 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_pipes/split_pipes.c\
 				src/parsing/split_pipes/split_pipes_init.c\
 				src/parsing/parsing.c\
-				src/parsing/expander/get_env_argument.c\
-				src/parsing/expander/expander.c
+				$(SRC_EXPANDER)\
+
+SRC_EXPANDER = 	src/parsing/expander/expander.c\
+				src/parsing/expander/exit_status.c\
+				src/parsing/expander/shell_vars.c\
 
 SRC_READLINE =  src/readline/readline.c\
 

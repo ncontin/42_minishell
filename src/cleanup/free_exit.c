@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 14:17:09 by aroullea         ###   ########.fr       */
+/*   Created: 2025/04/07 17:11:35 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/08 12:21:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void	free_exit(t_mini *mini)
 {
-	t_mini	mini;
-
-	if (argc >= 2)
+	if (mini->input)
+		free(mini->input);
+	if (mini->cmds)
 	{
-		write(2, "Too many arguments \n", 20);
-		return (1);
+		free_commands(mini->cmds);
+		mini->cmds = NULL;
 	}
-	(void)argv;
-	init_mini(&mini);
-	get_path(envp, mini.lst_env);
-	init_envp(&mini);
-	line_read(&mini);
-	return (0);
+	if (mini->lst_env)
+	{
+		if (mini->lst_env->envp_cp)
+			free_stack(mini->lst_env->envp_cp);
+		free_path(mini->lst_env);
+		free(mini->lst_env);
+		mini->lst_env = NULL;
+	}
 }

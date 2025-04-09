@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/08 18:10:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:15:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,12 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 {
 	if (current->argv != NULL && current->argv[0] != NULL)
 	{
-		if (ft_strncmp(current->argv[0], "exit", 4) == 0
-			&& current->next == NULL)
-			ft_exit(mini, NULL);
+		// if (ft_strncmp(current->argv[0], "exit", 4) == 0
+		// 	&& current->next == NULL)
+		// {
+		// 	ft_exit(mini, mini->cmds->argv);
+		// 	return ;
+		// }
 		if (current && !current->next && is_builtin(current->argv[0]))
 		{
 			if (current->file != NULL)
@@ -77,7 +80,7 @@ void	wait_children(t_mini *mini, int fork_count)
 	}
 	if (mini->error > 0)
 	{
-		free_all(mini);
+		free_exit(mini);
 		exit(mini->error);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/08 18:12:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:18:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 		write(2, current->argv[0], ft_strlen(current->argv[0]));
 		write(2, ": command not found\n", 20);
 	}
+	//free_exit(mini);
 	free_array(unix_path);
 	free_array(envp);
-	free_all(mini);
 	exit(127);
 }
 
@@ -64,14 +64,14 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 
 	if (current->argv == NULL)
 	{
-		free_all(mini);
+		free_exit(mini);
 		free_array(envp);
-		exit (EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	}
 	if (is_builtin(current->argv[0]))
 	{
 		execute_builtin(mini, current->argv);
-		free_all(mini);
+		free_exit(mini);
 		free_array(envp);
 		exit(EXIT_SUCCESS);
 	}
@@ -83,7 +83,6 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 			{
 				if (execve(current->argv[0], current->argv, envp) == -1)
 				{
-					free_all(mini);
 					free_array(envp);
 					exit(errno);
 				}
@@ -93,7 +92,6 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 		{
 			write(STDERR_FILENO, current->argv[0], ft_strlen(current->argv[0]));
 			write(STDERR_FILENO, ": Permission denied\n", 20);
-			free_all(mini);
 			free_array(envp);
 			exit (126);
 		}

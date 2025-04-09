@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/06 15:53:59 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/08 16:02:50 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static int	check_digit(char *str)
 
 	if (!str)
 		return (0);
+	if (!*str)
+		return (1);
 	i = 0;
 	if ((str[i] == '-' && ft_isdigit(str[i + 1])) || (str[i] == '+'
 			&& ft_isdigit(str[i + 1])))
@@ -49,7 +51,7 @@ static int	check_digit(char *str)
 	return (0);
 }
 
-static char	*del_quotes_and_spaces(char *str)
+static char	*del_spaces(char *str)
 {
 	char	*res;
 	char	*temp;
@@ -87,7 +89,7 @@ void	ft_exit(t_mini *mini, char **cmd_args)
 		if (!exit_try)
 			ft_putstr_fd("exit\n", 1);
 		if (cmd_args && cmd_args[1] && cmd_args[1][0] != '\0')
-			arg = del_quotes_and_spaces(cmd_args[1]);
+			arg = del_spaces(cmd_args[1]);
 		if (check_overflow(arg, &overflow) == 1 || check_digit(arg) == 1)
 			print_error(mini, arg);
 		else if (arg && cmd_args[2])
@@ -107,7 +109,7 @@ void	ft_exit(t_mini *mini, char **cmd_args)
 	mini->exit_code = mini->exit_code % 256;
 	if (arg)
 		free(arg);
-	free_all(mini);
+	free_exit(mini);
 	rl_clear_history();
 	exit(mini->exit_code);
 }
