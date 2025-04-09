@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:38:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 09:40:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 10:42:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static t_bool	is_operator_followed_by_arg(t_token *tokens)
 
 t_bool	is_valid_token(t_token *tokens)
 {
-	if (tokens->operator == PIPE)
+	if (tokens->operator == PIPE || (tokens->operator > 0 && tokens->next == NULL))
 	{
 		write(2, "syntax error near unexpected token \"|\"\n", 40);
 		return (FALSE);
