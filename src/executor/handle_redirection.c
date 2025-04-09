@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/08 21:45:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/09 08:08:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static void	input_operator(t_command *current, t_mini *mini, int *j)
 		write(STDERR_FILENO, ": No such file or directory\n", 28);
 		exit(EXIT_FAILURE);
 	}
-		
 }
 
 static void	output_operator(t_command *current, t_mini *mini, int *j)
@@ -95,14 +94,19 @@ void	handle_redirection(t_command *current, t_mini *mini)
 	i = 0;
 	while (i < current->nb_operator)
 	{
+		if (current->operator[i] == HEREDOC)
+			setup_here_doc(current, mini, &i);
+		i++;
+	}
+	i = 0;
+	while (i < current->nb_operator)
+	{
 		if (current->operator[i] == INPUT)
 			input_operator(current, mini, &i);
 		else if (current->operator[i] == OUTPUT)
 			output_operator(current, mini, &i);
 		else if (current->operator[i] == APPEND)
 			append_operator(current, mini, &i);
-		else if (current->operator[i] == HEREDOC)
-			setup_here_doc(current, mini, &i);
 		i++;
 	}
 }
