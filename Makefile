@@ -60,7 +60,11 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_pipes/split_pipes.c\
 				src/parsing/split_pipes/split_pipes_init.c\
 				src/parsing/parsing.c\
-				src/parsing/expander/expander.c
+				$(SRC_EXPANDER)\
+
+SRC_EXPANDER = 	src/parsing/expander/expander.c\
+				src/parsing/expander/exit_status.c\
+				src/parsing/expander/shell_vars.c\
 
 SRC_READLINE =  src/readline/readline.c\
 

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/08 12:17:33 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/09 11:16:53 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@
 // # include <curses.h>   // tgetent, tputs, etc. (requires -lncurses)
 // # include <sys/ioctl.h> // ioctl
 # include <errno.h>
-# include <sys/types.h>
 # include <sys/stat.h>
+# include <sys/types.h>
 
 typedef enum s_bool
 {
@@ -146,6 +146,8 @@ typedef struct s_mini
 void					free_exit(t_mini *mini);
 // expander
 void					expander(t_mini *mini);
+char					*expand_exit_status(char *arg, t_mini *mini);
+char					*expand_shell_vars(char *arg, t_mini *mini);
 // init
 void					init_mini(t_mini *mini);
 void					init_envp(t_mini *mini);
@@ -235,7 +237,7 @@ t_command				*split_pipe(t_token *tokens, t_command *cmds,
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 // create_argv.c
 t_bool					str_and_operator(t_command *new, t_token *tokens);
-//create_operator.c
+// create_operator.c
 void					create_operator(t_command *new, t_token *tokens);
 // close_fd.c
 void					close_fd(int *pipe_fd);
@@ -251,6 +253,7 @@ void					execute_cmd(t_command *current, char **envp,
 void					duplicate_pipes(t_command *current, int *prev_fd,
 							t_mini *mini);
 void					create_pipe(t_command *current, t_mini *mini);
-//here_doc.c
-void					setup_here_doc(t_command *current, t_mini *data, int *j);
+// here_doc.c
+void					setup_here_doc(t_command *current, t_mini *data,
+							int *j);
 #endif
