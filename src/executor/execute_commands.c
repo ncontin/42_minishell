@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 11:18:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:37:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 {
 	struct stat	statbuf;
 	int			i;
-	char		*tmp;
+	int			j;
 
 	i = 0;
+	j = 0;
 	if (current->argv == NULL)
 	{
 		free_exit(mini);
@@ -99,18 +100,18 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 		exit (EXIT_SUCCESS);
 	else if (current->argv[0][0] == '$' && current->argv[1] != NULL)
 	{
-		while(current->argv[i] != NULL)
+		while (current->argv[i][0] == '$')
 		{
-			if (current->argv[i][0] == '$')
-			{
-				tmp = current->argv[0];
-				current->argv[0] = current->argv[i];
-				free(tmp);
-				i++;
-			}
-			else
-				break ;
+			free(current->argv[i]);
+			i++;
 		}
+		while (current->argv[i] != NULL)
+		{
+			current->argv[j] = current->argv[i];
+			j++;
+			i++;
+		}
+		current->argv[j] = current->argv[i];
 	}
 	if (is_builtin(current->argv[0]))
 	{
