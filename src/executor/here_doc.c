@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 14:39:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:42:32 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 
 	new = NULL;
 	(void)mini;
-	while (1)
+	while (!signal_received)
 	{
 		write(1, "> ", 2);
 		str = get_next_line(0);

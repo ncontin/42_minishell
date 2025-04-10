@@ -6,15 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:08:22 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/10 17:39:24 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/10 17:52:09 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <asm-generic/signal-defs.h>
 #include <bits/sigaction.h>
-
-volatile sig_atomic_t	signal_received = 0;
 
 static void	sig_handler(int signal)
 {

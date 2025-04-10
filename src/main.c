@@ -6,11 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 14:17:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:52:10 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	signal_received = 0;
 
 int	main(int argc, char **argv, char **envp)
 {

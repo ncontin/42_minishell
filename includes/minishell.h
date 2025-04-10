@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 09:46:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:49:35 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <limits.h>   // PATH_MAX, other constants
 # include <sys/stat.h> // stat, lstat, fstat
 # include <unistd.h>   // access, open, read, close, unlink, dup, dup2, pipe,
-						// getcwd, chdir, isatty, ttyname, fork, execve
+// getcwd, chdir, isatty, ttyname, fork, execve
 
 // Process & Signal Handling
 # include <fcntl.h>
@@ -47,6 +47,8 @@
 # include <errno.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+
+extern int				signal_received;
 
 typedef enum s_bool
 {
