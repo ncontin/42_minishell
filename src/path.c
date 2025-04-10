@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:57:25 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 22:37:22 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:07:15 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**get_unix_path(char **envp)
 		envp++;
 	}
 	if (mypath == NULL)
-		write(2, "no PATH found \n",15);
+		write(2, "no PATH found \n", 15);
 	return (mypath);
 }
 

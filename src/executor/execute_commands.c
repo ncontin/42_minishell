@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 15:54:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:19:24 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 		write(STDERR_FILENO, "Command \'\' not found\n", 21);
 		free_exit(mini);
 		free_array(envp);
-		exit (127);
+		exit(127);
 	}
 	if (current->argv[0][0] == '$' && current->argv[0][1] == '\0')
 	{
@@ -94,10 +94,10 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 		write(STDERR_FILENO, ": command not found\n", 21);
 		free_exit(mini);
 		free_array(envp);
-		exit (127);
+		exit(127);
 	}
 	else if (current->argv[0][0] == '$' && current->argv[1] == NULL)
-		exit (EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	else if (current->argv[0][0] == '$' && current->argv[1] != NULL)
 	{
 		while (current->argv[i][0] == '$')
@@ -120,7 +120,8 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 		free_array(envp);
 		exit(EXIT_SUCCESS);
 	}
-	if (current->argv[0][0] == '/' || (current->argv[0][0] == '.' && current->argv[0][1] == '/'))
+	if (current->argv[0][0] == '/' || (current->argv[0][0] == '.'
+			&& current->argv[0][1] == '/'))
 	{
 		if (access(current->argv[0], X_OK) == 0)
 		{
@@ -146,7 +147,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 			write(STDERR_FILENO, ": Permission denied\n", 20);
 			free_exit(mini);
 			free_array(envp);
-			exit (126);
+			exit(126);
 		}
 		find_path_and_exec(current, envp, mini);
 	}
