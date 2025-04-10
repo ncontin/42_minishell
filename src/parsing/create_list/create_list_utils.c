@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:24:52 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 10:22:15 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/10 15:55:20 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,6 @@ int	get_size(char *args)
 		i++;
 	}
 	return (size);
-}
-
-char	*handle_size_zero(void)
-{
-	char	*new_arg;
-
-	new_arg = (char *)malloc(sizeof(char) * (2));
-	if (new_arg == NULL)
-		return (NULL);
-	new_arg = ft_strdup("");
-	return (new_arg);
 }
 
 char	*rm_quotes(char *args, int size)
