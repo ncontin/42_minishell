@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 15:37:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:53:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,16 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 	}
 	if (current->argv[0][0] == '/' || (current->argv[0][0] == '.' && current->argv[0][1] == '/'))
 	{
+		if(access(current->argv[0], F_OK) != 0)
+		{
+			write(STDERR_FILENO, current->argv[0], ft_strlen(current->argv[0]));
+			write(STDERR_FILENO, ": ", 2);
+			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+			write(STDERR_FILENO, "\n", 1);
+			free_exit(mini);
+			free_array(envp);
+			exit (127);
+		}
 		if (access(current->argv[0], X_OK) == 0)
 		{
 			if (lstat(current->argv[0], &statbuf) == 0)
@@ -148,7 +158,14 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 			free_array(envp);
 			exit (126);
 		}
-		find_path_and_exec(current, envp, mini);
+		else
+		{
+			write(2, current->argv[0], ft_strlen(current->argv[0]));
+			write(2, ": command not found\n", 20);
+			free_exit(mini);
+			free_array(envp);
+			exit (127);
+		}
 	}
 	else
 		find_path_and_exec(current, envp, mini);
