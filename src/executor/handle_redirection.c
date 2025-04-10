@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 13:34:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:57:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,12 @@ static void	append_operator(t_command *current, t_mini *mini, int *j)
 		file_fd = open(current->file[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
 		if (file_fd == -1)
 		{
-			write(STDERR_FILENO, "open error\n", 11);
-			close_fd(current->pipe_fd);
+			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
+			write(STDERR_FILENO, ": ", 2);
+			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+			write(STDERR_FILENO, "\n", 1);
 			free_commands(mini->cmds);
-			exit(errno);
+			exit(EXIT_FAILURE);
 		}
 	}
 	else if (access(current->file[i], W_OK) == 0)
@@ -35,10 +37,12 @@ static void	append_operator(t_command *current, t_mini *mini, int *j)
 		file_fd = open(current->file[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
 		if (file_fd == -1)
 		{
-			write(STDERR_FILENO, "open error\n", 11);
-			close_fd(current->pipe_fd);
+			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
+			write(STDERR_FILENO, ": ", 2);
+			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+			write(STDERR_FILENO, "\n", 1);
 			free_commands(mini->cmds);
-			exit(errno);
+			exit(EXIT_FAILURE);
 		}
 	}
 	else
@@ -49,7 +53,6 @@ static void	append_operator(t_command *current, t_mini *mini, int *j)
 	}
 	if (dup2(file_fd, STDOUT_FILENO) == -1)
 	{
-		close_fd(current->pipe_fd);
 		free_commands(mini->cmds);
 		exit(errno);
 	}
@@ -67,14 +70,15 @@ static void	input_operator(t_command *current, t_mini *mini, int *j)
 		file_fd = open(current->file[i], O_RDONLY);
 		if (file_fd == -1)
 		{
-			write(STDERR_FILENO, "open error\n", 11);
-			close_fd(current->pipe_fd);
+			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
+			write(STDERR_FILENO, ": ", 2);
+			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+			write(STDERR_FILENO, "\n", 1);
 			free_commands(mini->cmds);
-			exit(errno);
+			exit(EXIT_FAILURE);
 		}
 		if (dup2(file_fd, STDIN_FILENO) == -1)
 		{
-			close_fd(current->pipe_fd);
 			free_commands(mini->cmds);
 			exit(errno);
 		}
@@ -99,10 +103,12 @@ static void	output_operator(t_command *current, t_mini *mini, int *j)
 		file_fd = open(current->file[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		if (file_fd == -1)
 		{
-			write(STDERR_FILENO, "open error\n", 11);
-			close_fd(current->pipe_fd);
+			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
+			write(STDERR_FILENO, ": ", 2);
+			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+			write(STDERR_FILENO, "\n", 1);
 			free_commands(mini->cmds);
-			exit(errno);
+			exit(EXIT_FAILURE);
 		}
 	}
 	else if (access(current->file[i], W_OK) == 0)
@@ -110,10 +116,12 @@ static void	output_operator(t_command *current, t_mini *mini, int *j)
 		file_fd = open(current->file[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		if (file_fd == -1)
 		{
-			write(STDERR_FILENO, "open error\n", 11);
-			close_fd(current->pipe_fd);
+			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
+			write(STDERR_FILENO, ": ", 2);
+			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+			write(STDERR_FILENO, "\n", 1);
 			free_commands(mini->cmds);
-			exit(errno);
+			exit(EXIT_FAILURE);
 		}
 	}
 	else
@@ -124,7 +132,6 @@ static void	output_operator(t_command *current, t_mini *mini, int *j)
 	}
 	if (dup2(file_fd, STDOUT_FILENO) == -1)
 	{
-		close_fd(current->pipe_fd);
 		free_commands(mini->cmds);
 		exit(errno);
 	}
