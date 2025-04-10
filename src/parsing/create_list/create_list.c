@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 15:16:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 09:46:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ static t_token	*new_list(char *args, int nb_strings, t_token *head)
 			return (NULL);
 		check_quotes(args, current);
 		size = get_size(args);
-		if (size == 0)
-			current->argument = handle_size_zero();
-		else
-			current->argument = rm_quotes(args, size);
+		current->argument = rm_quotes(args, size);
 		if (current->argument == NULL)
 		{
 			msg_and_free(head);

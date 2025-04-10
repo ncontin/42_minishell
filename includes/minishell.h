@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 15:19:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 09:46:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,6 @@ t_bool					is_operator(char const *c, int no_space, int *len);
 void					check_quotes(char *args, t_token *current);
 int						get_size(char *args);
 char					*rm_quotes(char *args, int size);
-char					*handle_size_zero(void);
 // count_args.c
 int						count_args(t_parser *parser);
 // create_list.c

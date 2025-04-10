@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 16:24:52 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 15:19:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 09:45:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,6 @@ int	get_size(char *args)
 		i++;
 	}
 	return (size);
-}
-
-char	*handle_size_zero(void)
-{
-	char	*new_arg;
-	
-	new_arg = (char *)malloc(sizeof(char) * (2));
-	if (new_arg == NULL)
-		return (NULL);
-	new_arg[0] = ' ';
-	new_arg[1] = '\0';
-	return (new_arg);
 }
 
 char	*rm_quotes(char *args, int size)

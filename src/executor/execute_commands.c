@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 17:14:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:18:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,47 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 {
 	struct stat	statbuf;
+	int			i;
+	char		*tmp;
 
+	i = 0;
 	if (current->argv == NULL)
 	{
 		free_exit(mini);
 		free_array(envp);
 		exit(EXIT_SUCCESS);
+	}
+	else if (current->argv[0][0] == '\0')
+	{
+		write(STDERR_FILENO, "Command \'\' not found\n", 21);
+		free_exit(mini);
+		free_array(envp);
+		exit (127);
+	}
+	if (current->argv[0][0] == '$' && current->argv[0][1] == '\0')
+	{
+		write(STDERR_FILENO, "$", 1);
+		write(STDERR_FILENO, ": command not found\n", 21);
+		free_exit(mini);
+		free_array(envp);
+		exit (127);
+	}
+	else if (current->argv[0][0] == '$' && current->argv[1] == NULL)
+		exit (EXIT_SUCCESS);
+	else if (current->argv[0][0] == '$' && current->argv[1] != NULL)
+	{
+		while(current->argv[i] != NULL)
+		{
+			if (current->argv[i][0] == '$')
+			{
+				tmp = current->argv[0];
+				current->argv[0] = current->argv[i];
+				free(tmp);
+				i++;
+			}
+			else
+				break ;
+		}
 	}
 	if (is_builtin(current->argv[0]))
 	{
@@ -93,7 +128,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 				if (S_ISDIR(statbuf.st_mode))
 				{
 					write(2, current->argv[0], ft_strlen(current->argv[0]));
-					write(2, " : is a repository\n", 19);
+					write(2, ": Is a directory\n", 17);
 					exit(126);
 				}
 				if (execve(current->argv[0], current->argv, envp) == -1)

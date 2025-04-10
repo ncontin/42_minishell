@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 14:15:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/10 09:37:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,20 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 
 void	wait_children(t_mini *mini, int fork_count)
 {
-	int	status;
-	int	i;
+	int			status;
+	t_command	*current;
+	int			i;
 
 	i = 0;
-	while (i < fork_count)
+	current = mini->cmds;
+	while ((current != NULL) || (i < fork_count))
 	{
-		if (waitpid(-1, &status, 0) == -1)
+		if (waitpid(current->pid, &status, 0) == -1)
 		{
 			write(2, "waitpid error\n", 14);
-			mini->error = 1;
+			mini->error = errno;
 		}
+		current = current->next;
 		i++;
 	}
 	if (i > 0)
