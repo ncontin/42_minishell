@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 14:39:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/11 09:27:00 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 		if (str != NULL)
 			if ((ft_strncmp(limiter, str, ft_strlen(limiter) + 1)) == 0)
 				break ;
+		if (mini->cmds->limiter_quotes == NO_QUOTES)
+			str = expand_shell_vars(str, mini);
 		new = join_strings(new, str, ft_strlen(new), ft_strlen(str));
 		if (new == NULL)
 			return (NULL);
