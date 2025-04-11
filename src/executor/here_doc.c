@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/07 14:39:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/11 15:44:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 	(void)mini;
 	while (1)
 	{
-		write(1, "> ", 2);
-		str = get_next_line(0);
+		str = readline(">");
 		if (str != NULL)
 			if ((ft_strncmp(limiter, str, ft_strlen(limiter) + 1)) == 0)
 				break ;
+		if (mini->cmds->limiter_quotes == NO_QUOTES)
+			str = expand_shell_vars(str, mini);
 		new = join_strings(new, str, ft_strlen(new), ft_strlen(str));
 		if (new == NULL)
 			return (NULL);
@@ -102,8 +103,8 @@ void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 	tmp_fd = open("tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (tmp_fd == -1)
 		write(2, "here_doc : open error\n", 21);
-	limiter = add_line_return(current->file[i], mini, current->pipe_fd);
-	dest = get_str(limiter, mini, NULL);
+	//limiter = add_line_return(current->file[i], mini, current->pipe_fd);
+	dest = get_str(current->file[i], mini, NULL);
 	write(tmp_fd, dest, ft_strlen(dest));
 	close(tmp_fd);
 	tmp_fd = open("tmp_file", O_RDONLY);
