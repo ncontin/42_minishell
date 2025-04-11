@@ -6,7 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/04/10 17:49:35 by ncontin          ###   ########.fr       */
+=======
+/*   Updated: 2025/04/11 10:08:16 by aroullea         ###   ########.fr       */
+>>>>>>> a9efb90ff2837502e2b7a32110fc8097498957f8
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +216,7 @@ void					error_pid(t_command *current, t_mini *mini);
 t_bool					is_even_quotes(char **tokens);
 // free.c
 void					free_token(t_token *token);
+void					free_token_argument(t_token *token);
 void					msg_and_free(t_token *tokens);
 void					free_commands(t_command *cmds);
 // is_mutil_strings.c
