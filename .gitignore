@@ -57,3 +57,4 @@ vsupp.txt
 .nfs*
 .vscode
 mpanic
+minishell_tester

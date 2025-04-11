@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/11 15:44:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/11 16:02:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 	return (new);
 }
 
-static char	*add_line_return(char *source, t_mini *mini, int *fd)
+/*static char	*add_line_return(char *source, t_mini *mini, int *fd)
 {
 	char	*limiter;
 	size_t	size;
@@ -90,12 +90,12 @@ static char	*add_line_return(char *source, t_mini *mini, int *fd)
 	limiter[i] = '\n';
 	limiter[i + 1] = '\0';
 	return (limiter);
-}
+}*/
 
 void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 {
 	char	*dest;
-	char	*limiter;
+	//char	*limiter;
 	int		tmp_fd;
 	int		i;
 
@@ -115,5 +115,5 @@ void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 	close(tmp_fd);
 	unlink("tmp_file");
 	free(dest);
-	free(limiter);
+	//free(limiter);
 }

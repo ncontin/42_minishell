@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arg_split.c                                        :+:      :+:    :+:   */
+/*   args_split.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/17 14:37:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/11 19:08:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static char	**sort(char const *s, char **str, int nb_args)
 	k = 0;
 	while (k < nb_args)
 	{
-		while (*s == ' ')
+		while (ft_isspace(*s) == 1)
 			s++;
 		len = wordlen(s, FALSE, FALSE);
 		str[k] = (char *) malloc(sizeof(char) * (len + 1));

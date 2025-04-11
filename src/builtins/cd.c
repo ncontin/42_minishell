@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 16:35:47 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/11 19:28:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,12 @@ static char	*handle_home(t_mini *mini, char *pwd)
 			free(pwd);
 			return (NULL);
 		}
+	}
+	else if (ft_strncmp(mini->cmds->argv[1], "--", ft_strlen("--")) == 0)
+	{
+		mini->cmds->argv[1][0] = '.';
+		mini->cmds->argv[1][1] = '.';
+		path = mini->cmds->argv[1];
 	}
 	else
 		path = mini->cmds->argv[1];

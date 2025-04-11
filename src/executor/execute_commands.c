@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 17:53:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/11 19:52:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,23 +95,6 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 		free_exit(mini);
 		free_array(envp);
 		exit (127);
-	}
-	else if (current->argv[0][0] == '$' && current->argv[1] == NULL)
-		exit (EXIT_SUCCESS);
-	else if (current->argv[0][0] == '$' && current->argv[1] != NULL)
-	{
-		while (current->argv[i][0] == '$')
-		{
-			free(current->argv[i]);
-			i++;
-		}
-		while (current->argv[i] != NULL)
-		{
-			current->argv[j] = current->argv[i];
-			j++;
-			i++;
-		}
-		current->argv[j] = current->argv[i];
 	}
 	if (is_builtin(current->argv[0]))
 	{
