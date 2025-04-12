@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:39:36 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 16:04:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:49:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*get_next_line(int fd);
 char	*get_next_line_bonus(int fd);
+int		ft_isspace(char c);
 
 //bonus
 

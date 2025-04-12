@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 14:03:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/11 11:20:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:54:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_bool	is_operator(char const *c, int no_space, int *len)
 		return (TRUE);
 	else if ((c[0] == '>') || (c[0] == '<') || (c[0] == '|'))
 		return (TRUE);
-	if ((no_space == 0) && (c[0] == ' '))
+	if ((no_space == 0) && (ft_isspace(c[0]) == 1))
 		return (TRUE);
 	return (FALSE);
 }
