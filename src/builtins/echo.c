@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/12 13:32:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/12 20:09:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	ft_echo(char **cmd_args, long long int *exit_code)
 
 	newline = 1;
 	i = 1;
-	while (cmd_args[i] && cmd_args[i][0] == '-' && cmd_args[i][1] == 'n')
+	while (cmd_args[i] && cmd_args[i][0] == '-' && cmd_args[i][1] == 'n'
+			&& cmd_args[i][0] == '\0')
 	{
 		newline = 0;
 		i++;

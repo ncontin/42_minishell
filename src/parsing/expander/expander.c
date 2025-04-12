@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/12 15:24:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/12 20:53:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,26 @@ void	expander(t_mini *mini)
 	while (tokens != NULL)
 	{
 		if (tokens->prev != NULL && tokens->prev->operator == HEREDOC)
-			;
+		{
+			current = tokens;
+			tokens = tokens->next;
+		}
 		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
 		{
 			tokens->argument = expand_special_vars(tokens->argument, mini);
 			if (tokens->argument == NULL)
 				replace_tokens(&tokens);
+			else
+			{
+				current = tokens;
+				tokens = tokens->next;
+			}
 		}
-		current = tokens;
-		tokens = tokens->next;
+		else
+		{
+			current = tokens;
+			tokens = tokens->next;
+		}
 	}
 	while (current->prev != NULL)
 		current = current->prev;
