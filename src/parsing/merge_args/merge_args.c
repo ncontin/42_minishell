@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 15:26:03 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/03 22:48:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/12 10:31:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ t_bool	merge_args(t_token **tokens)
 	current = *tokens;
 	while (current != NULL)
 	{
-		if (current->linked == TRUE)
+		if (current->linked == TRUE
+				&& (current->next != NULL && current->next->argument != NULL))
 		{
 			if (concat_args(current, current->next, NULL) == FALSE)
 			{

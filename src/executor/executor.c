@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 09:37:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/12 09:39:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,13 @@ static void	parent_process(int *prev_fd, t_command *current)
 
 static t_bool	handle_start(t_command *current, t_mini *mini)
 {
+	if (current->next == NULL && current->prev == NULL) 
+	{
+		if (current->argv != NULL && current->argv[0] == NULL)
+		return (TRUE);
+	}
 	if (current->argv != NULL && current->argv[0] != NULL)
 	{
-		// if (ft_strncmp(current->argv[0], "exit", 4) == 0
-		// 	&& current->next == NULL)
-		// {
-		// 	ft_exit(mini, mini->cmds->argv);
-		// 	return ;
-		// }
 		if (current && !current->next && is_builtin(current->argv[0]))
 		{
 			if (current->file != NULL)

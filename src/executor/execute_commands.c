@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/11 19:52:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/12 08:30:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,7 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 {
 	struct stat	statbuf;
-	int			i;
-	int			j;
-
-	i = 0;
-	j = 0;
+	
 	if (current->argv == NULL)
 	{
 		free_exit(mini);
