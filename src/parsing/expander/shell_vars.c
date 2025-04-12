@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/11 20:03:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/12 17:08:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	find_word_len(char *arg, int len)
 {
 	len = 0;
 	while (arg[len] && arg[len] != ' ' && arg[len] != '\t' && arg[len] != '$'
-		&& arg[len] != '\n' && arg[len] != '/')
+		&& arg[len] != '\n' && arg[len] != '/' && arg[len] != ':' && arg[len] != '\'')
 		len++;
 	return (len);
 }

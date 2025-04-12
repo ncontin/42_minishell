@@ -54,6 +54,7 @@ dkms.conf
 vsupp.txt
 
 # Others
+parsing.txt
 .nfs*
 .vscode
 mpanic

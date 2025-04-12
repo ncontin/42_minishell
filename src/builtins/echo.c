@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 16:55:59 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/02 17:02:08 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/12 13:32:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(char **cmd_args)
+void	ft_echo(char **cmd_args, long long int *exit_code)
 {
 	int	i;
 	int	newline;
@@ -33,4 +33,5 @@ void	ft_echo(char **cmd_args)
 	}
 	if (newline == 1)
 		printf("\n");
+	*exit_code = 0;
 }

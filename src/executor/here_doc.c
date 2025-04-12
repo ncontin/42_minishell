@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/12 12:04:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/12 13:23:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ static char	*join_strings(char *s1, char const *s2, size_t k, size_t l)
 static char	*get_str(char *limiter, t_mini *mini, char *str)
 {
 	char	*new;
+	t_bool	is_str_null;
 
+	is_str_null = FALSE;
 	new = NULL;
 	(void)mini;
 	while (!signal_received)
@@ -52,11 +54,14 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 			if ((ft_strncmp(limiter, str, ft_strlen(limiter) + 1)) == 0)
 				break ;
 		if (mini->cmds->limiter_quotes == NO_QUOTES)
+		{
+			is_str_null = (str == NULL);
 			str = expand_shell_vars(str, mini);
+		}
 		new = join_strings(new, str, ft_strlen(new), ft_strlen(str));
 		if (new == NULL)
 			return (NULL);
-		if (str == NULL)
+		if (is_str_null == TRUE)
 		{
 			write(1, "\nHere doc : delimited by end of file\n", 37);
 			return (new);
@@ -67,7 +72,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 	return (new);
 }
 
-/*static char	*add_line_return(char *source, t_mini *mini, int *fd)
+static char	*add_line_return(char *source, t_mini *mini, int *fd)
 {
 	char	*limiter;
 	size_t	size;
@@ -90,22 +95,22 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 	limiter[i] = '\n';
 	limiter[i + 1] = '\0';
 	return (limiter);
-}*/
+}
 
 void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 {
 	char	*dest;
-	//char	*limiter;
+	char	*str;
 	int		tmp_fd;
 	int		i;
 
 	i = *j;
+	dest = get_str(current->file[i], mini, NULL);
+	str = add_line_return(dest, mini, current->pipe_fd);
 	tmp_fd = open("tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (tmp_fd == -1)
 		write(2, "here_doc : open error\n", 21);
-	// limiter = add_line_return(current->file[i], mini, current->pipe_fd);
-	dest = get_str(current->file[i], mini, NULL);
-	write(tmp_fd, dest, ft_strlen(dest));
+	write(tmp_fd, str, ft_strlen(str));
 	close(tmp_fd);
 	tmp_fd = open("tmp_file", O_RDONLY);
 	if (tmp_fd == -1)
@@ -115,5 +120,5 @@ void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 	close(tmp_fd);
 	unlink("tmp_file");
 	free(dest);
-	//free(limiter);
+	free(str);
 }

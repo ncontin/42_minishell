@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:57:25 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/10 17:07:15 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/12 12:30:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ void	get_path(char **envp, t_env *lst_env)
 	mypath = NULL;
 	lst_env->envp = envp;
 	env_path = getenv("PATH");
-	mypath = ft_split(env_path, ':');
-	if (mypath == NULL)
-		error_msg("Path : memory allocation failed\n", 12);
+	if (env_path != NULL)
+	{
+		mypath = ft_split(env_path, ':');
+		if (mypath == NULL)
+			error_msg("Path : memory allocation failed\n", 12);
+	}
 	lst_env->path = mypath;
 }
 
