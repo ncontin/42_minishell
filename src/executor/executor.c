@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/12 09:39:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/13 20:15:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,20 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 	execute_cmd(current, envp, mini);
 }
 
+static void	parent_signal(int signo)
+{
+	if (signo == SIGINT)
+		printf("\n");
+}
+
 static void	parent_process(int *prev_fd, t_command *current)
 {
+	struct sigaction    sa;
+
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 	if (*prev_fd != -1)
 	{
 		close(*prev_fd);
@@ -42,7 +54,7 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 	if (current->next == NULL && current->prev == NULL) 
 	{
 		if (current->argv != NULL && current->argv[0] == NULL)
-		return (TRUE);
+			return (TRUE);
 	}
 	if (current->argv != NULL && current->argv[0] != NULL)
 	{
@@ -60,8 +72,10 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 void	wait_children(t_mini *mini, int fork_count)
 {
 	int			status;
-	t_command	*current;
 	int			i;
+	int			sig;
+	t_command	*current;
+	struct sigaction    sa;
 
 	i = 0;
 	current = mini->cmds;
@@ -74,9 +88,19 @@ void	wait_children(t_mini *mini, int fork_count)
 		}
 		current = current->next;
 		i++;
-	}
+	}		
+	sa.sa_handler = parent_signal;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;		
+	sigaction(SIGINT, &sa, NULL);
 	if (i > 0)
 	{
+		if (WIFSIGNALED(status))
+		{
+			sig = WTERMSIG(status);
+			if (sig == SIGINT)
+				write(1, "\n", 1);
+		}
 		if (WIFEXITED(status))
 			mini->exit_code = WEXITSTATUS(status);
 	}

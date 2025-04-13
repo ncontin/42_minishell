@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/11 09:32:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/13 16:19:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ static void	handle_operator(t_command *new, t_token *current, int *j)
 {
 	new->operator[*j] = current->operator;
 	if (current->operator == HEREDOC && current->next != NULL)
+	{
 		new->limiter_quotes = current->next->quotes;
+		new->check_here_doc = TRUE;
+	}
 }
 
 static t_command	*handle_pipe(t_command *new, int *i, int *j)
