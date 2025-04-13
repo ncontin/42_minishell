@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 13:37:11 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/13 19:43:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	line_read(t_mini *mini)
 	{
 		handle_signals();
 		mini->input = readline("minishell> ");
+		signal_received = 0;
 		if (!mini->input)
 		{
 			if (isatty(STDIN_FILENO))

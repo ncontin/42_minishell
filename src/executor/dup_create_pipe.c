@@ -6,25 +6,11 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:20:41 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 07:02:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/13 19:03:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_bool	check_here_doc(t_operator *operator, int nb_operator)
-{
-	int	i;
-
-	i = 0;
-	while (i < nb_operator)
-	{
-		if (operator[i] == HEREDOC)
-			return (TRUE);
-		i++;
-	}
-	return (FALSE);
-}
 
 void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 {
@@ -39,7 +25,7 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 		}
 		close(current->pipe_fd[1]);
 	}
-	if (check_here_doc(current->operator, current->nb_operator) == FALSE)
+	if (current->check_here_doc == FALSE)
 	{
 		if (*prev_fd != -1)
 		{

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/12 13:23:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/13 19:37:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,12 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 
 	is_str_null = FALSE;
 	new = NULL;
-	(void)mini;
 	while (!signal_received)
 	{
-		str = readline(">");
+		write(1, "> ", 2);
+		str = get_next_line(0); 
+		if (signal_received)
+			break ;
 		if (str != NULL)
 			if ((ft_strncmp(limiter, str, ft_strlen(limiter) + 1)) == 0)
 				break ;
@@ -67,6 +69,14 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 			return (new);
 		}
 		free(str);
+	}
+	if (signal_received)
+	{
+		if (new != NULL)
+			free(new);
+		free(limiter);
+		free_exit(mini);
+		exit (130);
 	}
 	free(str);
 	return (new);
@@ -99,14 +109,15 @@ static char	*add_line_return(char *source, t_mini *mini, int *fd)
 
 void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 {
-	char	*dest;
+	char	*limiter;
 	char	*str;
-	int		tmp_fd;
 	int		i;
+	int		tmp_fd;
 
 	i = *j;
-	dest = get_str(current->file[i], mini, NULL);
-	str = add_line_return(dest, mini, current->pipe_fd);
+	here_doc_signal();
+	limiter = add_line_return(current->file[i], mini, current->pipe_fd);
+	str = get_str(limiter, mini, NULL);
 	tmp_fd = open("tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (tmp_fd == -1)
 		write(2, "here_doc : open error\n", 21);
@@ -119,6 +130,6 @@ void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 		write(2, "here_doc : dup2 error\n", 21);
 	close(tmp_fd);
 	unlink("tmp_file");
-	free(dest);
+	free(limiter);
 	free(str);
 }

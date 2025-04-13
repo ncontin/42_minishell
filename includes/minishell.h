@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/12 13:33:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/13 19:53:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ typedef struct s_command
 	char				**argv;
 	char				**file;
 	pid_t				pid;
+	t_bool				check_here_doc;
 	t_operator			*operator;
 	t_quotes			limiter_quotes;
 	struct s_command	*next;
@@ -259,4 +260,6 @@ void					create_pipe(t_command *current, t_mini *mini);
 // here_doc.c
 void					setup_here_doc(t_command *current, t_mini *data,
 							int *j);
+// here_doc_signal.c
+void					here_doc_signal();
 #endif
