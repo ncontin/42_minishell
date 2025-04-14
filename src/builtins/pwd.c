@@ -6,33 +6,46 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:28:54 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/13 08:23:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:58:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-custom pwd function,
-it uses the getcwd function to get the current working directory
-char	*getcwd(char *__buf, size_t __size)
-if buf is NULL, an array is allocated with `malloc'; the array is SIZE
-bytes long, unless SIZE == 0, in which case it is as big as necessary.
-*/
-void	ft_pwd(long long int *exit_code)
+int	check_options(t_mini *mini)
+{
+	if (!mini->cmds->argv[1])
+		return (0);
+	if (mini->cmds->argv[1][0] == '-' && mini->cmds->argv[1][1])
+	{
+		ft_putstr_fd("minishell: pwd: ", 2);
+		ft_putstr_fd(mini->cmds->argv[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		ft_putstr_fd("pwd: usage: pwd\n", 2);
+		return (1);
+	}
+	return (0);
+}
+
+void	ft_pwd(t_mini *mini)
 {
 	char	*buffer;
 
+	if (check_options(mini) == 1)
+	{
+		mini->exit_code = 2;
+		return ;
+	}
 	buffer = getcwd(NULL, 0);
 	if (buffer)
 	{
-		*exit_code = 0;
+		mini->exit_code = 0;
 		printf("%s\n", buffer);
 		free(buffer);
 	}
 	else
 	{
-		*exit_code = 1;
+		mini->exit_code = 1;
 		perror("pwd");
 	}
 }
