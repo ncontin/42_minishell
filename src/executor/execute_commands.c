@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/12 12:03:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 18:16:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,11 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 	if (errno == ENOENT)
 	{
 		write(2, current->argv[0], ft_strlen(current->argv[0]));
-		write(2, ": command not found\n", 20);
+		if (ft_strncmp(current->argv[0], "EcHo",
+				ft_strlen(current->argv[0])) == 0)
+			ft_putstr_fd(": No such file or directory", 2);
+		else
+			write(2, ": command not found\n", 20);
 	}
 	free_exit(mini);
 	free_array(unix_path);
@@ -70,7 +74,7 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 {
 	struct stat	statbuf;
-	
+
 	if (current->argv == NULL)
 	{
 		free_exit(mini);
@@ -102,7 +106,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 	if (current->argv[0][0] == '/' || (current->argv[0][0] == '.'
 			&& current->argv[0][1] == '/'))
 	{
-		if(access(current->argv[0], F_OK) != 0)
+		if (access(current->argv[0], F_OK) != 0)
 		{
 			write(STDERR_FILENO, current->argv[0], ft_strlen(current->argv[0]));
 			write(STDERR_FILENO, ": ", 2);
@@ -110,7 +114,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 			write(STDERR_FILENO, "\n", 1);
 			free_exit(mini);
 			free_array(envp);
-			exit (127);
+			exit(127);
 		}
 		if (access(current->argv[0], X_OK) == 0)
 		{
@@ -144,7 +148,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 			write(2, ": command not found\n", 20);
 			free_exit(mini);
 			free_array(envp);
-			exit (127);
+			exit(127);
 		}
 	}
 	else
