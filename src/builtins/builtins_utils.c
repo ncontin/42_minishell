@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/13 08:22:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:30:13 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ char	*get_key(char *str)
 	int		equal_index;
 
 	equal_index = find_equal(str);
+	if (str[equal_index - 1] && str[equal_index - 1] == '+')
+		equal_index -= 1;
 	key = ft_substr(str, 0, equal_index);
 	return (key);
 }

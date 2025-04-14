@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 11:18:44 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/14 11:28:57 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@
 // getcwd, chdir, isatty, ttyname, fork, execve
 
 // Process & Signal Handling
-# include <asm-generic/signal-defs.h>
-# include <bits/sigaction.h>
 # include <fcntl.h>
 # include <signal.h> // signal, sigaction, kill, sigemptyset, sigaddset
 # include <sys/types.h>
