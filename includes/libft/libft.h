@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 15:39:36 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/13 08:00:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:35:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		ft_printf(const char *str, ...);
 char	*get_next_line(int fd);
 char	*get_next_line_bonus(int fd);
 int		ft_isspace(char c);
+int		ft_isspecial(char c);
 
 //bonus
 

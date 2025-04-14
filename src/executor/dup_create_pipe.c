@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:20:41 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/13 19:03:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:55:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 {
-	if (current->next != NULL)
-	{
-		if (dup2(current->pipe_fd[1], STDOUT_FILENO) == -1)
-		{
-			close_fd(current->pipe_fd);
-			free_commands(mini->cmds);
-			write(2, "dup2 error\n", 10);
-			return ;
-		}
-		close(current->pipe_fd[1]);
-	}
 	if (current->check_here_doc == FALSE)
 	{
+		if (current->next != NULL)
+		{
+			if (dup2(current->pipe_fd[1], STDOUT_FILENO) == -1)
+			{
+				close_fd(current->pipe_fd);
+				free_commands(mini->cmds);
+				write(2, "dup2 error\n", 10);
+				return ;
+			}
+			close(current->pipe_fd[1]);
+		}
 		if (*prev_fd != -1)
 		{
 			if (dup2(*prev_fd, STDIN_FILENO) == -1)

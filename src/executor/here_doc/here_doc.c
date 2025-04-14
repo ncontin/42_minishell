@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/13 19:37:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 13:04:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*join_strings(char *s1, char const *s2, size_t k, size_t l)
 	return (str);
 }
 
-static char	*get_str(char *limiter, t_mini *mini, char *str)
+static char	*get_str(char *limiter, t_mini *mini, char *str, t_command *current)
 {
 	char	*new;
 	t_bool	is_str_null;
@@ -55,7 +55,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str)
 		if (str != NULL)
 			if ((ft_strncmp(limiter, str, ft_strlen(limiter) + 1)) == 0)
 				break ;
-		if (mini->cmds->limiter_quotes == NO_QUOTES)
+		if (current->limiter_quotes == NO_QUOTES)
 		{
 			is_str_null = (str == NULL);
 			str = expand_shell_vars(str, mini);
@@ -117,7 +117,7 @@ void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 	i = *j;
 	here_doc_signal();
 	limiter = add_line_return(current->file[i], mini, current->pipe_fd);
-	str = get_str(limiter, mini, NULL);
+	str = get_str(limiter, mini, NULL, current);
 	tmp_fd = open("tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (tmp_fd == -1)
 		write(2, "here_doc : open error\n", 21);

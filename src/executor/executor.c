@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/13 20:15:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:51:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,9 @@ void	wait_children(t_mini *mini, int fork_count)
 	current = mini->cmds;
 	while ((current != NULL) || (i < fork_count))
 	{
-		if (waitpid(current->pid, &status, 0) == -1)
+		if (current->check_here_doc == TRUE)
+			i++;
+		else if (waitpid(current->pid, &status, 0) == -1)
 		{
 			write(2, "waitpid error\n", 14);
 			mini->error = errno;
@@ -116,6 +118,7 @@ void	executor(t_mini *mini)
 	t_command	*current;
 	int			prev_fd;
 	int			fork_count;
+	int			status;
 
 	current = mini->cmds;
 	prev_fd = -1;
@@ -134,12 +137,15 @@ void	executor(t_mini *mini)
 		}
 		else if (current->pid == 0)
 		{
-			if (current->next != NULL)
+			if (current->next != NULL && current->check_here_doc == FALSE)
 				close(current->pipe_fd[0]);
 			child_process(current, &prev_fd, mini);
 		}
 		else if (current->pid > 0)
 		{
+			if (current->check_here_doc == TRUE)
+				if (waitpid(current->pid, &status, 0) == -1)
+					write(2, strerror(errno), ft_strlen(strerror(errno)));
 			parent_process(&prev_fd, current);
 			current = current->next;
 		}
