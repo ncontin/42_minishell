@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:20:41 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 12:55:33 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:57:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 			}
 			close(*prev_fd);
 		}
+	}
+	else if (current->check_here_doc == TRUE)
+	{
+		if (current->next != NULL)
+			close(current->pipe_fd[0]);
+		if (current->prev != NULL)
+			close (*prev_fd);
 	}
 }
 

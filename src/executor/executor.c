@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 12:51:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:00:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	wait_children(t_mini *mini, int fork_count)
 	current = mini->cmds;
 	while ((current != NULL) || (i < fork_count))
 	{
-		if (current->check_here_doc == TRUE)
+		if (current->check_here_doc == TRUE && current->next != NULL)
 			i++;
 		else if (waitpid(current->pid, &status, 0) == -1)
 		{
@@ -143,9 +143,11 @@ void	executor(t_mini *mini)
 		}
 		else if (current->pid > 0)
 		{
-			if (current->check_here_doc == TRUE)
+			if (current->check_here_doc == TRUE && current->next != NULL)
+			{
 				if (waitpid(current->pid, &status, 0) == -1)
 					write(2, strerror(errno), ft_strlen(strerror(errno)));
+			}
 			parent_process(&prev_fd, current);
 			current = current->next;
 		}
