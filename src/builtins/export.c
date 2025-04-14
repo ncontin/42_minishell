@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/09 12:04:08 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/14 12:32:02 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,23 @@
 static t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 {
 	t_env_node	*current;
+	int			equal_index;
 
 	current = *lst_env->envp_cp;
+	equal_index = find_equal(arg);
+	if (equal_index < 0)
+		equal_index = ft_strlen(arg);
+	if (arg[equal_index - 1] == '+')
+		equal_index -= 1;
 	while (current)
 	{
-		if (ft_strncmp(arg, current->key, ft_strlen(arg)) == 0)
-			if (ft_strncmp(arg, current->key, ft_strlen(arg)) == 0)
-				return (current);
+		if (ft_strncmp(arg, current->key, equal_index) == 0)
+			return (current);
 		current = current->next;
 	}
 	return (NULL);
 }
 
-// chained list
 static void	add_export_env(t_env *lst_env, char *arg)
 {
 	t_env_node	*env;
@@ -92,6 +96,7 @@ static void	sort_env(t_env_node **envp_cp)
 		current = current->next;
 	}
 }
+
 static void	print_id_error(t_mini *mini, char **cmd_args)
 {
 	mini->exit_code = 1;
@@ -99,6 +104,7 @@ static void	print_id_error(t_mini *mini, char **cmd_args)
 	ft_putstr_fd(cmd_args[1], 2);
 	ft_putstr_fd(": not a valid identifier\n", 2);
 }
+
 static int	is_valid_identifier(t_mini *mini, char **cmd_args)
 {
 	int	i;
@@ -111,26 +117,44 @@ static int	is_valid_identifier(t_mini *mini, char **cmd_args)
 		print_id_error(mini, cmd_args);
 		return (0);
 	}
-	i = 1;
 	equal_index = find_equal(cmd_args[1]);
 	if (equal_index < 0)
 		equal_index = ft_strlen(cmd_args[1]);
-	while (i < equal_index)
+	if (cmd_args[1][equal_index - 1] == '+')
+		equal_index -= 1;
+	i = 0;
+	while (++i < equal_index)
 	{
 		if (!ft_isalnum(cmd_args[1][i]) && cmd_args[1][i] != '_')
 		{
 			print_id_error(mini, cmd_args);
 			return (0);
 		}
-		i++;
 	}
 	return (1);
+}
+
+void	join_env_value(t_env_node *env_to_replace, char *arg)
+{
+	int		equal_index;
+	char	*temp;
+	char	*str_to_join;
+
+	str_to_join = get_value(arg);
+	equal_index = find_equal(arg);
+	temp = ft_strdup(env_to_replace->value);
+	free(env_to_replace->value);
+	env_to_replace->value = ft_strjoin(temp, str_to_join);
+	printf("env_to_replace->value: %s\n", env_to_replace->value);
+	free(temp);
+	free(str_to_join);
 }
 
 void	ft_export(t_mini *mini, char **cmd_args)
 {
 	int			i;
 	t_env_node	*env_to_replace;
+	int			equal_index;
 
 	i = 0;
 	if (!mini->lst_env || !mini->cmds || !cmd_args[0])
@@ -148,8 +172,11 @@ void	ft_export(t_mini *mini, char **cmd_args)
 		while (cmd_args[++i])
 		{
 			env_to_replace = check_existing_env(mini->lst_env, cmd_args[i]);
-			if (env_to_replace != NULL)
+			equal_index = find_equal(cmd_args[i]);
+			if (env_to_replace && cmd_args[i][equal_index - 1] != '+')
 				replace_env(env_to_replace, cmd_args[i]);
+			else if (env_to_replace && cmd_args[i][equal_index - 1] == '+')
+				join_env_value(env_to_replace, cmd_args[i]);
 			else
 				add_export_env(mini->lst_env, cmd_args[i]);
 		}
