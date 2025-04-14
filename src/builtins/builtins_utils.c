@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/14 12:30:13 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/14 17:53:36 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	find_equal(char *str)
 {
 	int	i;
 
+	if (!str)
+		return (-1);
 	i = 0;
 	while (str[i])
 	{

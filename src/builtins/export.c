@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/14 13:08:12 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/14 18:00:35 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 	equal_index = find_equal(arg);
 	if (equal_index < 0)
 		equal_index = ft_strlen(arg);
-	if (arg[equal_index - 1] == '+')
+	else if (arg[equal_index - 1] == '+')
 		equal_index -= 1;
 	while (current)
 	{
@@ -97,37 +97,53 @@ static void	sort_env(t_env_node **envp_cp)
 	}
 }
 
-static void	print_id_error(t_mini *mini, char **cmd_args)
+static void	print_id_error(t_mini *mini, char *arg)
 {
 	mini->exit_code = 1;
-	ft_putstr_fd("minishell: export: ", 2);
-	ft_putstr_fd(cmd_args[1], 2);
-	ft_putstr_fd(": not a valid identifier\n", 2);
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
 }
 
-static int	is_valid_identifier(t_mini *mini, char **cmd_args)
+static int	is_valid_option(t_mini *mini, char **cmd_args)
+{
+	if (!cmd_args[1] || !cmd_args[1][0])
+		return (0);
+	if (ft_strncmp(cmd_args[1], "--", 2) == 0 && cmd_args[1][2])
+	{
+		ft_putstr_fd("minishell: export: ", 2);
+		ft_putstr_fd(mini->cmds->argv[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		ft_putstr_fd("export: usage: export [name[=value]\n", 2);
+		mini->exit_code = 2;
+		return (0);
+	}
+	return (1);
+}
+
+static int	is_valid_identifier(t_mini *mini, char *arg)
 {
 	int	i;
 	int	equal_index;
 
-	if (!cmd_args[1] || !cmd_args[1][0])
+	if (!arg || !arg[0])
 		return (0);
-	if (!ft_isalpha(cmd_args[1][0]) && cmd_args[1][0] != '_')
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
 	{
-		print_id_error(mini, cmd_args);
+		print_id_error(mini, arg);
 		return (0);
 	}
-	equal_index = find_equal(cmd_args[1]);
+	equal_index = find_equal(arg);
 	if (equal_index < 0)
-		equal_index = ft_strlen(cmd_args[1]);
-	if (cmd_args[1][equal_index - 1] == '+')
+		equal_index = ft_strlen(arg);
+	if (arg[equal_index - 1] == '+')
 		equal_index -= 1;
 	i = 0;
 	while (++i < equal_index)
 	{
-		if (!ft_isalnum(cmd_args[1][i]) && cmd_args[1][i] != '_')
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
 		{
-			print_id_error(mini, cmd_args);
+			print_id_error(mini, arg);
 			return (0);
 		}
 	}
@@ -158,7 +174,7 @@ void	ft_export(t_mini *mini, char **cmd_args)
 	i = 0;
 	if (!mini->lst_env || !mini->cmds || !cmd_args[0])
 		return ;
-	if (cmd_args[1] && !is_valid_identifier(mini, cmd_args))
+	if (cmd_args[1] && !is_valid_option(mini, cmd_args))
 		return ;
 	mini->lst_env->sorted_envp_cp = copy_envp_list(mini->lst_env->envp_cp);
 	if (!mini->lst_env->sorted_envp_cp)
@@ -170,8 +186,12 @@ void	ft_export(t_mini *mini, char **cmd_args)
 	{
 		while (cmd_args[++i])
 		{
+			if (cmd_args[i] && !is_valid_identifier(mini, cmd_args[i]))
+				continue ;
 			env_to_replace = check_existing_env(mini->lst_env, cmd_args[i]);
 			equal_index = find_equal(cmd_args[i]);
+			if (equal_index < 0)
+				equal_index = ft_strlen(cmd_args[i]);
 			if (env_to_replace && cmd_args[i][equal_index - 1] != '+')
 				replace_env(env_to_replace, cmd_args[i]);
 			else if (env_to_replace && cmd_args[i][equal_index - 1] == '+')
