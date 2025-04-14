@@ -1,14 +1,4 @@
 --------------------------------------------
-minishell> pwd -truc
-/home/anthonin/git/minishell
-
-bash> pwd -truc
-bash: pwd: -t : invalid option
-pwd : usage : pwd [-LP]
-bash> echo $?
-2
-
---------------------------------------------
 minishell> env truc
 SHELL=/bin/zsh
 LSCOLORS=Gxfxcxdxbxegedabagacad

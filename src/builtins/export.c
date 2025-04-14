@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/14 12:32:02 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/14 13:08:12 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ void	join_env_value(t_env_node *env_to_replace, char *arg)
 	temp = ft_strdup(env_to_replace->value);
 	free(env_to_replace->value);
 	env_to_replace->value = ft_strjoin(temp, str_to_join);
-	printf("env_to_replace->value: %s\n", env_to_replace->value);
 	free(temp);
 	free(str_to_join);
 }
