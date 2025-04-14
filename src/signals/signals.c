@@ -6,13 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:08:22 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/13 19:06:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:19:05 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <asm-generic/signal-defs.h>
-#include <bits/sigaction.h>
 
 static void	sig_handler(int signal)
 {

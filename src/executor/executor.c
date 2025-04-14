@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/13 20:15:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:19:04 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 	char	**envp;
 
 	duplicate_pipes(current, prev_fd, mini);
-	if (current->operator != NONE)
+	if (current->operator!= NONE)
 		handle_redirection(current, mini);
 	envp = get_envp_array(mini->lst_env);
 	execute_cmd(current, envp, mini);
@@ -31,7 +31,7 @@ static void	parent_signal(int signo)
 
 static void	parent_process(int *prev_fd, t_command *current)
 {
-	struct sigaction    sa;
+	struct sigaction	sa;
 
 	sa.sa_handler = SIG_IGN;
 	sigemptyset(&sa.sa_mask);
@@ -51,7 +51,7 @@ static void	parent_process(int *prev_fd, t_command *current)
 
 static t_bool	handle_start(t_command *current, t_mini *mini)
 {
-	if (current->next == NULL && current->prev == NULL) 
+	if (current->next == NULL && current->prev == NULL)
 	{
 		if (current->argv != NULL && current->argv[0] == NULL)
 			return (TRUE);
@@ -71,11 +71,11 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 
 void	wait_children(t_mini *mini, int fork_count)
 {
-	int			status;
-	int			i;
-	int			sig;
-	t_command	*current;
-	struct sigaction    sa;
+	int					status;
+	int					i;
+	int					sig;
+	t_command			*current;
+	struct sigaction	sa;
 
 	i = 0;
 	current = mini->cmds;
@@ -88,10 +88,10 @@ void	wait_children(t_mini *mini, int fork_count)
 		}
 		current = current->next;
 		i++;
-	}		
+	}
 	sa.sa_handler = parent_signal;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;		
+	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	if (i > 0)
 	{
