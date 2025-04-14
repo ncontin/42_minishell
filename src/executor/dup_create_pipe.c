@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:20:41 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 14:57:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:20:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 {
-	if (current->check_here_doc == FALSE)
+	int	null_fd;
+	
+	if (current->next != NULL && current->next->check_here_doc == FALSE)
 	{
 		if (current->next != NULL)
 		{
@@ -38,18 +40,17 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 			close(*prev_fd);
 		}
 	}
-	else if (current->check_here_doc == TRUE)
+	else if (current->check_here_doc == FALSE && current->nb_operator == 0)
 	{
-		if (current->next != NULL)
-			close(current->pipe_fd[0]);
-		if (current->prev != NULL)
-			close (*prev_fd);
+		null_fd = open("/dev/null", O_WRONLY);
+		dup2(null_fd, STDOUT_FILENO);
+		close(null_fd);
 	}
 }
 
 void	create_pipe(t_command *current, t_mini *mini)
 {
-	if (current->next != NULL)
+	if (current->next != NULL && (current->next->check_here_doc == FALSE))
 	{
 		if (pipe(current->pipe_fd) == -1)
 		{

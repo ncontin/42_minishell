@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 14:34:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 19:25:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,12 +128,12 @@ void	setup_here_doc(t_command *current, t_mini *mini, int *j)
 		write(2, "here_doc : open error\n", 21);
 	if (dup2(tmp_fd, STDIN_FILENO) == -1)
 		write(2, "here_doc : dup2 error\n", 21);
+	close(tmp_fd);
 	if (current->next != NULL)
 	{
 		dup2(current->pipe_fd[1], STDOUT_FILENO);
 		close(current->pipe_fd[1]);
 	}
-	close(tmp_fd);
 	unlink("tmp_file");
 	free(limiter);
 	free(str);

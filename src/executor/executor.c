@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 15:00:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:00:11 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	parent_process(int *prev_fd, t_command *current)
 		close(*prev_fd);
 		*prev_fd = -1;
 	}
-	if (current->next != NULL)
+	if (current->next != NULL && current->next->check_here_doc == FALSE)
 	{
 		close(current->pipe_fd[1]);
 		*prev_fd = current->pipe_fd[0];
@@ -137,7 +137,7 @@ void	executor(t_mini *mini)
 		}
 		else if (current->pid == 0)
 		{
-			if (current->next != NULL && current->check_here_doc == FALSE)
+			if (current->next != NULL && current->next->check_here_doc == FALSE)
 				close(current->pipe_fd[0]);
 			child_process(current, &prev_fd, mini);
 		}
