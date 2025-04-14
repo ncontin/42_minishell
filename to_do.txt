@@ -1,4 +1,6 @@
 --------------------------------------------
+export +=
+--------------------------------------------
 minishell> pwd -truc
 /home/anthonin/git/minishell
 
@@ -56,7 +58,7 @@ PAGER=less
 QT_IM_MODULE=ibus
 DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=5441f3245db5f7e82f0a106967fa0853
 XDG_RUNTIME_DIR=/run/user/1000
-DEBUGINFOD_URLS=https://debuginfod.ubuntu.com 
+DEBUGINFOD_URLS=https://debuginfod.ubuntu.com
 XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 PATH=/home/anthonin/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/anthonin/.local/bin:/home/anthonin/.local/bin
 GDMSESSION=ubuntu
@@ -90,7 +92,7 @@ bash> echo$?
 --------------------------------------------
 zsh> env -i ./minishell
 minishell> cd /bin/
-minishell> ls 
+minishell> ls
 No path found
 
 --------------------------------------------
@@ -104,4 +106,4 @@ bash> echo $?
 --------------------------------------------
 minishell> cat
 ^C
-minishell> minishell> 
+minishell> minishell>
