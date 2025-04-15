@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 23:58:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 00:06:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,8 @@ void	executor(t_mini *mini)
 	fork_count = 0;
 	if (handle_start(current, mini) == TRUE)
 		return ;
-	setup_here_docs(mini);
+	if (setup_here_docs(mini) == 1)
+		return ;
 	executor_signal();
 	while (current != NULL)
 	{
