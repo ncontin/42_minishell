@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 11:01:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/04 12:21:20 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/15 11:49:22 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,20 @@ static void	del_env(t_env_node *current, t_env_node *prev,
 	if (current->value)
 		free(current->value);
 	free(current);
+}
+
+static int	check_options(t_mini *mini)
+{
+	if (!mini->cmds->argv[1])
+		return (0);
+	if (mini->cmds->argv[1][0] == '-' && mini->cmds->argv[1][1])
+	{
+		ft_putstr_fd("minishell: unset: ’", 2);
+		ft_putstr_fd(mini->cmds->argv[1], 2);
+		ft_putstr_fd("’: invalid option\n", 2);
+		return (1);
+	}
+	return (0);
 }
 
 static void	unset_env(t_env_node **env_stack, char *arg)
@@ -54,6 +68,11 @@ void	ft_unset(t_mini *mini, char **cmd_args)
 {
 	int	i;
 
+	if (check_options(mini) == 1)
+	{
+		mini->exit_code = 2;
+		return ;
+	}
 	if (!mini->lst_env->envp_cp)
 		return ;
 	i = 1;
