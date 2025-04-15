@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/15 12:59:22 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/15 13:29:42 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	ft_exit(t_mini *mini, char **cmd_args)
 	overflow = 0;
 	arg = NULL;
 	if (isatty(STDIN_FILENO))
-		ft_putstr_fd("exit\n", STDERR_FILENO);
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (cmd_args && cmd_args[1])
 	{
 		arg = del_spaces(cmd_args[1]);
