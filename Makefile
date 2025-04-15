@@ -80,6 +80,7 @@ SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/here_doc/signal_here_doc.c\
 
 SRC_SIGNALS = 	src/signals/signals.c\
+				src/signals/executor_signal.c\
 
 LIBRARY = includes/libft/libft.a
 INCLUDES = -I./includes -I./includes/libft

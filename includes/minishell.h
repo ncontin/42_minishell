@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 13:01:20 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/15 13:03:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,4 +262,7 @@ void					setup_here_doc(t_command *current, t_mini *data,
 							int *j);
 // here_doc_signal.c
 void					here_doc_signal(void);
+//executor_signal.c
+void					executor_signal(void);
+void					parent_signal(void);
 #endif

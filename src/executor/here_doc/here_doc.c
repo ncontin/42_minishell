@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 19:25:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 10:31:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static char	*get_str(char *limiter, t_mini *mini, char *str, t_command *current)
 	}
 	if (signal_received)
 	{
+		if (current->next != NULL)
+			close(current->pipe_fd[1]);
 		if (new != NULL)
 			free(new);
 		free(limiter);

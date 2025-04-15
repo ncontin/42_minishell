@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 00:05:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 13:06:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,27 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 	execute_cmd(current, envp, mini);
 }
 
-static void	parent_signal(int signo)
+static int	parent_process(int *prev_fd, t_command *current, t_mini *mini)
 {
-	if (signo == SIGINT)
-		printf("\n");
-}
+	int					status;
 
-static void	parent_process(int *prev_fd, t_command *current)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = SIG_IGN;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
+	if (current->check_here_doc == TRUE && current->next != NULL)
+	{
+		if (waitpid(current->pid, &status, 0) == -1)
+			write(2, strerror(errno), ft_strlen(strerror(errno)));
+		if (WIFEXITED(status))
+		{
+			mini->exit_code = WEXITSTATUS(status);
+			if (current->next != NULL)
+			{
+				close(current->pipe_fd[0]);
+				close(current->pipe_fd[1]);
+			}
+			if (mini->exit_code > 0)
+				return (1);
+			return (0);
+		}
+	}
 	if (*prev_fd != -1)
 	{
 		close(*prev_fd);
@@ -47,6 +54,7 @@ static void	parent_process(int *prev_fd, t_command *current)
 		close(current->pipe_fd[1]);
 		*prev_fd = current->pipe_fd[0];
 	}
+	return (0);
 }
 
 static t_bool	handle_start(t_command *current, t_mini *mini)
@@ -75,11 +83,10 @@ void	wait_children(t_mini *mini, int fork_count)
 	int					i;
 	int					sig;
 	t_command			*current;
-	struct sigaction	sa;
 
 	i = 0;
 	current = mini->cmds;
-	while ((current != NULL) || (i < fork_count))
+	while ((current != NULL) && (i < fork_count))
 	{
 		if (current->check_here_doc == TRUE && current->next != NULL)
 			i++;
@@ -91,10 +98,7 @@ void	wait_children(t_mini *mini, int fork_count)
 		current = current->next;
 		i++;
 	}
-	sa.sa_handler = parent_signal;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
+	parent_signal();
 	if (i > 0)
 	{
 		if (WIFSIGNALED(status))
@@ -106,11 +110,6 @@ void	wait_children(t_mini *mini, int fork_count)
 		if (WIFEXITED(status))
 			mini->exit_code = WEXITSTATUS(status);
 	}
-	if (mini->error > 0)
-	{
-		free_exit(mini);
-		exit(mini->error);
-	}
 }
 
 void	executor(t_mini *mini)
@@ -118,13 +117,13 @@ void	executor(t_mini *mini)
 	t_command	*current;
 	int			prev_fd;
 	int			fork_count;
-	int			status;
 
 	current = mini->cmds;
 	prev_fd = -1;
 	fork_count = 0;
 	if (handle_start(current, mini) == TRUE)
 		return ;
+	executor_signal();
 	while (current != NULL)
 	{
 		create_pipe(current, mini);
@@ -143,12 +142,8 @@ void	executor(t_mini *mini)
 		}
 		else if (current->pid > 0)
 		{
-			if (current->check_here_doc == TRUE && current->next != NULL)
-			{
-				if (waitpid(current->pid, &status, 0) == -1)
-					write(2, strerror(errno), ft_strlen(strerror(errno)));
-			}
-			parent_process(&prev_fd, current);
+			if (parent_process(&prev_fd, current, mini) == 1)
+				return ;
 			current = current->next;
 		}
 		fork_count++;
