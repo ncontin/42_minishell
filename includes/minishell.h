@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 13:03:25 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:31:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ typedef struct s_command
 {
 	int					nb_operator;
 	int					pipe_fd[2];
+	int					here_doc_fd;
 	t_quotes			*arg_quotes;
 	char				**argv;
 	char				**file;
@@ -257,12 +258,13 @@ void					execute_cmd(t_command *current, char **envp,
 void					duplicate_pipes(t_command *current, int *prev_fd,
 							t_mini *mini);
 void					create_pipe(t_command *current, t_mini *mini);
-// here_doc.c
-void					setup_here_doc(t_command *current, t_mini *data,
-							int *j);
+// here_docredirection.c
+void					here_doc_redirection(t_command *current, t_mini *mini);
 // here_doc_signal.c
 void					here_doc_signal(void);
 //executor_signal.c
 void					executor_signal(void);
 void					parent_signal(void);
+//setup_here_docs.c
+int						setup_here_docs(t_mini *mini);
 #endif

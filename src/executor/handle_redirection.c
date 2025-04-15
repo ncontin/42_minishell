@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/13 19:06:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:37:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,15 @@ void	handle_redirection(t_command *current, t_mini *mini)
 {
 	int	i;
 
-	i = 0;
-	while (i < current->nb_operator)
+	i = current->nb_operator - 1;
+	while (i >= 0) 
 	{
 		if (current->operator[i] == HEREDOC)
-			setup_here_doc(current, mini, &i);
-		i++;
+		{
+			here_doc_redirection(current, mini);
+			break ;
+		}
+		i--;
 	}
 	i = 0;
 	while (i < current->nb_operator)

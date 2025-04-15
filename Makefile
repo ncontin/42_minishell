@@ -76,8 +76,9 @@ SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/handle_redirection.c\
 				src/executor/execute_commands.c\
 				src/executor/dup_create_pipe.c\
-				src/executor/here_doc/here_doc.c\
+				src/executor/here_doc/here_doc_redirection.c\
 				src/executor/here_doc/signal_here_doc.c\
+				src/executor/here_doc/setup_here_docs.c\
 
 SRC_SIGNALS = 	src/signals/signals.c\
 				src/signals/executor_signal.c\

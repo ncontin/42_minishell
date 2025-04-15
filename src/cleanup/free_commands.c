@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/09 11:39:43 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/15 14:44:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	free_commands(t_command *cmds)
 			i++;
 		}
 		i = 0;
+		if (current->here_doc_fd != -1)
+			close(current->here_doc_fd);
 		free(current->arg_quotes);
 		free(current->file);
 		free(current->operator);

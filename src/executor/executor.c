@@ -6,16 +6,52 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 13:06:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:47:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void close_unused_heredoc_fd(t_command *cmds, t_command *current)
+{
+	t_command	*commands;
+
+	commands = cmds;
+	while (commands != NULL)
+	{
+		if (commands->check_here_doc == TRUE)
+		{
+			if (current != commands && commands->here_doc_fd != -1)
+			{
+				close (commands->here_doc_fd);
+				commands->here_doc_fd = -1;
+			}
+		}
+		commands = commands->next;
+	}
+}
+
+static void	close_prev_heredoc_fd(t_command *current)
+{
+	t_command	*commands;
+
+	commands = current->prev;
+	while (commands != NULL)
+	{
+		if (commands->check_here_doc == TRUE)
+		{
+				close (commands->here_doc_fd);
+				commands->here_doc_fd = -1;
+		}
+		commands = commands->prev;
+	}
+}
+
 static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 {
 	char	**envp;
 
+	close_unused_heredoc_fd(mini->cmds, current);
 	duplicate_pipes(current, prev_fd, mini);
 	if (current->operator!= NONE)
 		handle_redirection(current, mini);
@@ -25,7 +61,7 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 
 static int	parent_process(int *prev_fd, t_command *current, t_mini *mini)
 {
-	int					status;
+	int	status;
 
 	if (current->check_here_doc == TRUE && current->next != NULL)
 	{
@@ -54,6 +90,7 @@ static int	parent_process(int *prev_fd, t_command *current, t_mini *mini)
 		close(current->pipe_fd[1]);
 		*prev_fd = current->pipe_fd[0];
 	}
+	close_prev_heredoc_fd(current);
 	return (0);
 }
 
@@ -79,13 +116,14 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 
 void	wait_children(t_mini *mini, int fork_count)
 {
-	int					status;
-	int					i;
-	int					sig;
-	t_command			*current;
+	int			status;
+	int			i;
+	int			sig;
+	t_command	*current;
 
 	i = 0;
 	current = mini->cmds;
+	status = 0;
 	while ((current != NULL) && (i < fork_count))
 	{
 		if (current->check_here_doc == TRUE && current->next != NULL)
@@ -123,6 +161,7 @@ void	executor(t_mini *mini)
 	fork_count = 0;
 	if (handle_start(current, mini) == TRUE)
 		return ;
+	setup_here_docs(mini);
 	executor_signal();
 	while (current != NULL)
 	{
