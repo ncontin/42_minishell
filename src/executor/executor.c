@@ -6,16 +6,52 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 00:05:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:58:16 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void close_child_heredoc_fd(t_command *cmds, t_command *current)
+{
+	t_command	*commands;
+
+	commands = cmds;
+	while (commands != NULL)
+	{
+		if (commands->check_here_doc == TRUE)
+		{
+			if (current != commands && commands->here_doc_fd != -1)
+			{
+				close (commands->here_doc_fd);
+				commands->here_doc_fd = -1;
+			}
+		}
+		commands = commands->next;
+	}
+}
+
+static void	close_parent_heredoc_fd(t_command *current)
+{
+	t_command	*commands;
+
+	commands = current->prev;
+	while (commands != NULL)
+	{
+		if (commands->check_here_doc == TRUE && commands->here_doc_fd != -1)
+		{
+			close (commands->here_doc_fd);
+			commands->here_doc_fd = -1;
+		}
+		commands = commands->prev;
+	}
+}
+
 static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 {
 	char	**envp;
 
+	close_child_heredoc_fd(mini->cmds, current);
 	duplicate_pipes(current, prev_fd, mini);
 	if (current->operator!= NONE)
 		handle_redirection(current, mini);
@@ -23,20 +59,8 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 	execute_cmd(current, envp, mini);
 }
 
-static void	parent_signal(int signo)
+static int	parent_process(int *prev_fd, t_command *current)
 {
-	if (signo == SIGINT)
-		printf("\n");
-}
-
-static void	parent_process(int *prev_fd, t_command *current)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = SIG_IGN;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
 	if (*prev_fd != -1)
 	{
 		close(*prev_fd);
@@ -47,6 +71,8 @@ static void	parent_process(int *prev_fd, t_command *current)
 		close(current->pipe_fd[1]);
 		*prev_fd = current->pipe_fd[0];
 	}
+	close_parent_heredoc_fd(current);
+	return (0);
 }
 
 static t_bool	handle_start(t_command *current, t_mini *mini)
@@ -71,19 +97,17 @@ static t_bool	handle_start(t_command *current, t_mini *mini)
 
 void	wait_children(t_mini *mini, int fork_count)
 {
-	int					status;
-	int					i;
-	int					sig;
-	t_command			*current;
-	struct sigaction	sa;
+	int			status;
+	int			i;
+	int			sig;
+	t_command	*current;
 
 	i = 0;
 	current = mini->cmds;
-	while ((current != NULL) || (i < fork_count))
+	status = 0;
+	while ((current != NULL) && (i < fork_count))
 	{
-		if (current->check_here_doc == TRUE && current->next != NULL)
-			i++;
-		else if (waitpid(current->pid, &status, 0) == -1)
+		if (waitpid(current->pid, &status, 0) == -1)
 		{
 			write(2, "waitpid error\n", 14);
 			mini->error = errno;
@@ -91,25 +115,17 @@ void	wait_children(t_mini *mini, int fork_count)
 		current = current->next;
 		i++;
 	}
-	sa.sa_handler = parent_signal;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
+	//parent_signal();
 	if (i > 0)
 	{
 		if (WIFSIGNALED(status))
 		{
 			sig = WTERMSIG(status);
 			if (sig == SIGINT)
-				write(1, "\n", 1);
+				printf("\n");
 		}
 		if (WIFEXITED(status))
 			mini->exit_code = WEXITSTATUS(status);
-	}
-	if (mini->error > 0)
-	{
-		free_exit(mini);
-		exit(mini->error);
 	}
 }
 
@@ -118,13 +134,14 @@ void	executor(t_mini *mini)
 	t_command	*current;
 	int			prev_fd;
 	int			fork_count;
-	int			status;
 
 	current = mini->cmds;
 	prev_fd = -1;
 	fork_count = 0;
 	if (handle_start(current, mini) == TRUE)
 		return ;
+	setup_here_docs(mini);
+	executor_signal();
 	while (current != NULL)
 	{
 		create_pipe(current, mini);
@@ -137,18 +154,15 @@ void	executor(t_mini *mini)
 		}
 		else if (current->pid == 0)
 		{
+			here_doc_child_signal();
 			if (current->next != NULL && current->next->check_here_doc == FALSE)
 				close(current->pipe_fd[0]);
 			child_process(current, &prev_fd, mini);
 		}
 		else if (current->pid > 0)
 		{
-			if (current->check_here_doc == TRUE && current->next != NULL)
-			{
-				if (waitpid(current->pid, &status, 0) == -1)
-					write(2, strerror(errno), ft_strlen(strerror(errno)));
-			}
-			parent_process(&prev_fd, current);
+			if (parent_process(&prev_fd, current) == 1)
+				return ;
 			current = current->next;
 		}
 		fork_count++;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
+/*   setup_here_docs.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/04 12:11:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/14 19:25:17 by aroullea         ###   ########.fr       */
+/*   Created: 2025/04/15 13:17:22 by aroullea          #+#    #+#             */
+/*   Updated: 2025/04/15 23:16:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str, t_command *current)
 	while (!signal_received)
 	{
 		write(1, "> ", 2);
-		str = get_next_line(0); 
+		str = get_next_line(0);
 		if (signal_received)
 			break ;
 		if (str != NULL)
@@ -72,6 +72,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str, t_command *current)
 	}
 	if (signal_received)
 	{
+		close(current->here_doc_fd);
 		if (new != NULL)
 			free(new);
 		free(limiter);
@@ -82,7 +83,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str, t_command *current)
 	return (new);
 }
 
-static char	*add_line_return(char *source, t_mini *mini, int *fd)
+static char *add_line_return(char *source, t_mini *mini)
 {
 	char	*limiter;
 	size_t	size;
@@ -93,10 +94,7 @@ static char	*add_line_return(char *source, t_mini *mini, int *fd)
 	size = ft_strlen(source);
 	limiter = (char *)malloc(sizeof(char) * size + 2);
 	if (limiter == NULL)
-	{
 		write(2, "here_doc error\n", 15);
-		close(*fd);
-	}
 	while (i < size)
 	{
 		limiter[i] = source[i];
@@ -107,34 +105,66 @@ static char	*add_line_return(char *source, t_mini *mini, int *fd)
 	return (limiter);
 }
 
-void	setup_here_doc(t_command *current, t_mini *mini, int *j)
+static int	read_here_doc(t_mini *mini, t_command *current, int i)
 {
-	char	*limiter;
-	char	*str;
-	int		i;
-	int		tmp_fd;
+	char				*limiter;
+	int					here_doc_pipe[2];
+	pid_t				pid;
+	char				*str;
+	int					status;
 
-	i = *j;
-	here_doc_signal();
-	limiter = add_line_return(current->file[i], mini, current->pipe_fd);
-	str = get_str(limiter, mini, NULL, current);
-	tmp_fd = open("tmp_file", O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	if (tmp_fd == -1)
-		write(2, "here_doc : open error\n", 21);
-	write(tmp_fd, str, ft_strlen(str));
-	close(tmp_fd);
-	tmp_fd = open("tmp_file", O_RDONLY);
-	if (tmp_fd == -1)
-		write(2, "here_doc : open error\n", 21);
-	if (dup2(tmp_fd, STDIN_FILENO) == -1)
-		write(2, "here_doc : dup2 error\n", 21);
-	close(tmp_fd);
-	if (current->next != NULL)
+	if (current->here_doc_fd != -1)
+		close(current->here_doc_fd);
+	here_doc_parent_signal();
+	pipe(here_doc_pipe);
+	pid = fork();
+	if (pid == 0)
 	{
-		dup2(current->pipe_fd[1], STDOUT_FILENO);
-		close(current->pipe_fd[1]);
+		here_doc_child_signal();
+		current->here_doc_fd = here_doc_pipe[1];
+		close(here_doc_pipe[0]);
+		limiter = add_line_return(current->file[i], mini);
+		str = get_str(limiter, mini, NULL, current);
+		write(here_doc_pipe[1], str, ft_strlen(str));
+		free(limiter);
+		free(str);
+		free_exit(mini);
+		close(here_doc_pipe[1]);
+		exit (EXIT_SUCCESS);
 	}
-	unlink("tmp_file");
-	free(limiter);
-	free(str);
+	else
+	{
+		waitpid(pid, &status, 0);
+		close(here_doc_pipe[1]);
+		current->here_doc_fd = here_doc_pipe[0];
+		if (WIFEXITED(status))
+			mini->exit_code = WEXITSTATUS(status);
+		if (mini->exit_code > 0)
+			return (1);
+	}
+	return (0);
+}
+
+int	setup_here_docs(t_mini *mini)
+{
+	t_command	*current;
+	int			i;
+
+	i = 0;
+	current = mini->cmds;
+	while (current != NULL)
+	{
+		while (i < current->nb_operator)
+		{
+			if (current->operator[i] == HEREDOC)
+			{
+				if (read_here_doc(mini, current, i) == 1)
+					return (1);
+			}
+			i++;
+		}
+		i = 0;
+		current = current->next;
+	}
+	return (0);
 }
