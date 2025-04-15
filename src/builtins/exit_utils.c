@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 12:18:43 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/15 13:28:01 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ long long	ft_atoll(const char *nptr, int *overflow)
 	int			i;
 	int			sign;
 	long long	result;
+	int			digit;
 
 	result = 0;
 	sign = 1;
@@ -31,13 +32,25 @@ long long	ft_atoll(const char *nptr, int *overflow)
 	}
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		if (sign == -1 && (result >= LLONG_MAX / 10 && (nptr[i] - '0') > 8))
-			*overflow = 1;
-		else if (sign != -1 && result >= LLONG_MAX / 10 && (nptr[i] - '0') > 7)
-			*overflow = 1;
-		result = (result * 10) + (nptr[i] - '0');
+		digit = nptr[i] - '0';
+		if (sign == 1)
+		{
+			if (result >= LLONG_MAX / 10 && digit > 7)
+			{
+				*overflow = 1;
+				return (LLONG_MAX);
+			}
+		}
+		else
+		{
+			if (result >= LLONG_MAX / 10 && digit > 8)
+			{
+				*overflow = 1;
+				return (LLONG_MIN);
+			}
+		}
+		result = (result * 10) + digit;
 		i++;
 	}
 	return (result *= sign);
 }
-

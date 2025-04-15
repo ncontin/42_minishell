@@ -1,14 +1,5 @@
 
 --------------------------------------------
-minishell> unset -TEST
-minishell>
-
-bash> unset -TEST
-bash: unset: -T : invalid option
-bash> echo$?
-2
-
---------------------------------------------
 zsh> env -i ./minishell
 minishell> cd /bin/
 minishell> ls
