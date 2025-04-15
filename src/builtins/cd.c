@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/14 12:40:42 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/15 16:29:24 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ int	ft_cd(t_mini *mini)
 		ft_putstr_fd("cd: too many arguments\n", 2);
 		mini->exit_code = 1;
 	}
+	if (mini->cmds->argv[1] && !mini->cmds->argv[1][0])
+		return (0);
 	else if (mini->cmds->argv[1] != NULL && ft_strncmp(mini->cmds->argv[1], "-",
 			(ft_strlen("-") + 1)) == 0)
 	{
@@ -122,7 +124,10 @@ int	ft_cd(t_mini *mini)
 	if (chdir(path) == -1)
 	{
 		free(pwd);
-		perror("cd");
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": ", 2);
+		perror(NULL);
 		mini->exit_code = 1;
 		return (mini->exit_code);
 	}
