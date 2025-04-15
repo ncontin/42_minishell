@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/15 13:28:01 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/15 15:36:40 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,20 @@ long long	ft_atoll(const char *nptr, int *overflow)
 				*overflow = 1;
 				return (LLONG_MAX);
 			}
+			if ((unsigned long long)result >= ULLONG_MAX / 10 && digit >= 5)
+			{
+				*overflow = 1;
+				return (LLONG_MAX);
+			}
 		}
 		else
 		{
 			if (result >= LLONG_MAX / 10 && digit > 8)
+			{
+				*overflow = 1;
+				return (LLONG_MIN);
+			}
+			if ((unsigned long long)result >= ULLONG_MAX / 10 && digit >= 6)
 			{
 				*overflow = 1;
 				return (LLONG_MIN);
