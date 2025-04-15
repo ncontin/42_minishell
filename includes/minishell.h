@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 15:31:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:06:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,7 +261,8 @@ void					create_pipe(t_command *current, t_mini *mini);
 // here_docredirection.c
 void					here_doc_redirection(t_command *current, t_mini *mini);
 // here_doc_signal.c
-void					here_doc_signal(void);
+void					here_doc_child_signal(void);
+void					here_doc_parent_signal(void);
 //executor_signal.c
 void					executor_signal(void);
 void					parent_signal(void);

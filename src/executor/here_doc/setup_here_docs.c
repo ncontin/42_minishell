@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:17:22 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 16:38:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:16:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static char	*get_str(char *limiter, t_mini *mini, char *str, t_command *current)
 	}
 	if (signal_received)
 	{
+		close(current->here_doc_fd);
 		if (new != NULL)
 			free(new);
 		free(limiter);
@@ -104,39 +105,52 @@ static char *add_line_return(char *source, t_mini *mini)
 	return (limiter);
 }
 
-static int	read_here_doc(t_mini *mini, t_command *current, int i, char **str)
+static int	read_here_doc(t_mini *mini, t_command *current, int i)
 {
-	char	*limiter;
+	char				*limiter;
+	int					here_doc_pipe[2];
+	pid_t				pid;
+	char				*str;
+	int					status;
 
-	here_doc_signal();
-	limiter = add_line_return(current->file[i], mini);
-	*str = get_str(limiter, mini, NULL, current);
-	free(limiter);
-	return (0);
-}
-
-static void	handle_pipe_here_doc(t_mini *mini, t_command *current, char *str)
-{
-	int		here_doc_pipe[2];
-	
-	(void)mini;
+	if (current->here_doc_fd != -1)
+		close(current->here_doc_fd);
+	here_doc_parent_signal();
 	pipe(here_doc_pipe);
-	write(here_doc_pipe[1], str, ft_strlen(str));
-	close(here_doc_pipe[1]);
-	current->here_doc_fd = here_doc_pipe[0];
-	free(str);
+	pid = fork();
+	if (pid == 0)
+	{
+		here_doc_child_signal();
+		current->here_doc_fd = here_doc_pipe[1];
+		close(here_doc_pipe[0]);
+		limiter = add_line_return(current->file[i], mini);
+		str = get_str(limiter, mini, NULL, current);
+		write(here_doc_pipe[1], str, ft_strlen(str));
+		free(limiter);
+		free(str);
+		free_exit(mini);
+		close(here_doc_pipe[1]);
+		exit (EXIT_SUCCESS);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		close(here_doc_pipe[1]);
+		current->here_doc_fd = here_doc_pipe[0];
+		if (WIFEXITED(status))
+			mini->exit_code = WEXITSTATUS(status);
+		if (mini->exit_code > 0)
+			return (1);
+	}
+	return (0);
 }
 
 int	setup_here_docs(t_mini *mini)
 {
 	t_command	*current;
 	int			i;
-	t_bool		find;
-	char		*str;
 
 	i = 0;
-	find = FALSE;
-	str = NULL;
 	current = mini->cmds;
 	while (current != NULL)
 	{
@@ -144,23 +158,13 @@ int	setup_here_docs(t_mini *mini)
 		{
 			if (current->operator[i] == HEREDOC)
 			{
-				find = TRUE;
-				if (str != NULL)
-				{
-					free(str);
-					str = NULL;
-				}
-				if (read_here_doc(mini, current, i, &str) == 1)
+				if (read_here_doc(mini, current, i) == 1)
 					return (1);
 			}
 			i++;
 		}
-		if (find == TRUE)
-			handle_pipe_here_doc(mini, current, str);
 		i = 0;
 		current = current->next;
-		find = FALSE;
-		str = NULL;
 	}
 	return (0);
 }

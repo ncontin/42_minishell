@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 17:47:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 23:11:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void close_unused_heredoc_fd(t_command *cmds, t_command *current)
+static void close_child_heredoc_fd(t_command *cmds, t_command *current)
 {
 	t_command	*commands;
 
@@ -31,17 +31,17 @@ static void close_unused_heredoc_fd(t_command *cmds, t_command *current)
 	}
 }
 
-static void	close_prev_heredoc_fd(t_command *current)
+static void	close_parent_heredoc_fd(t_command *current)
 {
 	t_command	*commands;
 
 	commands = current->prev;
 	while (commands != NULL)
 	{
-		if (commands->check_here_doc == TRUE)
+		if (commands->check_here_doc == TRUE && commands->here_doc_fd != -1)
 		{
-				close (commands->here_doc_fd);
-				commands->here_doc_fd = -1;
+			close (commands->here_doc_fd);
+			commands->here_doc_fd = -1;
 		}
 		commands = commands->prev;
 	}
@@ -51,7 +51,7 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 {
 	char	**envp;
 
-	close_unused_heredoc_fd(mini->cmds, current);
+	close_child_heredoc_fd(mini->cmds, current);
 	duplicate_pipes(current, prev_fd, mini);
 	if (current->operator!= NONE)
 		handle_redirection(current, mini);
@@ -59,27 +59,8 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 	execute_cmd(current, envp, mini);
 }
 
-static int	parent_process(int *prev_fd, t_command *current, t_mini *mini)
+static int	parent_process(int *prev_fd, t_command *current)
 {
-	int	status;
-
-	if (current->check_here_doc == TRUE && current->next != NULL)
-	{
-		if (waitpid(current->pid, &status, 0) == -1)
-			write(2, strerror(errno), ft_strlen(strerror(errno)));
-		if (WIFEXITED(status))
-		{
-			mini->exit_code = WEXITSTATUS(status);
-			if (current->next != NULL)
-			{
-				close(current->pipe_fd[0]);
-				close(current->pipe_fd[1]);
-			}
-			if (mini->exit_code > 0)
-				return (1);
-			return (0);
-		}
-	}
 	if (*prev_fd != -1)
 	{
 		close(*prev_fd);
@@ -90,7 +71,7 @@ static int	parent_process(int *prev_fd, t_command *current, t_mini *mini)
 		close(current->pipe_fd[1]);
 		*prev_fd = current->pipe_fd[0];
 	}
-	close_prev_heredoc_fd(current);
+	close_parent_heredoc_fd(current);
 	return (0);
 }
 
@@ -126,9 +107,7 @@ void	wait_children(t_mini *mini, int fork_count)
 	status = 0;
 	while ((current != NULL) && (i < fork_count))
 	{
-		if (current->check_here_doc == TRUE && current->next != NULL)
-			i++;
-		else if (waitpid(current->pid, &status, 0) == -1)
+		if (waitpid(current->pid, &status, 0) == -1)
 		{
 			write(2, "waitpid error\n", 14);
 			mini->error = errno;
@@ -136,14 +115,14 @@ void	wait_children(t_mini *mini, int fork_count)
 		current = current->next;
 		i++;
 	}
-	parent_signal();
+	//parent_signal();
 	if (i > 0)
 	{
 		if (WIFSIGNALED(status))
 		{
 			sig = WTERMSIG(status);
 			if (sig == SIGINT)
-				write(1, "\n", 1);
+				printf("\n");
 		}
 		if (WIFEXITED(status))
 			mini->exit_code = WEXITSTATUS(status);
@@ -181,7 +160,7 @@ void	executor(t_mini *mini)
 		}
 		else if (current->pid > 0)
 		{
-			if (parent_process(&prev_fd, current, mini) == 1)
+			if (parent_process(&prev_fd, current) == 1)
 				return ;
 			current = current->next;
 		}
