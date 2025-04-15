@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/14 18:00:35 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/15 00:06:38 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,12 +152,12 @@ static int	is_valid_identifier(t_mini *mini, char *arg)
 
 void	join_env_value(t_env_node *env_to_replace, char *arg)
 {
-	int		equal_index;
+	//int		equal_index;
 	char	*temp;
 	char	*str_to_join;
 
 	str_to_join = get_value(arg);
-	equal_index = find_equal(arg);
+	//equal_index = find_equal(arg);
 	temp = ft_strdup(env_to_replace->value);
 	free(env_to_replace->value);
 	env_to_replace->value = ft_strjoin(temp, str_to_join);
