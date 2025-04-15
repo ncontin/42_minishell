@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:35:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/18 15:18:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 23:24:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static void	no_quotes(char const *s, t_bool *dquotes, t_bool *squotes, int *len)
 	size++;
 	while ((s[size] == '"' || s[size] == '\'') && s[size] == s[size + 1])
 	{
-		if (s[size] == '"' && !squotes)
+		if (s[size] == '"' && !(*squotes))
 			*dquotes = !(*dquotes);
-		else if (s[size] == '\'' && !dquotes)
+		else if (s[size] == '\'' && !(*dquotes))
 			*squotes = !(*squotes);
 		size++;
 	}

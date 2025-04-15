@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/14 11:46:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:10:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static int	find_word_len(char *arg, int len)
 {
 	len = 0;
-	while (arg[len] && (ft_isspace(arg[len]) == 0) && (ft_isspecial(arg[len]) == 0))
+	while (arg[len] && arg[len] != ' ' && arg[len] != '\t' && arg[len] != '$'
+		&& arg[len] != '\n' && arg[len] != '/' && arg[len] != ':' && arg[len] != '\'')
 		len++;
 	return (len);
 }
@@ -88,16 +89,14 @@ char	*expand_shell_vars(char *arg, t_mini *mini)
 
 	if (arg == NULL)
 		return (NULL);
-	i = 0;
-	while (ft_isprint(arg[i]) && arg[i] != '$')
-		i++;
-	if (arg[i] == '\0')
+	if (arg[0] == '$' && ft_isspace(arg[1]) == 1)
 		return (arg);
+	i = 0;
 	full_str = ft_strdup(arg);
 	while (full_str[i])
 	{
 		if (full_str[i] == '$' && (full_str[i + 1]
-			&& (ft_isspecial(full_str[i + 1]) == 0)))
+			&& (ft_isspace(full_str[i + 1]) == 0)))
 		{
 			full_str = replace_env_vars(full_str, mini, i);
 			if (*full_str == '\0')
