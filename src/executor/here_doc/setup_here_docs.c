@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:17:22 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 19:57:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:16:32 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,24 @@ static int	parent(t_mini *mini, t_command *current, pid_t pid, int hd_pipe[2])
 	int	status;
 	int	sig;
 
-	status = -1;
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
 		write(STDERR_FILENO, "\n", 1);
+		close(hd_pipe[1]);
+		current->here_doc_fd = hd_pipe[0];
+		mini->exit_code = errno;
+		return (1);
 	}
 	close(hd_pipe[1]);
 	current->here_doc_fd = hd_pipe[0];
-	if (status)
+	if (WIFSIGNALED(status))
 	{
-		if (WIFSIGNALED(status))
-		{
-			sig = WTERMSIG(status);
-			mini->exit_code = 128 + sig;
-		}
-		else if (WIFEXITED(status))
-			mini->exit_code = WEXITSTATUS(status);
+		sig = WTERMSIG(status);
+		mini->exit_code = 128 + sig;
 	}
+	else if (WIFEXITED(status))
+		mini->exit_code = WEXITSTATUS(status);
 	if (mini->exit_code > 0)
 		return (1);
 	return (0);
@@ -56,7 +56,7 @@ static void	children(t_mini *mini, t_command *current, int i, int hd_pipe)
 		free_exit(mini);
 		exit (EXIT_FAILURE);
 	}
-	str = get_str(limiter, mini, NULL, current);
+	str = here_doc_get_str(limiter, mini, NULL, current);
 	if (write(hd_pipe, str, ft_strlen(str)) == -1)
 	{
 		here_doc_exit(mini, limiter, str, &hd_pipe);

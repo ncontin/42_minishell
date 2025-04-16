@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 19:48:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:14:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,6 +273,6 @@ void					get_str_error(t_mini *mini, int here_doc_fd, char *new, char *limiter);
 void					here_doc_error(char *str_error, int here_doc_pipe[2]);
 void					here_doc_exit(t_mini *mini, char *limiter, char *str, int *hd_pipe);
 //here_doc_get_str.c
-char					*get_str(char *limiter, t_mini *mini, char *str, t_command *current);
+char					*here_doc_get_str(char *limiter, t_mini *mini, char *str, t_command *current);
 char					*add_line_return(char *source, t_mini *mini);
 #endif

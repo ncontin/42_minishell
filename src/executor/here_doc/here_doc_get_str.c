@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:29:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 19:50:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:13:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ char	*add_line_return(char *source, t_mini *mini)
 	return (limiter);
 }
 
-char	*get_str(char *limiter, t_mini *mini, char *str, t_command *current)
+char	*here_doc_get_str(char *limiter, t_mini *mini, char *str,
+			t_command *current)
 {
 	char	*new;
 
