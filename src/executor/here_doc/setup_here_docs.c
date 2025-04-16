@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:17:22 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 23:16:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 12:48:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,10 @@ static char *add_line_return(char *source, t_mini *mini)
 	size = ft_strlen(source);
 	limiter = (char *)malloc(sizeof(char) * size + 2);
 	if (limiter == NULL)
-		write(2, "here_doc error\n", 15);
+	{
+		write(STDERR_FILENO, "here_doc allocation error\n", 26);
+		return (NULL);
+	}
 	while (i < size)
 	{
 		limiter[i] = source[i];
@@ -102,6 +105,7 @@ static char *add_line_return(char *source, t_mini *mini)
 	}
 	limiter[i] = '\n';
 	limiter[i + 1] = '\0';
+	i++;
 	return (limiter);
 }
 
@@ -116,14 +120,31 @@ static int	read_here_doc(t_mini *mini, t_command *current, int i)
 	if (current->here_doc_fd != -1)
 		close(current->here_doc_fd);
 	here_doc_parent_signal();
-	pipe(here_doc_pipe);
+	if (pipe(here_doc_pipe) == -1)
+	{
+		write(STDERR_FILENO, strerror(errno), errno);
+		return (1);
+	}
 	pid = fork();
-	if (pid == 0)
+	if (pid == -1)
+	{
+		close(here_doc_pipe[0]);
+		close(here_doc_pipe[1]);
+		write(STDERR_FILENO, strerror(errno), errno);
+		return (1);
+	}
+	else if (pid == 0)
 	{
 		here_doc_child_signal();
 		current->here_doc_fd = here_doc_pipe[1];
 		close(here_doc_pipe[0]);
 		limiter = add_line_return(current->file[i], mini);
+		if (limiter == NULL)
+		{
+			close(here_doc_pipe[1]);
+			free_exit(mini);
+			exit (EXIT_FAILURE);
+		}
 		str = get_str(limiter, mini, NULL, current);
 		write(here_doc_pipe[1], str, ft_strlen(str));
 		free(limiter);
