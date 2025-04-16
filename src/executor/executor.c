@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 09:29:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 11:30:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,13 @@ void	wait_children(t_mini *mini, int fork_count)
 		current = current->next;
 		i++;
 	}
-	//parent_signal();
 	if (i > 0)
 	{
 		if (sig == SIGINT)
+		{
+			mini->exit_code = 128 + sig;
 			printf("\n");
+		}
 		if (WIFEXITED(status))
 			mini->exit_code = WEXITSTATUS(status);
 	}
