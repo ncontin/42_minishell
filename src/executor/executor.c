@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 11:30:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:53:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	wait_children(t_mini *mini, int fork_count)
 	t_command	*current;
 
 	i = 0;
+	sig = 0;
 	current = mini->cmds;
 	status = 0;
 	while ((current != NULL) && (i < fork_count))

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 23:06:22 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:24:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,4 +268,12 @@ void					executor_signal(void);
 void					parent_signal(void);
 //setup_here_docs.c
 int						setup_here_docs(t_mini *mini);
+//here_doc_utils.c
+void					get_str_error(t_mini *mini, int here_doc_fd, char *new, char *limiter);
+void					here_doc_error(char *str_error, int here_doc_pipe[2]);
+void					here_doc_exit(t_mini *mini, char *limiter, char *str, int *hd_pipe);
+//here_doc_children.c
+void					here_doc_child(t_mini *mini, t_command *current, int i, int hd_pipe);
+//here_doc_parent.c
+int						here_doc_parent(t_mini *mini, t_command *commands, pid_t pid, int here_doc_pipe[2]);
 #endif

@@ -59,15 +59,3 @@ minishell: command not found
 bash> export PATH=$PATH:.
 bash> minishell
 minishell> 
-
---------------------------------------------
-minishell> cat << "        "
-minishell> cat << ""
-minishell> 
-
-bash> cat << "         "
->
-bash> cat << ""
->
-
-
