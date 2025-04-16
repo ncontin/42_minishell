@@ -80,8 +80,7 @@ SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/here_doc/signal_here_doc.c\
 				src/executor/here_doc/setup_here_docs.c\
 				src/executor/here_doc/here_doc_utils.c\
-				src/executor/here_doc/here_doc_child.c\
-				src/executor/here_doc/here_doc_parent.c\
+				src/executor/here_doc/here_doc_get_str.c\
 
 SRC_SIGNALS = 	src/signals/signals.c\
 				src/signals/executor_signal.c\
