@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 13:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/09 13:52:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:23:56 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void	assign_type_argument(t_token *tokens)
 	{
 		if (current->operator == PIPE)
 			current->arg_type = PIPE_OPERATOR;
-		/*else if (current->argument != NULL && current->argument[0] == '$')
-			current->arg_type = ENV_VAR;*/
 		else if (current->operator == OUTPUT || current->operator == INPUT
 			|| current->operator == APPEND || current->operator == HEREDOC)
 			current->arg_type = REDIRECTION;

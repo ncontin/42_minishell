@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 14:53:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:30:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void close_child_heredoc_fd(t_command *cmds, t_command *current)
+static void	close_child_heredoc_fd(t_command *cmds, t_command *current)
 {
 	t_command	*commands;
 
@@ -53,7 +53,7 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 
 	close_child_heredoc_fd(mini->cmds, current);
 	duplicate_pipes(current, prev_fd, mini);
-	if (current->operator!= NONE)
+	if (current->operator != NONE)
 		handle_redirection(current, mini);
 	envp = get_envp_array(mini->lst_env);
 	execute_cmd(current, envp, mini);

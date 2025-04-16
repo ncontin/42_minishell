@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 17:42:04 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 18:48:44 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/16 20:22:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ static void	arg_count(t_token *tokens, int *count_arg, int *count_operator)
 	t_arg_type	type;
 
 	current = tokens;
-	while (current != NULL && current->operator!= PIPE)
+	while (current != NULL && current->operator != PIPE)
 	{
 		type = current->arg_type;
-		if (current->operator== NONE &&(type == COMMAND || type == OPTION
+		if (current->operator == NONE && (type == COMMAND || type == OPTION
 				|| type == ARGUMENT || type == ENV_VAR))
 			(*count_arg)++;
-		else if (current->operator!= NONE)
+		else if (current->operator != NONE)
 			(*count_operator)++;
 		current = current->next;
 	}
@@ -49,8 +49,8 @@ static t_bool	alloc_argv(t_command *new, int nb_args, t_token *tokens)
 
 static t_bool	alloc_operator(t_command *new, int nb_operator, t_token *tokens)
 {
-	new->operator=(t_operator *) malloc(sizeof(t_operator *) * nb_operator);
-	if (new->operator== NULL)
+	new->operator = (t_operator *) malloc(sizeof(t_operator *) * nb_operator);
+	if (new->operator == NULL)
 	{
 		free(tokens);
 		return (FALSE);
