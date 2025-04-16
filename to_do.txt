@@ -52,7 +52,7 @@ bash> export PATH=""
 bash> ls
 bash: ls: No such file or directory
 --------------------------------------------
-minishell> export PATH=$PATH
+minishell> export PATH=$PATH:.
 minishell> minishell
 minishell: command not found
 
