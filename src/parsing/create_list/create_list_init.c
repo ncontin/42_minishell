@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 15:52:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/27 15:19:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/17 10:32:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_token	*init_new_list(t_token *head)
 	if (current == NULL)
 	{
 		write(2, "Memory allocation failed to create list\n", 40);
+		free_token_argument(head);
 		free_token(head);
 		return (NULL);
 	}

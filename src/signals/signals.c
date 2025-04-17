@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 11:08:22 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/14 11:19:05 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/17 09:43:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	sig_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		signal_received = 1;
+		g_signal_received = 1;
 		rl_redisplay();
 		printf("\n");
 		rl_on_new_line();

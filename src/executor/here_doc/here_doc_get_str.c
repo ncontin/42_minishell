@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:29:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 20:13:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/17 09:45:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*read_line(t_mini *mini, int here_doc_fd, char *new, char *limiter)
 
 	write(1, "> ", 2);
 	str = get_next_line(0);
-	if (signal_received)
+	if (g_signal_received)
 		get_str_error(mini, here_doc_fd, new, limiter);
 	return (str);
 }

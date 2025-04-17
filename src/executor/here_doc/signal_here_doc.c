@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 12:09:29 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 17:12:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/17 09:45:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	here_doc_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		signal_received = 1;
+		g_signal_received = 1;
 		printf("\n");
 	}
 }
