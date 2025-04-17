@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 11:49:12 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:18:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,9 +209,11 @@ void					lst_add_new(t_token **head, t_token *new);
 void					assign_operator(t_token *tokens);
 // error.c
 void					error_msg(char *message, int error);
-void					error_pid(t_command *current, t_mini *mini);
+void					error_arg_split(t_mini *mini);
 // even_quotes.c
 t_bool					is_even_quotes(char **tokens);
+// is_valid_operator.c
+t_bool					is_valid_operator(char **args);
 // free.c
 void					free_token(t_token *token);
 void					free_token_argument(t_token *token);

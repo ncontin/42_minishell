@@ -55,6 +55,7 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/check_operator/is_valid_token.c\
 				src/parsing/check_operator/assign_type_argument.c\
 				src/parsing/check_operator/is_even_quotes.c\
+				src/parsing/check_operator/is_valid_operator.c\
 				src/parsing/merge_args/merge_args.c\
 				src/parsing/split_pipes/str_and_operator.c\
 				src/parsing/split_pipes/split_pipes.c\
