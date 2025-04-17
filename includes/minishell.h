@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 23:06:22 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:12:32 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ typedef struct s_mini
 	char				*input;
 	char				**args;
 	long long int		exit_code;
+	int					expanded;
 	t_env				*lst_env;
 	t_token				*tokens;
 	t_command			*cmds;
@@ -152,6 +153,7 @@ void					free_exit(t_mini *mini);
 void					expander(t_mini *mini);
 char					*expand_exit_status(char *arg, t_mini *mini);
 char					*expand_shell_vars(char *arg, t_mini *mini);
+void					split_words(t_mini *mini, t_token **tokens);
 // init
 void					init_mini(t_mini *mini);
 void					init_envp(t_mini *mini);
@@ -263,9 +265,9 @@ void					here_doc_redirection(t_command *current, t_mini *mini);
 // here_doc_signal.c
 void					here_doc_child_signal(void);
 void					here_doc_parent_signal(void);
-//executor_signal.c
+// executor_signal.c
 void					executor_signal(void);
 void					parent_signal(void);
-//setup_here_docs.c
+// setup_here_docs.c
 int						setup_here_docs(t_mini *mini);
 #endif

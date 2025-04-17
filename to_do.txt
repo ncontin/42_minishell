@@ -13,7 +13,17 @@ bash : /home : is a directory
 bash> echo $?
 126
 
---------------------------------------------
-minishell> cat
-^C
-minishell> minishell>
+
+
+----------------------------------------------
+#export A='foo   ' B='bar   ' C='baz   '
+
+echo $A"$B"$C"A"$B"$C"
+echo $A'$B'$C'A'$B'$C'
+echo $A"$B"$C"A"$B"$C"
+echo $A'$B'$C'A'$B'$C'
+echo $A
+echo $A$B
+echo $A$B$C
+echo $A$B$C$AA
+------------------------------------------------

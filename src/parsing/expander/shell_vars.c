@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/15 17:19:57 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/17 16:53:04 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static char	*replace_env_vars(char *full_str, t_mini *mini, int i)
 		if (ft_strncmp(&full_str[i + 1], current->key, len) == 0
 			&& ft_strlen(current->key) == len)
 		{
+			// printf("mini->tokens->quotes: %s\n", mini->tokens->quotes);
 			full_str = process_string(full_str, current, len, i);
 			i += ft_strlen(current->value) - 1;
 			find = 1;
@@ -104,6 +105,7 @@ char	*expand_shell_vars(char *arg, t_mini *mini)
 						+ 1]) == 0)))
 		{
 			full_str = replace_env_vars(full_str, mini, i);
+			mini->expanded = 1;
 			if (full_str && full_str[0] == '\0')
 			{
 				free(arg);
