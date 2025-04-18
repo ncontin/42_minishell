@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/17 17:12:19 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/18 13:26:40 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static t_token	*create_token(char *arg)
 	return (new_token);
 }
 
-static void	add_new_token(t_token *token, char *word)
+static void	add_new_token(t_token *token, char *word, t_token *next_og)
 {
 	t_token	*current;
 	t_token	*next;
@@ -69,19 +69,21 @@ static void	add_new_token(t_token *token, char *word)
 	current = token;
 	next = token->next;
 	current->next = new;
+	new->next = next_og;
 	new->prev = current;
+	if (next_og)
+		next_og->prev = new;
 }
 
 void	split_words(t_mini *mini, t_token **tokens)
 {
 	t_token	*current;
 	char	**split_words;
-	t_token	*next;
+	t_token	*next_og;
 	char	*trimmed_word;
 	int		array_size;
 	int		i;
 
-	current = NULL;
 	// word_splitting(t_token **tokens):
 	// This function iterates through the token list.
 	// If a token has quotes == NO_QUOTES and its argument contains IFS whitespace (e.g.,
@@ -99,7 +101,7 @@ void	split_words(t_mini *mini, t_token **tokens)
 	current = *tokens;
 	while (current)
 	{
-		next = current->next;
+		next_og = current->next;
 		if (current->quotes == NO_QUOTES && has_space(current->argument)
 			&& mini->expanded == 1)
 		{
@@ -114,7 +116,7 @@ void	split_words(t_mini *mini, t_token **tokens)
 				i = 1;
 				while (split_words[i])
 				{
-					add_new_token(current, split_words[i]);
+					add_new_token(current, split_words[i], next_og);
 					current = current->next;
 					i++;
 				}
@@ -129,11 +131,13 @@ void	split_words(t_mini *mini, t_token **tokens)
 			else if (array_size == 0)
 			{
 				current->prev->next = current->next;
-				current->next->prev = current->prev;
+				if (current->next)
+					current->next->prev = current->prev;
+				free(current->argument);
 				free(current);
 			}
 			free_array(split_words);
 		}
-		current = next;
+		current = next_og;
 	}
 }
