@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 10:46:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 11:28:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_token	*new_list(char *args, int nb_strings, t_token *head)
 		if (current->argument == NULL)
 		{
 			free(current);
-			msg_and_free(head);
+			error_create_list(head);
 			return (NULL);
 		}
 		lst_add_new(&head, current);
@@ -55,5 +55,6 @@ t_token	*create_list(char **tokens)
 			return (NULL);
 		i++;
 	}
+	free_array(tokens);
 	return (head);
 }

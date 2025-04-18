@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 17:18:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 12:32:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,20 @@
 
 extern int				g_signal_received;
 
-typedef enum s_bool
+typedef enum e_bool
 {
 	FALSE,
 	TRUE
 }						t_bool;
 
-typedef enum s_quotes
+typedef enum e_quotes
 {
 	NO_QUOTES,
 	SINGLE,
 	DOUBLE
 }						t_quotes;
 
-typedef enum s_operator
+typedef enum e_operator
 {
 	NONE,
 	OUTPUT,
@@ -73,7 +73,7 @@ typedef enum s_operator
 	PIPE
 }						t_operator;
 
-typedef enum s_arg_type
+typedef enum e_arg_type
 {
 	ARGUMENT,
 	COMMAND,
@@ -210,6 +210,9 @@ void					assign_operator(t_token *tokens);
 // error.c
 void					error_msg(char *message, int error);
 void					error_arg_split(t_mini *mini);
+void					error_merge_args(t_mini *mini);
+void					error_create_list(t_token *tokens);
+void					error_split_pipe(t_mini *mini);
 // even_quotes.c
 t_bool					is_even_quotes(char **tokens);
 // is_valid_operator.c
@@ -217,7 +220,6 @@ t_bool					is_valid_operator(char **args);
 // free.c
 void					free_token(t_token *token);
 void					free_token_argument(t_token *token);
-void					msg_and_free(t_token *tokens);
 void					free_commands(t_command *cmds);
 // is_mutil_strings.c
 int						is_multi_strings(char *args, int i, t_bool dquotes,
@@ -243,7 +245,7 @@ t_command				*split_pipe(t_token *tokens, t_command *cmds,
 // split_pipes_init.c
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
 // create_argv.c
-t_bool					str_and_operator(t_command *new, t_token *tokens);
+int						str_and_operator(t_command *new, t_token *tokens);
 // create_operator.c
 void					create_operator(t_command *new, t_token *tokens);
 // close_fd.c

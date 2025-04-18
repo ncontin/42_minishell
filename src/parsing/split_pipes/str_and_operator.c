@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 17:42:04 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 20:22:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:58:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,41 +30,43 @@ static void	arg_count(t_token *tokens, int *count_arg, int *count_operator)
 	}
 }
 
-static t_bool	alloc_argv(t_command *new, int nb_args, t_token *tokens)
+static int	alloc_argv(t_command *new, int nb_args)
 {
 	new->argv = (char **)malloc(sizeof(char *) * (nb_args + 2));
 	if (new->argv == NULL)
 	{
-		free(tokens);
-		return (FALSE);
+		free(new);
+		new = NULL;
+		return (1);
 	}
 	new->arg_quotes = (t_quotes *)malloc(sizeof(t_quotes *) * (nb_args));
 	if (new->arg_quotes == NULL)
 	{
-		free(tokens);
-		return (FALSE);
+		free(new->argv);
+		free(new);
+		new = NULL;
+		return (1);
 	}
-	return (TRUE);
+	return (0);
 }
 
-static t_bool	alloc_operator(t_command *new, int nb_operator, t_token *tokens)
+static int	alloc_operator(t_command *new, int nb_operator)
 {
 	new->operator = (t_operator *) malloc(sizeof(t_operator *) * nb_operator);
 	if (new->operator == NULL)
 	{
-		free(tokens);
-		return (FALSE);
+		return (1);
 	}
 	new->file = (char **)malloc(sizeof(char *) * nb_operator);
 	if (new->file == NULL)
 	{
-		free(tokens);
-		return (FALSE);
+		free(new->operator);
+		return (1);
 	}
-	return (TRUE);
+	return (0);
 }
 
-t_bool	str_and_operator(t_command *new, t_token *tokens)
+int	str_and_operator(t_command *new, t_token *tokens)
 {
 	int	nb_args;
 	int	nb_operator;
@@ -74,14 +76,23 @@ t_bool	str_and_operator(t_command *new, t_token *tokens)
 	arg_count(tokens, &nb_args, &nb_operator);
 	if (nb_args > 0)
 	{
-		if (alloc_argv(new, nb_args, tokens) == FALSE)
-			return (FALSE);
+		if (alloc_argv(new, nb_args) == 1)
+			return (1);
 	}
 	if (nb_operator > 0)
 	{
-		if (alloc_operator(new, nb_operator, tokens) == FALSE)
-			return (FALSE);
+		if (alloc_operator(new, nb_operator) == 1)
+		{
+			if (nb_args > 0)
+			{
+				free(new->arg_quotes);
+				free(new->argv);
+				free(new);
+				new = NULL;
+			}
+			return (1);
+		}
 	}
 	new->nb_operator = nb_operator;
-	return (TRUE);
+	return (0);
 }
