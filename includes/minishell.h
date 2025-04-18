@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 18:15:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:19:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-extern int				g_signal_received;
+extern int	g_signal_received;
 
 typedef enum e_bool
 {

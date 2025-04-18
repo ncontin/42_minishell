@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:48:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 17:09:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:31:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,5 @@ void	error_pid_executor(t_mini *mini, t_command *current, int *prev_fd)
 	close(current->pipe_fd[0]);
 	close(current->pipe_fd[1]);
 	if (*prev_fd != -1)
-		close(*prev_fd);	
+		close(*prev_fd);
 }
