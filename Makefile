@@ -8,7 +8,6 @@ RM = rm -f
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
-		src/path.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\
@@ -79,6 +78,7 @@ SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/handle_redirection.c\
 				src/executor/execute_commands.c\
 				src/executor/dup_create_pipe.c\
+				src/executor/path.c\
 				src/executor/here_doc/setup_here_docs.c\
 				src/executor/here_doc/here_doc_utils.c\
 				src/executor/here_doc/here_doc_get_str.c\

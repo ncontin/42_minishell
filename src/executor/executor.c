@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 17:22:32 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:05:32 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	handle_start(t_command *current, t_mini *mini)
 	return (0);
 }
 
-void	wait_children(t_mini *mini, int fork_count)
+static void	wait_children(t_mini *mini, int fork_count)
 {
 	int			status;
 	int			i;

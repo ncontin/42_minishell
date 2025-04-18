@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 17:21:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:15:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,139 +147,113 @@ typedef struct s_mini
 	t_command			*cmds;
 }						t_mini;
 
-void					free_exit(t_mini *mini);
-// expander
-void					expander(t_mini *mini);
-char					*expand_exit_status(char *arg, t_mini *mini);
-char					*expand_shell_vars(char *arg, t_mini *mini);
-// init
-void					init_mini(t_mini *mini);
-void					init_envp(t_mini *mini);
-char					**get_envp_array(t_env *lst_env);
-// builtins
-int						is_builtin(char *str);
-void					execute_builtin(t_mini *mini, char **argv);
-void					ft_pwd(t_mini *mini);
-void					ft_echo(char **cmd_args, long long int *exit_code);
-void					free_array(char **array);
-int						ft_cd(t_mini *mini);
-int						find_min_len(char *s1, char *s2);
-void					print_export(t_env_node **sorted_envp_cp, char **args);
-t_env_node				**copy_envp_list(t_env_node **envp_cp);
-void					replace_env(t_env_node *env_to_replace, char *arg);
-void					ft_env(t_mini *mini);
-void					ft_export(t_mini *mini, char **cmd_args);
-void					ft_unset(t_mini *mini, char **cmd_args);
-void					ft_unset(t_mini *mini, char **cmd_args);
-void					print_env(t_env_node **env_stack);
-t_env_node				*find_last(t_env_node **my_envp);
-int						find_equal(char *str);
-char					*get_key(char *str);
-char					*get_value(char *str);
-void					ft_exit(t_mini *mini, char **cmd_args);
-long long				ft_atoll(const char *nptr, int *overflow);
+/* === INIT === */
+void		init_mini(t_mini *mini);
+void		init_envp(t_mini *mini);
+char		**get_envp_array(t_env *lst_env);
 
-// signals
-// void					sig_handler(int nbr);
-void					handle_signals(void);
-// free
-void					free_stack(t_env_node **my_envp);
-void					free_array(char **array);
-void					free_path(t_env *lst_env);
-void					free_input(t_mini *mini);
-// assign_type_argument
-void					assign_type_argument(t_token *tokens);
-void					line_read(t_mini *mini);
-// arg_split.c
-char					**arg_split(char const *s);
-// arg_split_utils.c
-t_bool					is_operator(char const *c, int no_space, int *len);
-// check_quotes.c
-void					check_quotes(char *args, t_token *current);
-int						get_size(char *args);
-char					*rm_quotes(char *args, int size);
-// count_args.c
-int						count_args(t_parser *parser);
-// create_list.c
-t_token					*create_list(char **tokens);
-// create_list_init.c
-t_token					*init_new_list(t_token *head);
-void					lst_add_new(t_token **head, t_token *new);
-// check_operator.c
-void					assign_operator(t_token *tokens);
-// parsing_error.c
-void					error_msg(char *message, int error);
-void					error_arg_split(t_mini *mini);
-void					error_merge_args(t_mini *mini);
-void					error_create_list(t_token *tokens, t_token *current);
-void					error_split_pipe(t_mini *mini);
-// executor_error.c
-void					error_pid_executor(t_mini *mini, t_command *current, int *prev_fd);
-// even_quotes.c
-t_bool					is_even_quotes(char **tokens);
-// is_valid_operator.c
-t_bool					is_valid_operator(char **args);
-// free.c
-void					free_token(t_token *token);
-void					free_token_argument(t_token *token);
-void					free_commands(t_command *cmds);
-// is_mutil_strings.c
-int						is_multi_strings(char *args, int i, t_bool dquotes,
-							t_bool squotes);
-// is_valid_token.c
-t_bool					is_valid_token(t_token *tokens);
-// multi_str.c
-void					multi_str(char *args, int nb_strings, t_token **head,
-							int i);
-// parsing.c
-t_command				*parsing(t_mini *mini);
-// wordlen.c
-int						wordlen(char const *s, t_bool dquotes, t_bool squotes);
-// path.c
-void					get_path(char **envp, t_env *lst_env);
-char					**get_unix_path(char **envp);
-char					*copy_command(char *unix_path, char *commands);
-// merge_args.c
-t_bool					merge_args(t_token **tokens);
-// split_pipes.c
-t_command				*split_pipe(t_token *tokens, t_command *cmds,
-							t_command *new, int i);
-// split_pipes_init.c
-t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
-// split_pipe_utils.c
-t_bool					is_command(t_arg_type arg_type);
-t_bool					is_recognized_operator(t_operator operator);
-t_bool					is_filename_or_limiter(t_arg_type arg_type);
-// create_argv.c
-int						str_and_operator(t_command *new, t_token *tokens);
-// create_operator.c
-void					create_operator(t_command *new, t_token *tokens);
-// close_fd.c
-void					close_fd(int *pipe_fd);
-// executor.c
-void					executor(t_mini *mini, t_command *current, int prev_fd, int fork_count);
-// handle_redirection.c
-void					handle_redirection(t_command *current, t_mini *mini);
-// execute_commands.c
-int						execute_builtin_parent(t_mini *mini, t_command *cmd);
-void					execute_cmd(t_command *current, char **envp,
-							t_mini *mini);
-// dup_create_pipe.c
-void					duplicate_pipes(t_command *current, int *prev_fd,
-							t_mini *mini);
-int						create_pipe(t_command *current, int *prev_fd, t_mini *mini);
-// here_docredirection.c
-void					here_doc_redirection(t_command *current, t_mini *mini);
-//executor_signal.c
-void					executor_signal(void);
-void					child_signal(void);
-//setup_here_docs.c
-int						setup_here_docs(t_mini *mini);
-//here_doc_utils.c
-void					get_str_error(t_mini *mini, int here_doc_fd, char *new, char *limiter);
-void					here_doc_error(char *str_error, int here_doc_pipe[2]);
-void					here_doc_exit(t_mini *mini, char *limiter, char *str, int *hd_pipe);
-//here_doc_get_str.c
-char					*here_doc_get_str(char *limiter, t_mini *mini, char *str, t_command *current);
-char					*add_line_return(char *source, t_mini *mini);
+/* === BUILTINS === */
+int			is_builtin(char *str);
+void		execute_builtin(t_mini *mini, char **argv);
+void		ft_pwd(t_mini *mini);
+void		ft_echo(char **cmd_args, long long int *exit_code);
+void		free_array(char **array);
+int			ft_cd(t_mini *mini);
+int			find_min_len(char *s1, char *s2);
+void		print_export(t_env_node **sorted_envp_cp, char **args);
+t_env_node	**copy_envp_list(t_env_node **envp_cp);
+void		replace_env(t_env_node *env_to_replace, char *arg);
+void		ft_env(t_mini *mini);
+void		ft_export(t_mini *mini, char **cmd_args);
+void		ft_unset(t_mini *mini, char **cmd_args);
+void		ft_unset(t_mini *mini, char **cmd_args);
+void		print_env(t_env_node **env_stack);
+t_env_node	*find_last(t_env_node **my_envp);
+int			find_equal(char *str);
+char		*get_key(char *str);
+char		*get_value(char *str);
+void		ft_exit(t_mini *mini, char **cmd_args);
+long long	ft_atoll(const char *nptr, int *overflow);
+
+/* === SIGNAL === */
+void		executor_signal(void);
+void		child_signal(void);
+void		handle_signals(void);
+/* === FREEING ===*/
+void		free_stack(t_env_node **my_envp);
+void		free_array(char **array);
+void		free_path(t_env *lst_env);
+void		free_input(t_mini *mini);
+void		free_exit(t_mini *mini);
+void		free_token(t_token *token);
+void		free_token_argument(t_token *token);
+void		free_commands(t_command *cmds);
+void		close_fd(int *pipe_fd);
+/*=== ERROR ===*/
+void		error_msg(char *message, int error);
+void		error_arg_split(t_mini *mini);
+void		error_merge_args(t_mini *mini);
+void		error_create_list(t_token *tokens, t_token *current);
+void		error_split_pipe(t_mini *mini);
+void		error_pid_executor(t_mini *mini, t_command *current, int *prev_fd);
+void		get_str_error(t_mini *mini, int here_fd, char *new, char *limiter);
+void		here_doc_error(char *str_error, int here_doc_pipe[2]);
+/*====== READLINE ======*/
+void		line_read(t_mini *mini);
+/*====== PARSING ====== */
+t_command	*parsing(t_mini *mini);
+/*=== CHECK OPERATOR ===*/
+void		assign_operator(t_token *tokens);
+void		assign_type_argument(t_token *tokens);
+t_bool		is_even_quotes(char **tokens);
+t_bool		is_valid_operator(char **args);
+t_bool		is_valid_token(t_token *tokens);
+/*=== CREATE LIST ===*/
+t_token		*create_list(char **tokens);
+t_token		*init_new_list(t_token *head);
+void		lst_add_new(t_token **head, t_token *new);
+void		check_quotes(char *args, t_token *current);
+int			get_size(char *args);
+char		*rm_quotes(char *args, int size);
+void		multi_str(char *args, int nb_strings, t_token **head, int i);
+int			is_multi_strings(char *args, int i, t_bool dquote, t_bool squote);
+/* === EXPANDER === */
+void		expander(t_mini *mini);
+char		*expand_exit_status(char *arg, t_mini *mini);
+char		*expand_shell_vars(char *arg, t_mini *mini);
+/*=== MERGE ARGS ===*/
+t_bool		merge_args(t_token **tokens);
+/*=== SPLIT ARGS ===*/
+int			count_args(t_parser *parser);
+char		**arg_split(char const *s);
+t_bool		is_operator(char const *c, int no_space, int *len);
+int			wordlen(char const *s, t_bool dquotes, t_bool squotes);
+/*=== SPLIT PIPES === */
+t_command	*split_pipe(t_token *token, t_command *cmds, t_command *new, int i);
+t_command	*create_cmd_list(t_command **cmds, t_token *tokens);
+t_bool		is_command(t_arg_type arg_type);
+t_bool		is_recognized_operator(t_operator operator);
+t_bool		is_filename_or_limiter(t_arg_type arg_type);
+int			str_and_operator(t_command *new, t_token *tokens);
+/* ====== EXECUTOR ====== */
+void		executor(t_mini *mini, t_command *current, int prev_fd, int count);
+/* === DUP AND CREATE PIPE === */
+void		duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini);
+int			create_pipe(t_command *current, int *prev_fd, t_mini *mini);
+/* === EXECUTE COMMANDS === */
+int			execute_builtin_parent(t_mini *mini, t_command *cmd);
+void		execute_cmd(t_command *current, char **envp, t_mini *mini);
+void		get_path(char **envp, t_env *lst_env);
+char		**get_unix_path(char **envp);
+char		*copy_command(char *unix_path, char *commands);
+/* === HANDLE REDIRECTION === */
+void		here_doc_redirection(t_command *current, t_mini *mini);
+void		handle_redirection(t_command *current, t_mini *mini);
+/*====== HERE_DOC ====== */
+char		*add_line_return(char *source, t_mini *mini);
+int			setup_here_docs(t_mini *mini);
+void		here_doc_exit(t_mini *mini, char *limiter, char *str, int *hd_pipe);
+char		*here_doc_get_str(char *limiter, t_mini *mini, char *str,
+				t_command *current);
+
 #endif
