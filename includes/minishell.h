@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 14:53:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:09:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,12 +207,14 @@ t_token					*init_new_list(t_token *head);
 void					lst_add_new(t_token **head, t_token *new);
 // check_operator.c
 void					assign_operator(t_token *tokens);
-// error.c
+// parsing_error.c
 void					error_msg(char *message, int error);
 void					error_arg_split(t_mini *mini);
 void					error_merge_args(t_mini *mini);
 void					error_create_list(t_token *tokens, t_token *current);
 void					error_split_pipe(t_mini *mini);
+// executor_error.c
+void					error_pid_executor(t_mini *mini, t_command *current, int *prev_fd);
 // even_quotes.c
 t_bool					is_even_quotes(char **tokens);
 // is_valid_operator.c
@@ -255,7 +257,7 @@ void					create_operator(t_command *new, t_token *tokens);
 // close_fd.c
 void					close_fd(int *pipe_fd);
 // executor.c
-void					executor(t_mini *mini);
+void					executor(t_mini *mini, t_command *current, int prev_fd, int fork_count);
 // handle_redirection.c
 void					handle_redirection(t_command *current, t_mini *mini);
 // execute_commands.c
@@ -265,7 +267,7 @@ void					execute_cmd(t_command *current, char **envp,
 // dup_create_pipe.c
 void					duplicate_pipes(t_command *current, int *prev_fd,
 							t_mini *mini);
-void					create_pipe(t_command *current, t_mini *mini);
+int						create_pipe(t_command *current, int *prev_fd, t_mini *mini);
 // here_docredirection.c
 void					here_doc_redirection(t_command *current, t_mini *mini);
 // here_doc_signal.c

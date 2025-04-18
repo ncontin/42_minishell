@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:20:41 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 15:04:19 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:19:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,20 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 		handle_prev_fd(prev_fd);
 }
 
-void	create_pipe(t_command *current, t_mini *mini)
+int	create_pipe(t_command *current, int *prev_fd, t_mini *mini)
 {
-	(void)mini;
 	if (current->next != NULL && (current->next->check_here_doc == FALSE))
 	{
 		if (pipe(current->pipe_fd) == -1)
 		{
-			close_fd(current->pipe_fd);
-			return ;
+			mini->exit_code = errno;
+			write(STDERR_FILENO, "executor: ", 10);
+			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+			write(STDERR_FILENO, "\n", 1);
+			if (*prev_fd != -1)
+				close(*prev_fd);
+			return (1);
 		}
 	}
+	return (0);
 }

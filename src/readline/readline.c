@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 22:02:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:35:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	handle_user_input(t_mini *mini)
 	add_history(mini->input);
 	mini->cmds = parsing(mini);
 	if (mini->cmds != NULL)
-		executor(mini);
+		executor(mini, mini->cmds, -1, 0);
 	free_commands(mini->cmds);
 	mini->cmds = NULL;
 	free(mini->input);

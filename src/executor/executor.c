@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 15:17:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:10:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ static int	handle_start(t_command *current, t_mini *mini)
 	}
 	if (setup_here_docs(mini) == 1)
 		return (1);
+	executor_signal();
 	return (0);
 }
 
@@ -135,26 +136,18 @@ void	wait_children(t_mini *mini, int fork_count)
 	}
 }
 
-void	executor(t_mini *mini)
+void	executor(t_mini *mini, t_command *current, int prev_fd, int fork_count)
 {
-	t_command	*current;
-	int			prev_fd;
-	int			fork_count;
-
-	current = mini->cmds;
-	prev_fd = -1;
-	fork_count = 0;
 	if (handle_start(current, mini) == 1)
 		return ;
-	executor_signal();
 	while (current != NULL)
 	{
-		create_pipe(current, mini);
+		if (create_pipe(current, &prev_fd, mini) == 1)
+			break ;
 		current->pid = fork();
 		if (current->pid < 0)
 		{
-			mini->error = errno;
-			write(2, "fork error\n", 11);
+			error_pid_executor(mini, current, &prev_fd);
 			break ;
 		}
 		else if (current->pid == 0)
