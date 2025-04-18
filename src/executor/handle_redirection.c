@@ -6,11 +6,25 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 17:37:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:35:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	here_doc_redirection(t_command *current, t_mini *mini)
+{
+	(void)mini;
+	if (dup2(current->here_doc_fd, STDIN_FILENO) == -1)
+		write(2, "here_doc : dup2 error\n", 21);
+	close(current->here_doc_fd);
+	current->here_doc_fd = -1;
+	if (current->next != NULL)
+	{
+		dup2(current->pipe_fd[1], STDOUT_FILENO);
+		close(current->pipe_fd[1]);
+	}
+}
 
 static void	append_operator(t_command *current, t_mini *mini, int *j)
 {
@@ -18,8 +32,7 @@ static void	append_operator(t_command *current, t_mini *mini, int *j)
 	int	i;
 
 	i = *j;
-
-	if (access(current->file[i], F_OK) != 0) 
+	if (access(current->file[i], F_OK) != 0)
 	{
 		file_fd = open(current->file[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
 		if (file_fd == -1)
@@ -98,7 +111,7 @@ static void	output_operator(t_command *current, t_mini *mini, int *j)
 	int	i;
 
 	i = *j;
-	if (access(current->file[i], F_OK) != 0) 
+	if (access(current->file[i], F_OK) != 0)
 	{
 		file_fd = open(current->file[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		if (file_fd == -1)
@@ -143,7 +156,7 @@ void	handle_redirection(t_command *current, t_mini *mini)
 	int	i;
 
 	i = current->nb_operator - 1;
-	while (i >= 0) 
+	while (i >= 0)
 	{
 		if (current->operator[i] == HEREDOC)
 		{

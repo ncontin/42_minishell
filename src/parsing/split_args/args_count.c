@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 11:06:22 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/11 19:11:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:23:11 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ static void	check_operator(t_parser *parser, int *j)
 	if (parser->in_word)
 	{
 		parser->in_word = FALSE;
-		if ((ft_isspace(parser->s[i]) == 0) 
-				&& is_operator(parser->s + i, 0, &i))
+		if ((ft_isspace(parser->s[i]) == 0)
+			&& is_operator(parser->s + i, 0, &i))
 			parser->count++;
 	}
 	else if (is_operator(parser->s + i, 1, &i))

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 17:12:32 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/18 12:07:00 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 
-extern int				signal_received;
+extern int				g_signal_received;
 
 typedef enum s_bool
 {
@@ -270,4 +270,14 @@ void					executor_signal(void);
 void					parent_signal(void);
 // setup_here_docs.c
 int						setup_here_docs(t_mini *mini);
+// here_doc_utils.c
+void					get_str_error(t_mini *mini, int here_doc_fd, char *new,
+							char *limiter);
+void					here_doc_error(char *str_error, int here_doc_pipe[2]);
+void					here_doc_exit(t_mini *mini, char *limiter, char *str,
+							int *hd_pipe);
+// here_doc_get_str.c
+char					*here_doc_get_str(char *limiter, t_mini *mini,
+							char *str, t_command *current);
+char					*add_line_return(char *source, t_mini *mini);
 #endif

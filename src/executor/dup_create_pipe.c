@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:20:41 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 14:48:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/16 20:29:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 			}
 		}
 	}
-	else if (current->check_here_doc == FALSE && current->next != NULL 
-			&& current->next->check_here_doc && current->nb_operator == 0)
+	else if (current->check_here_doc == FALSE && current->next != NULL
+		&& current->next->check_here_doc && current->nb_operator == 0)
 	{
 		if (*prev_fd != -1)
 		{
@@ -74,7 +74,6 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 void	create_pipe(t_command *current, t_mini *mini)
 {
 	(void)mini;
-	
 	if (current->next != NULL && (current->next->check_here_doc == FALSE))
 	{
 		if (pipe(current->pipe_fd) == -1)

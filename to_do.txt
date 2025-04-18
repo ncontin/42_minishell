@@ -13,17 +13,49 @@ bash : /home : is a directory
 bash> echo $?
 126
 
+--------------------------------------------
+minishell> exi
+minishell> ech
+minishell> en
 
+bash> exi
+exi: command not found
+bash> echo$?
+127
+--------------------------------------------
+minishell> ~
+bash> ~
+bash: /nfs/homes/user: Is a directory
+126
 
-----------------------------------------------
-#export A='foo   ' B='bar   ' C='baz   '
+minishell> .
+bash> .
+bash: .: filename argument required
+2
 
-echo $A"$B"$C"A"$B"$C"
-echo $A'$B'$C'A'$B'$C'
-echo $A"$B"$C"A"$B"$C"
-echo $A'$B'$C'A'$B'$C'
-echo $A
-echo $A$B
-echo $A$B$C
-echo $A$B$C$AA
-------------------------------------------------
+minishell> ..
+bash> ..
+..: command not found
+127
+
+minishell> "."
+bash> "."
+bash: .: filename argument required
+2
+--------------------------------------------
+minishell> export PATH=""
+minishell> ls
+en.subject.minishell.pdf  Makefile   minishell_tester  obj	  src	     unset_var_for_gdb
+includes		  minishell  mpanic	       README.md  to_do.txt  vsupp
+
+bash> export PATH=""
+bash> ls
+bash: ls: No such file or directory
+--------------------------------------------
+minishell> export PATH=$PATH:.
+minishell> minishell
+minishell: command not found
+
+bash> export PATH=$PATH:.
+bash> minishell
+minishell>
