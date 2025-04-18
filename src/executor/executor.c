@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 17:10:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:22:32 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 {
 	char	**envp;
 
-	here_doc_child_signal();
+	child_signal();
 	if (current->next != NULL && current->next->check_here_doc == FALSE)
 		close(current->pipe_fd[0]);
 	close_child_heredoc_fd(mini->cmds, current);
@@ -95,9 +95,9 @@ static int	handle_start(t_command *current, t_mini *mini)
 				return (1);
 		}
 	}
+	executor_signal();
 	if (setup_here_docs(mini) == 1)
 		return (1);
-	executor_signal();
 	return (0);
 }
 
