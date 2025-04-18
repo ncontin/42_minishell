@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 12:32:40 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:53:56 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void					assign_operator(t_token *tokens);
 void					error_msg(char *message, int error);
 void					error_arg_split(t_mini *mini);
 void					error_merge_args(t_mini *mini);
-void					error_create_list(t_token *tokens);
+void					error_create_list(t_token *tokens, t_token *current);
 void					error_split_pipe(t_mini *mini);
 // even_quotes.c
 t_bool					is_even_quotes(char **tokens);
@@ -244,6 +244,10 @@ t_command				*split_pipe(t_token *tokens, t_command *cmds,
 							t_command *new, int i);
 // split_pipes_init.c
 t_command				*create_cmd_list(t_command **cmds, t_token *tokens);
+// split_pipe_utils.c
+t_bool					is_command(t_arg_type arg_type);
+t_bool					is_recognized_operator(t_operator operator);
+t_bool					is_filename_or_limiter(t_arg_type arg_type);
 // create_argv.c
 int						str_and_operator(t_command *new, t_token *tokens);
 // create_operator.c

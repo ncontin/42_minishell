@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 19:20:41 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 17:28:57 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:04:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void handle_prev_fd(int *prev_fd)
+static void	handle_prev_fd(int *prev_fd)
 {
 	if (*prev_fd != -1)
 	{
@@ -51,7 +51,7 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 			handle_no_here_doc(current, prev_fd, mini);
 	}
 	else if (current->check_here_doc == FALSE && current->next != NULL
-			&& current->next->check_here_doc && current->nb_operator == 0)
+		&& current->next->check_here_doc && current->nb_operator == 0)
 	{
 		handle_prev_fd(prev_fd);
 		null_fd = open("/dev/null", O_WRONLY);

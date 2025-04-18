@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 11:38:18 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 14:55:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:01:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ static t_bool	is_both_operator(t_token *tokens)
 	while (current != NULL)
 	{
 		if ((current->operator > 0) && (current->next != NULL
-					&& current->next->operator != NONE))
+				&& current->next->operator != NONE))
 		{
 			if (check_same_operator(current->operator,
-						current->next->operator) == TRUE)
+					current->next->operator) == TRUE)
 			{
 				current = current->next;
 				write(2, "syntax error near unexpected token `", 36);
@@ -56,7 +56,7 @@ static t_bool	is_operator_followed_by_arg(t_token *tokens)
 	{
 		check_operator = ((current->operator > 0) && (current->operator < 5));
 		if (check_operator
-				&& (current->next == NULL || current->next->argument == NULL))
+			&& (current->next == NULL || current->next->argument == NULL))
 		{
 			write(2, "syntax error near unexpected token `newline'\n", 45);
 			return (FALSE);

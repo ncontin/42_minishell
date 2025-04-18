@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 20:30:41 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:17:27 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 {
 	char	**envp;
 
+	here_doc_child_signal();
+	if (current->next != NULL && current->next->check_here_doc == FALSE)
+		close(current->pipe_fd[0]);
 	close_child_heredoc_fd(mini->cmds, current);
 	duplicate_pipes(current, prev_fd, mini);
 	if (current->operator != NONE)
@@ -75,24 +78,26 @@ static int	parent_process(int *prev_fd, t_command *current)
 	return (0);
 }
 
-static t_bool	handle_start(t_command *current, t_mini *mini)
+static int	handle_start(t_command *current, t_mini *mini)
 {
 	if (current->next == NULL && current->prev == NULL)
 	{
 		if (current->argv != NULL && current->argv[0] == NULL)
-			return (TRUE);
+			return (1);
 	}
 	if (current->argv != NULL && current->argv[0] != NULL)
 	{
 		if (current && !current->next && is_builtin(current->argv[0]))
 		{
 			if (current->file != NULL)
-				return (FALSE);
+				return (0);
 			if (execute_builtin_parent(mini, current) == TRUE)
-				return (TRUE);
+				return (1);
 		}
 	}
-	return (FALSE);
+	if (setup_here_docs(mini) == 1)
+		return (1);
+	return (0);
 }
 
 void	wait_children(t_mini *mini, int fork_count)
@@ -139,9 +144,7 @@ void	executor(t_mini *mini)
 	current = mini->cmds;
 	prev_fd = -1;
 	fork_count = 0;
-	if (handle_start(current, mini) == TRUE)
-		return ;
-	if (setup_here_docs(mini) == 1)
+	if (handle_start(current, mini) == 1)
 		return ;
 	executor_signal();
 	while (current != NULL)
@@ -155,19 +158,14 @@ void	executor(t_mini *mini)
 			break ;
 		}
 		else if (current->pid == 0)
-		{
-			here_doc_child_signal();
-			if (current->next != NULL && current->next->check_here_doc == FALSE)
-				close(current->pipe_fd[0]);
 			child_process(current, &prev_fd, mini);
-		}
-		else if (current->pid > 0)
+		else
 		{
 			if (parent_process(&prev_fd, current) == 1)
 				return ;
 			current = current->next;
+			fork_count++;
 		}
-		fork_count++;
 	}
 	wait_children(mini, fork_count);
 }

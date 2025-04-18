@@ -6,11 +6,19 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 17:42:04 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 13:58:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:46:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	free_new(t_command **new)
+{
+	free((*new)->arg_quotes);
+	free((*new)->argv);
+	free(*new);
+	*new = NULL;
+}
 
 static void	arg_count(t_token *tokens, int *count_arg, int *count_operator)
 {
@@ -84,12 +92,7 @@ int	str_and_operator(t_command *new, t_token *tokens)
 		if (alloc_operator(new, nb_operator) == 1)
 		{
 			if (nb_args > 0)
-			{
-				free(new->arg_quotes);
-				free(new->argv);
-				free(new);
-				new = NULL;
-			}
+				free_new(&new);
 			return (1);
 		}
 	}

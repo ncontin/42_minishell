@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 15:52:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 13:59:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:15:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	cmd_add_new(t_command **head, t_command *new)
 t_command	*create_cmd_list(t_command **cmds, t_token *tokens)
 {
 	t_command	*new_cmds;
-	
+
 	new_cmds = (t_command *)malloc(sizeof(t_command));
 	if (new_cmds == NULL)
 		return (NULL);
