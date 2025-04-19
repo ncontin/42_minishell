@@ -12,109 +12,28 @@
 
 #include "minishell.h"
 
-static void	close_child_heredoc_fd(t_command *cmds, t_command *current)
+static void	check_error(t_mini *mini, int sig, int status)
 {
-	t_command	*commands;
-
-	commands = cmds;
-	while (commands != NULL)
+	if (sig == SIGINT)
 	{
-		if (commands->check_here_doc == TRUE)
-		{
-			if (current != commands && commands->here_doc_fd != -1)
-			{
-				close (commands->here_doc_fd);
-				commands->here_doc_fd = -1;
-			}
-		}
-		commands = commands->next;
+		mini->exit_code = 128 + sig;
+		printf("\n");
 	}
-}
-
-static void	close_parent_heredoc_fd(t_command *current)
-{
-	t_command	*commands;
-
-	commands = current->prev;
-	while (commands != NULL)
-	{
-		if (commands->check_here_doc == TRUE && commands->here_doc_fd != -1)
-		{
-			close (commands->here_doc_fd);
-			commands->here_doc_fd = -1;
-		}
-		commands = commands->prev;
-	}
-}
-
-static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
-{
-	char	**envp;
-
-	child_signal();
-	if (current->next != NULL && current->next->check_here_doc == FALSE)
-	{
-		close(current->pipe_fd[0]);
-		current->pipe_fd[0] = -1;
-	}
-	close_child_heredoc_fd(mini->cmds, current);
-	duplicate_pipes(current, prev_fd, mini);
-	if (current->operator != NONE)
-		handle_redirection(current, mini);
-	envp = get_envp_array(mini->lst_env);
-	execute_cmd(current, envp, mini);
-}
-
-static void	parent_process(int *prev_fd, t_command *current)
-{
-	if (*prev_fd != -1)
-	{
-		close(*prev_fd);
-		*prev_fd = -1;
-	}
-	if (current->next != NULL && current->next->check_here_doc == FALSE)
-	{
-		close(current->pipe_fd[1]);
-		current->pipe_fd[1] = -1;
-		*prev_fd = current->pipe_fd[0];
-	}
-	close_parent_heredoc_fd(current);
-}
-
-static int	handle_start(t_command *current, t_mini *mini)
-{
-	if (current->next == NULL && current->prev == NULL)
-	{
-		if (current->argv != NULL && current->argv[0] == NULL)
-			return (1);
-	}
-	if (current->argv != NULL && current->argv[0] != NULL)
-	{
-		if (current && !current->next && is_builtin(current->argv[0]))
-		{
-			if (current->file != NULL)
-				return (0);
-			if (execute_builtin_parent(mini, current) == TRUE)
-				return (1);
-		}
-	}
-	executor_signal();
-	if (setup_here_docs(mini) == 1)
-		return (1);
-	return (0);
+	if (WIFEXITED(status))
+		mini->exit_code = WEXITSTATUS(status);
 }
 
 static void	wait_children(t_mini *mini, int fork_count)
 {
-	int			status;
 	int			i;
 	int			sig;
+	int			status;
 	t_command	*current;
 
 	i = 0;
 	sig = 0;
-	current = mini->cmds;
 	status = 0;
+	current = mini->cmds;
 	while ((current != NULL) && (i < fork_count))
 	{
 		if (waitpid(current->pid, &status, 0) == -1)
@@ -128,24 +47,44 @@ static void	wait_children(t_mini *mini, int fork_count)
 		i++;
 	}
 	if (i > 0)
+		check_error(mini, sig, status);
+}
+
+static int	is_builtin_command(t_command *current)
+{
+	if (current && !current->prev && !current->next
+		&& current->argv && current->argv[0]
+		&& !current->file
+		&& is_builtin(current->argv[0]))
+		return (1);
+	return (0);
+}
+
+static int	handle_start(t_command *current, t_mini *mini)
+{
+	if (current->next == NULL && current->prev == NULL)
 	{
-		if (sig == SIGINT)
-		{
-			mini->exit_code = 128 + sig;
-			printf("\n");
-		}
-		if (WIFEXITED(status))
-			mini->exit_code = WEXITSTATUS(status);
+		if (current->argv != NULL && current->argv[0] == NULL)
+			return (1);
 	}
+	if (is_builtin_command(current))
+	{
+		execute_builtin(mini, current->argv);
+		return (1);
+	}
+	executor_signal();
+	if (setup_here_docs(mini) == 1)
+		return (1);
+	return (0);
 }
 
 void	executor(t_mini *mini, t_command *current, int prev_fd, int fork_count)
 {
-	if (handle_start(current, mini) == 1)
+	if (handle_start(current, mini))
 		return ;
 	while (current != NULL)
 	{
-		if (create_pipe(current, &prev_fd, mini) == 1)
+		if (create_pipe(current, &prev_fd, mini))
 			break ;
 		current->pid = fork();
 		if (current->pid < 0)
@@ -157,8 +96,7 @@ void	executor(t_mini *mini, t_command *current, int prev_fd, int fork_count)
 			child_process(current, &prev_fd, mini);
 		else
 		{
-			if (parent_process(&prev_fd, current) == 1)
-				return ;
+			parent_process(&prev_fd, current);
 			current = current->next;
 			fork_count++;
 		}

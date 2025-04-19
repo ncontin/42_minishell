@@ -12,19 +12,6 @@
 
 #include "minishell.h"
 
-int	execute_builtin_parent(t_mini *mini, t_command *cmd)
-{
-	int	exec;
-
-	exec = 0;
-	if (is_builtin(cmd->argv[0]))
-	{
-		execute_builtin(mini, cmd->argv);
-		exec = 1;
-	}
-	return (exec);
-}
-
 static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 {
 	char	**unix_path;
@@ -66,51 +53,37 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 	free_array(envp);
 	exit(127);
 }
-
+static void	check_special_cases(t_command *cmd, char **envp, t_mini *mini)
+{
+	if (!cmd->argv)
+		clean_exit(mini, envp, 0);
+	else if (cmd->argv[0][0] == '\0')
+	{
+		write(STDERR_FILENO, "Command \'\' not found\n", 21);
+		clean_exit(mini, envp, 127);
+	}
+	if (cmd->argv[0][0] == '$' && cmd->argv[0][1] == '\0')
+	{
+		write(STDERR_FILENO, "$ : command not found\n", 23);
+		clean_exit(mini, envp, 127);
+	}
+}
 void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 {
 	struct stat	statbuf;
 
-	if (current->argv == NULL)
-	{
-		free_exit(mini);
-		free_array(envp);
-		exit(EXIT_SUCCESS);
-	}
-	else if (current->argv[0][0] == '\0')
-	{
-		write(STDERR_FILENO, "Command \'\' not found\n", 21);
-		free_exit(mini);
-		free_array(envp);
-		exit(127);
-	}
-	if (current->argv[0][0] == '$' && current->argv[0][1] == '\0')
-	{
-		write(STDERR_FILENO, "$", 1);
-		write(STDERR_FILENO, ": command not found\n", 21);
-		free_exit(mini);
-		free_array(envp);
-		exit(127);
-	}
+	check_special_cases(current, envp, mini);
 	if (is_builtin(current->argv[0]))
 	{
 		execute_builtin(mini, current->argv);
-		free_exit(mini);
-		free_array(envp);
-		exit(EXIT_SUCCESS);
+		clean_exit(mini, envp, 0);
 	}
-	if (current->argv[0][0] == '/' || (current->argv[0][0] == '.'
-			&& current->argv[0][1] == '/'))
+	if (current->argv[0][0] == '/' || (current->argv[0][0] == '.' && current->argv[0][1] == '/'))
 	{
 		if (access(current->argv[0], F_OK) != 0)
 		{
-			write(STDERR_FILENO, current->argv[0], ft_strlen(current->argv[0]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(STDERR_FILENO, "\n", 1);
-			free_exit(mini);
-			free_array(envp);
-			exit(127);
+			print_error(strerror(errno), current->argv[0]);
+			clean_exit(mini, envp, 127);
 		}
 		if (access(current->argv[0], X_OK) == 0)
 		{

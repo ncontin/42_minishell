@@ -188,6 +188,7 @@ void		free_exit(t_mini *mini);
 void		free_token(t_token *token);
 void		free_token_argument(t_token *token);
 void		free_commands(t_command *cmds);
+void		clean_exit(t_mini *mini, char **envp, int exit_code);
 void		close_fd(int *pipe_fd);
 /* === ERROR === */
 void		error_msg(char *message, int error);
@@ -198,6 +199,7 @@ void		error_split_pipe(t_mini *mini);
 void		error_pid_executor(t_mini *mini, t_command *current, int *prev_fd);
 void		error_dup2_executor(t_mini *mini, int error_code, int *prev_fd);
 void		error_open_executor(t_mini *mini, int error_code);
+void		print_error(char *msg, char *arg);
 void		get_str_error(t_mini *mini, int here_fd, char *new, char *limiter);
 void		here_doc_error(char *str_error, int here_doc_pipe[2]);
 /* ====== READLINE ====== */
@@ -239,6 +241,12 @@ t_bool		is_filename_or_limiter(t_arg_type arg_type);
 int			str_and_operator(t_command *new, t_token *tokens);
 /* ====== EXECUTOR ====== */
 void		executor(t_mini *mini, t_command *current, int prev_fd, int count);
+/* === PROCESS === */
+void		parent_process(int *prev_fd, t_command *current);
+void		child_process(t_command *current, int *prev_fd, t_mini *mini);
+/* === HERE DOC CLOSE FD === */
+void		close_child_heredoc_fd(t_command *cmds, t_command *current);
+void		close_parent_heredoc_fd(t_command *current);
 /* === DUP AND CREATE PIPE === */
 void		duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini);
 int			create_pipe(t_command *current, int *prev_fd, t_mini *mini);

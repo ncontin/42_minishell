@@ -56,7 +56,7 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 		null_fd = open("/dev/null", O_WRONLY);
 		if (null_fd == -1)
 			error_open_executor(mini, errno);
-		if (dup2(null_fd, STDOUT_FILENO))
+		if (dup2(null_fd, STDOUT_FILENO) == -1)
 		{
 			close(null_fd);
 			error_dup2_executor(mini, errno, prev_fd);
