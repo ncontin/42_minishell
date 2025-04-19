@@ -53,7 +53,10 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 
 	child_signal();
 	if (current->next != NULL && current->next->check_here_doc == FALSE)
+	{
 		close(current->pipe_fd[0]);
+		current->pipe_fd[0] = -1;
+	}
 	close_child_heredoc_fd(mini->cmds, current);
 	duplicate_pipes(current, prev_fd, mini);
 	if (current->operator != NONE)
@@ -62,7 +65,7 @@ static void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 	execute_cmd(current, envp, mini);
 }
 
-static int	parent_process(int *prev_fd, t_command *current)
+static void	parent_process(int *prev_fd, t_command *current)
 {
 	if (*prev_fd != -1)
 	{
@@ -72,10 +75,10 @@ static int	parent_process(int *prev_fd, t_command *current)
 	if (current->next != NULL && current->next->check_here_doc == FALSE)
 	{
 		close(current->pipe_fd[1]);
+		current->pipe_fd[1] = -1;
 		*prev_fd = current->pipe_fd[0];
 	}
 	close_parent_heredoc_fd(current);
-	return (0);
 }
 
 static int	handle_start(t_command *current, t_mini *mini)

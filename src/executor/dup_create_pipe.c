@@ -17,15 +17,9 @@ static void	handle_prev_fd(int *prev_fd, t_mini *mini)
 	if (*prev_fd != -1)
 	{
 		if (dup2(*prev_fd, STDIN_FILENO) == -1)
-		{
-			write(STDERR_FILENO, "executor :", 10);
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(STDERR_FILENO, "\n", 1);
-			close(*prev_fd);
-			free_exit(mini);
-			exit(EXIT_FAILURE);
-		}
+			error_dup2_executor(mini, errno, prev_fd);
 		close(*prev_fd);
+		*prev_fd = -1;
 	}
 }
 
@@ -36,16 +30,12 @@ static void	handle_no_here_doc(t_command *current, int *prev_fd, t_mini *mini)
 	{
 		if (dup2(current->pipe_fd[1], STDOUT_FILENO) == -1)
 		{
-			write(STDERR_FILENO, "executor :", 10);
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(STDERR_FILENO, "\n", 1);
-			if (*prev_fd != -1)
-				close(*prev_fd);
 			close(current->pipe_fd[1]);
-			free_exit(mini);
-			exit(EXIT_FAILURE);
+			current->pipe_fd[1] = -1;
+			error_dup2_executor(mini, errno, prev_fd);
 		}
 		close(current->pipe_fd[1]);
+		current->pipe_fd[1] = -1;
 	}
 	handle_prev_fd(prev_fd, mini);
 }
@@ -64,7 +54,13 @@ void	duplicate_pipes(t_command *current, int *prev_fd, t_mini *mini)
 	{
 		handle_prev_fd(prev_fd, mini);
 		null_fd = open("/dev/null", O_WRONLY);
-		dup2(null_fd, STDOUT_FILENO);
+		if (null_fd == -1)
+			error_open_executor(mini, errno);
+		if (dup2(null_fd, STDOUT_FILENO))
+		{
+			close(null_fd);
+			error_dup2_executor(mini, errno, prev_fd);
+		}
 		close(null_fd);
 	}
 	else

@@ -23,3 +23,23 @@ void	error_pid_executor(t_mini *mini, t_command *current, int *prev_fd)
 	if (*prev_fd != -1)
 		close(*prev_fd);
 }
+
+void	error_dup2_executor(t_mini *mini, int error_code, int *prev_fd)
+{
+	write(STDERR_FILENO, "executor :", 10);
+	write(STDERR_FILENO, strerror(error_code), ft_strlen(strerror(error_code)));
+	write(STDERR_FILENO, "\n", 1);
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	free_exit(mini);
+	exit(EXIT_FAILURE);
+}
+
+void	error_open_executor(t_mini *mini, int error_code)
+{
+	write(STDERR_FILENO, "executor :", 10);
+	write(STDERR_FILENO, strerror(error_code), ft_strlen(strerror(error_code)));
+	write(STDERR_FILENO, "\n", 1);
+	free_exit(mini);
+	exit(EXIT_FAILURE);
+}
