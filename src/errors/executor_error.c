@@ -44,7 +44,7 @@ void	error_open_executor(t_mini *mini, int error_code)
 	exit(EXIT_FAILURE);
 }
 
-void	print_error(char *msg, char *arg)
+void	print_executor_error(char *msg, char *arg)
 {
 	write(STDERR_FILENO, arg, ft_strlen(arg));
 	write(STDERR_FILENO, ": ", 2);

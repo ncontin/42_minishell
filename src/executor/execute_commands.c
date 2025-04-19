@@ -82,7 +82,7 @@ void	execute_cmd(t_command *current, char **envp, t_mini *mini)
 	{
 		if (access(current->argv[0], F_OK) != 0)
 		{
-			print_error(strerror(errno), current->argv[0]);
+			print_executor_error(strerror(errno), current->argv[0]);
 			clean_exit(mini, envp, 127);
 		}
 		if (access(current->argv[0], X_OK) == 0)
