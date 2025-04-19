@@ -179,7 +179,7 @@ long long	ft_atoll(const char *nptr, int *overflow);
 void		executor_signal(void);
 void		child_signal(void);
 void		handle_signals(void);
-/* === FREEING ===*/
+/* === FREEING === */
 void		free_stack(t_env_node **my_envp);
 void		free_array(char **array);
 void		free_path(t_env *lst_env);
@@ -189,7 +189,7 @@ void		free_token(t_token *token);
 void		free_token_argument(t_token *token);
 void		free_commands(t_command *cmds);
 void		close_fd(int *pipe_fd);
-/*=== ERROR ===*/
+/* === ERROR === */
 void		error_msg(char *message, int error);
 void		error_arg_split(t_mini *mini);
 void		error_merge_args(t_mini *mini);
@@ -198,17 +198,17 @@ void		error_split_pipe(t_mini *mini);
 void		error_pid_executor(t_mini *mini, t_command *current, int *prev_fd);
 void		get_str_error(t_mini *mini, int here_fd, char *new, char *limiter);
 void		here_doc_error(char *str_error, int here_doc_pipe[2]);
-/*====== READLINE ======*/
+/* ====== READLINE ====== */
 void		line_read(t_mini *mini);
-/*====== PARSING ====== */
+/* ====== PARSING ====== */
 t_command	*parsing(t_mini *mini);
-/*=== CHECK OPERATOR ===*/
+/* === CHECK OPERATOR === */
 void		assign_operator(t_token *tokens);
 void		assign_type_argument(t_token *tokens);
 t_bool		is_even_quotes(char **tokens);
 t_bool		is_valid_operator(char **args);
 t_bool		is_valid_token(t_token *tokens);
-/*=== CREATE LIST ===*/
+/* === CREATE LIST === */
 t_token		*create_list(char **tokens);
 t_token		*init_new_list(t_token *head);
 void		lst_add_new(t_token **head, t_token *new);
@@ -221,14 +221,14 @@ int			is_multi_strings(char *args, int i, t_bool dquote, t_bool squote);
 void		expander(t_mini *mini);
 char		*expand_exit_status(char *arg, t_mini *mini);
 char		*expand_shell_vars(char *arg, t_mini *mini);
-/*=== MERGE ARGS ===*/
+/* === MERGE ARGS === */
 t_bool		merge_args(t_token **tokens);
-/*=== SPLIT ARGS ===*/
+/* === SPLIT ARGS === */
 int			count_args(t_parser *parser);
 char		**arg_split(char const *s);
 t_bool		is_operator(char const *c, int no_space, int *len);
 int			wordlen(char const *s, t_bool dquotes, t_bool squotes);
-/*=== SPLIT PIPES === */
+/* === SPLIT PIPES === */
 t_command	*split_pipe(t_token *token, t_command *cmds, t_command *new, int i);
 t_command	*create_cmd_list(t_command **cmds, t_token *tokens);
 t_bool		is_command(t_arg_type arg_type);
@@ -249,7 +249,7 @@ char		*copy_command(char *unix_path, char *commands);
 /* === HANDLE REDIRECTION === */
 void		here_doc_redirection(t_command *current, t_mini *mini);
 void		handle_redirection(t_command *current, t_mini *mini);
-/*====== HERE_DOC ====== */
+/* ====== HERE_DOC ====== */
 char		*add_line_return(char *source, t_mini *mini);
 int			setup_here_docs(t_mini *mini);
 void		here_doc_exit(t_mini *mini, char *limiter, char *str, int *hd_pipe);
