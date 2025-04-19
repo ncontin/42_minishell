@@ -33,7 +33,7 @@ void	free_exit(t_mini *mini)
 
 void	clean_exit(t_mini *mini, char **envp, int exit_code)
 {
-    free_array(envp);
-    free_exit(mini);
-    exit(exit_code);
+	free_array(envp);
+	free_exit(mini);
+	exit(exit_code);
 }
