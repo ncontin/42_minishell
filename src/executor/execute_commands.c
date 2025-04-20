@@ -70,7 +70,7 @@ static void	check_special_cases(t_command *cmd, char **envp, t_mini *mini)
 	}
 }
 
-void	handle_absolute_path(t_command *current, char **envp, t_mini *mini)
+static void	handle_path(t_command *current, char **envp, t_mini *mini)
 {
 	struct stat	statbuf;
 
@@ -86,8 +86,7 @@ void	handle_absolute_path(t_command *current, char **envp, t_mini *mini)
 		{
 			if (S_ISDIR(statbuf.st_mode))
 			{
-				write(2, current->argv[0], ft_strlen(current->argv[0]));
-				write(2, ": Is a directory\n", 17);
+				print_executor_error(": Is a directory\n", current->argv[0]);
 				clean_exit(mini, envp, 126);
 			}
 			if (execve(current->argv[0], current->argv, envp) == -1)
@@ -96,14 +95,12 @@ void	handle_absolute_path(t_command *current, char **envp, t_mini *mini)
 	}
 	if (errno == EACCES)
 	{
-		write(STDERR_FILENO, current->argv[0], ft_strlen(current->argv[0]));
-		write(STDERR_FILENO, ": Permission denied\n", 20);
+		print_executor_error(": Permission denied\n", current->argv[0]);
 		clean_exit(mini, envp, 126);
 	}
 	else
 	{
-		write(2, current->argv[0], ft_strlen(current->argv[0]));
-		write(2, ": command not found\n", 20);
+		print_executor_error(": command not found\n", current->argv[0]);
 		clean_exit(mini, envp, 127);
 	}
 }
@@ -117,7 +114,7 @@ void	execute_cmd(t_command *cmd, char **envp, t_mini *mini)
 		clean_exit(mini, envp, 0);
 	}
 	if (cmd->argv[0][0] == '/' || (cmd->argv[0][0] == '.' && cmd->argv[0][1] == '/'))
-		handle_absolute_path(cmd, envp, mini);
+		handle_path(cmd, envp, mini);
 	else
 		find_path_and_exec(cmd, envp, mini);
 }
