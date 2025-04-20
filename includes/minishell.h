@@ -150,7 +150,7 @@ typedef struct s_mini
 /* === INIT === */
 void		init_mini(t_mini *mini);
 void		init_envp(t_mini *mini);
-char		**get_envp_array(t_env *lst_env);
+int			get_envp_array(t_env *lst_env, char ***envp);
 
 /* === BUILTINS === */
 int			is_builtin(char *str);

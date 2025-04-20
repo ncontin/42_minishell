@@ -22,10 +22,11 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 	unix_path = get_unix_path(mini->lst_env->envp);
 	if (unix_path == NULL)
 	{
+		write(2, current->argv[0], ft_strlen(current->argv[0]));
+		write(2, "No such file or directory\n", 25);
 		free_exit(mini);
-		free_array(unix_path);
 		free_array(envp);
-		exit(errno);
+		exit(127);
 	}
 	while (unix_path[i])
 	{
@@ -34,10 +35,10 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 		{
 			if (execve(path, current->argv, envp) == -1)
 			{
-				free_exit(mini);
+				write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
+				free(path);
 				free_array(unix_path);
-				free_array(envp);
-				exit(errno);
+				clean_exit(mini, envp, errno);
 			}
 		}
 		free(path);
@@ -48,10 +49,8 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 		write(2, current->argv[0], ft_strlen(current->argv[0]));
 		write(2, ": command not found\n", 20);
 	}
-	free_exit(mini);
 	free_array(unix_path);
-	free_array(envp);
-	exit(127);
+	clean_exit(mini, envp, 127);
 }
 
 static void	check_special_cases(t_command *cmd, char **envp, t_mini *mini)
@@ -80,8 +79,8 @@ static void	handle_path(t_command *current, char **envp, t_mini *mini)
 		clean_exit(mini, envp, 127);
 	}
 	errno = 0;
-	if (access(current->argv[0], X_OK) == 0)
-	{
+	//if (access(current->argv[0], X_OK) == 0)
+	//{
 		if (lstat(current->argv[0], &statbuf) == 0)
 		{
 			if (S_ISDIR(statbuf.st_mode))
@@ -90,9 +89,12 @@ static void	handle_path(t_command *current, char **envp, t_mini *mini)
 				clean_exit(mini, envp, 126);
 			}
 			if (execve(current->argv[0], current->argv, envp) == -1)
+			{
+				write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
 				clean_exit(mini, envp, errno);
+			}
 		}
-	}
+	//}
 	if (errno == EACCES)
 	{
 		print_executor_error(": Permission denied\n", current->argv[0]);

@@ -16,6 +16,7 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 {
 	char	**envp;
 
+	envp = NULL;
 	child_signal();
 	if (current->next != NULL && current->next->check_here_doc == FALSE)
 	{
@@ -26,7 +27,12 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 	duplicate_pipes(current, prev_fd, mini);
 	if (current->operator != NONE)
 		handle_redirection(current, mini);
-	envp = get_envp_array(mini->lst_env);
+	if (get_envp_array(mini->lst_env, &envp) == 1)
+	{
+		if (*prev_fd != -1)
+			close(*prev_fd);
+		free_exit(mini);
+	}
 	execute_cmd(current, envp, mini);
 }
 

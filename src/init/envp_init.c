@@ -82,28 +82,29 @@ int	add_env_to_array(t_env_node *current, char **envp_array, int i)
 	return (0);
 }
 
-char	**get_envp_array(t_env *lst_env)
+int	get_envp_array(t_env *lst_env, char ***envp)
 {
 	int			envp_cp_size;
-	t_env_node	*current;
 	char		**envp_array;
+	t_env_node	*current;
 	int			i;
 
 	envp_cp_size = find_list_size(lst_env);
 	i = 0;
 	envp_array = malloc((envp_cp_size + 1) * sizeof(char *));
 	if (!envp_array)
-		return (NULL);
+		return (1);
 	current = *lst_env->envp_cp;
 	while (i < envp_cp_size && current)
 	{
 		if (add_env_to_array(current, envp_array, i) == 1)
-			return (NULL);
+			return (1);
 		current = current->next;
 		i++;
 	}
 	envp_array[i] = NULL;
-	return (envp_array);
+	(*envp = envp_array);
+	return (0);
 }
 
 void	init_envp(t_mini *mini)

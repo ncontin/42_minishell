@@ -25,7 +25,6 @@ static void	handle_prev_fd(int *prev_fd, t_mini *mini)
 
 static void	handle_no_here_doc(t_command *current, int *prev_fd, t_mini *mini)
 {
-	(void)mini;
 	if (current->next != NULL)
 	{
 		if (dup2(current->pipe_fd[1], STDOUT_FILENO) == -1)
