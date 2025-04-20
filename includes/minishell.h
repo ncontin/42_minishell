@@ -200,6 +200,7 @@ void		error_pid_executor(t_mini *mini, t_command *current, int *prev_fd);
 void		error_dup2_executor(t_mini *mini, int error_code, int *prev_fd);
 void		error_open_executor(t_mini *mini, int error_code);
 void		print_executor_error(char *msg, char *arg);
+void		error_path(t_mini *mini, char **envp, int error_code, t_command *cmd);
 void		get_str_error(t_mini *mini, int here_fd, char *new, char *limiter);
 void		here_doc_error(char *str_error, int here_doc_pipe[2]);
 /* ====== READLINE ====== */

@@ -12,26 +12,19 @@
 
 #include "minishell.h"
 
-static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
+static void	get_path_and_exec(t_mini *mini, t_command *cmd, char **envp,
+		char **unix_path)
 {
-	char	**unix_path;
-	char	*path;
 	int		i;
+	char	*path;
 
 	i = 0;
-	unix_path = get_unix_path(mini->lst_env->envp);
-	if (unix_path == NULL)
-	{
-		write(2, current->argv[0], ft_strlen(current->argv[0]));
-		write(2, " :No such file or directory\n", 27);
-		clean_exit(mini, envp, 127);
-	}
 	while (unix_path[i])
 	{
-		path = copy_command(unix_path[i], current->argv[0]);
+		path = copy_command(unix_path[i], cmd->argv[0]);
 		if (access(path, X_OK) == 0)
 		{
-			if (execve(path, current->argv, envp) == -1)
+			if (execve(path, cmd->argv, envp) == -1)
 			{
 				write(STDERR_FILENO, "execve error\n", 13);
 				free(path);
@@ -42,11 +35,21 @@ static void	find_path_and_exec(t_command *current, char **envp, t_mini *mini)
 		free(path);
 		i++;
 	}
-	if (errno == ENOENT)
+}
+
+static void	find_path(t_command *current, char **envp, t_mini *mini)
+{
+	char	**unix_path;
+
+	unix_path = get_unix_path(mini->lst_env->envp);
+	if (unix_path == NULL)
 	{
-		write(2, current->argv[0], ft_strlen(current->argv[0]));
-		write(2, ": command not found\n", 20);
+		print_executor_error(":No such file or directory\n", current->argv[0]);
+		clean_exit(mini, envp, 127);
 	}
+	get_path_and_exec(mini, current, envp, unix_path);
+	if (errno == ENOENT)
+		print_executor_error(": command not found\n", current->argv[0]);
 	free_array(unix_path);
 	clean_exit(mini, envp, 127);
 }
@@ -93,16 +96,7 @@ static void	handle_path(t_command *current, char **envp, t_mini *mini)
 			}
 		}
 	}
-	if (errno == EACCES)
-	{
-		print_executor_error(": Permission denied\n", current->argv[0]);
-		clean_exit(mini, envp, 126);
-	}
-	else
-	{
-		print_executor_error(": command not found\n", current->argv[0]);
-		clean_exit(mini, envp, 127);
-	}
+	error_path(mini, envp, errno, current);
 }
 
 void	execute_cmd(t_command *cmd, char **envp, t_mini *mini)
@@ -117,5 +111,5 @@ void	execute_cmd(t_command *cmd, char **envp, t_mini *mini)
 			|| (cmd->argv[0][0] == '.' && cmd->argv[0][1] == '/'))
 		handle_path(cmd, envp, mini);
 	else
-		find_path_and_exec(cmd, envp, mini);
+		find_path(cmd, envp, mini);
 }

@@ -51,3 +51,17 @@ void	print_executor_error(char *msg, char *arg)
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	write(STDERR_FILENO, "\n", 1);	
 }
+
+void	error_path(t_mini *mini, char **envp, int error_code, t_command *cmd)
+{
+	if (error_code == EACCES)
+	{
+		print_executor_error(": Permission denied\n", cmd->argv[0]);
+		clean_exit(mini, envp, 126);
+	}   
+	else
+	{
+		print_executor_error(": command not found\n", cmd->argv[0]);
+		clean_exit(mini, envp, 127);
+	}
+}
