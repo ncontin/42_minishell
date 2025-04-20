@@ -29,6 +29,8 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 		handle_redirection(current, mini);
 	if (get_envp_array(mini->lst_env, &envp) == 1)
 	{
+		write(STDERR_FILENO, "child envp :", 12);
+		write(STDERR_FILENO, "memory allocation failed\n", 26);
 		if (*prev_fd != -1)
 			close(*prev_fd);
 		free_exit(mini);
