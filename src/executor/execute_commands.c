@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/21 18:26:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:09:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,20 @@ static void	check_special_cases(t_command *cmd, char **envp, t_mini *mini)
 		write(STDERR_FILENO, "Command \'\' not found\n", 21);
 		clean_exit(mini, envp, 127);
 	}
-	if (cmd->argv[0][0] == '$' && cmd->argv[0][1] == '\0')
+	else if (cmd->argv[0][0] == '$' && cmd->argv[0][1] == '\0')
 	{
 		write(STDERR_FILENO, "$ : command not found\n", 23);
 		clean_exit(mini, envp, 127);
+	}
+	else if (ft_strncmp("..", cmd->argv[0], ft_strlen(cmd->argv[0]) + 1) == 0)
+	{
+		print_executor_error("command not found", cmd->argv[0]);
+		clean_exit(mini, envp, 127);
+	}
+	else if (ft_strncmp(".", cmd->argv[0], ft_strlen(cmd->argv[0]) + 1) == 0)
+	{
+		print_executor_error("filename argument required", cmd->argv[0]);
+		clean_exit(mini, envp, 2);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/21 18:26:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/21 19:26:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ int			find_min_len(char *s1, char *s2);
 void		print_export(t_env_node **sorted_envp_cp, char **args);
 t_env_node	**copy_envp_list(t_env_node **envp_cp);
 void		replace_env(t_env_node *env_to_replace, char *arg);
-void		ft_env(t_mini *mini);
+void		ft_env(t_mini *mini, char **cmd_args);
 void		ft_export(t_mini *mini, char **cmd_args);
 void		ft_unset(t_mini *mini, char **cmd_args);
 void		ft_unset(t_mini *mini, char **cmd_args);
