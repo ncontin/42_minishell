@@ -44,7 +44,7 @@ static void	find_path(t_command *current, char **envp, t_mini *mini)
 	unix_path = get_unix_path(mini->lst_env->envp);
 	if (unix_path == NULL)
 	{
-		print_executor_error(":No such file or directory\n", current->argv[0]);
+		print_executor_error(": no such file or directory\n", current->argv[0]);
 		clean_exit(mini, envp, 127);
 	}
 	get_path_and_exec(mini, current, envp, unix_path);

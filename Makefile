@@ -41,6 +41,7 @@ SRC_CLEANUP =	src/cleanup/free_path.c\
 
 SRC_ERRORS = 	src/errors/parsing_error.c\
 				src/errors/executor_error.c\
+				src/errors/redirection_error.c\
 
 SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_args/args_split.c\
