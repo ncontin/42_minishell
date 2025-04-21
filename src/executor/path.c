@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:57:25 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/12 12:30:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:47:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ char	**get_unix_path(char **envp)
 		}
 		envp++;
 	}
-	if (mypath == NULL)
-		write(2, "no PATH found \n", 15);
 	return (mypath);
 }
 
@@ -73,4 +71,30 @@ char	*copy_command(char *unix_path, char *commands)
 	ft_strlcat(path, "/", len_path + 2);
 	ft_strlcat(path, commands, (len_path + len_cmd + 2));
 	return (path);
+}
+
+int	*is_user_in_bin(t_mini *mini, t_command *cmd, char **envp)
+{
+	char	*path;
+	char	*bin_folder;
+
+	while (envp && *envp)
+	{
+		if ((ft_strncmp(*envp, "PWD", 3)) == 0)
+		{
+			bin_folder = *envp + 4;
+			if (ft_strncmp(bin_folder, "/usr/bin", 8) == 0)
+			{
+				path = copy_command(bin_folder, cmd->argv[0]);
+				if (execve(path, cmd->argv, envp) == -1)
+				{
+					write(STDERR_FILENO, "execve error\n", 13);
+					free(path);
+					clean_exit(mini, envp, 1);
+				}
+			}
+		}
+		envp++;
+	}
+	return (0);
 }

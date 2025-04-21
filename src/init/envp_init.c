@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/13 08:23:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:28:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,23 @@ int	add_env_to_array(t_env_node *current, char **envp_array, int i)
 {
 	char	*temp;
 
+	temp = NULL;
 	temp = ft_strjoin(current->key, "=");
-	envp_array[i] = ft_strjoin(temp, current->value);
+	if (temp == NULL)
+	{
+		if (envp_array != NULL)
+			free_array(envp_array);
+		return (1);
+	}
+	else if (temp != NULL && current->value == NULL)
+		envp_array[i] = ft_strdup(temp);
+	else if (temp != NULL && current->value != NULL)
+		envp_array[i] = ft_strjoin(temp, current->value);
 	free(temp);
 	if (!envp_array[i])
 	{
-		while (i-- > 0)
-			free(envp_array[i]);
-		free(envp_array);
+		if (envp_array != NULL)
+			free_array(envp_array);
 		return (1);
 	}
 	return (0);
@@ -89,6 +98,7 @@ int	get_envp_array(t_env *lst_env, char ***envp)
 	t_env_node	*current;
 	int			i;
 
+	envp_array = NULL;
 	envp_cp_size = find_list_size(lst_env);
 	i = 0;
 	envp_array = malloc((envp_cp_size + 1) * sizeof(char *));
@@ -103,7 +113,7 @@ int	get_envp_array(t_env *lst_env, char ***envp)
 		i++;
 	}
 	envp_array[i] = NULL;
-	(*envp = envp_array);
+	(*envp) = envp_array;
 	return (0);
 }
 

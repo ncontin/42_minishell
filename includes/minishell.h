@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 18:19:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:26:02 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,7 @@ void		execute_cmd(t_command *current, char **envp, t_mini *mini);
 void		get_path(char **envp, t_env *lst_env);
 char		**get_unix_path(char **envp);
 char		*copy_command(char *unix_path, char *commands);
+int			*is_user_in_bin(t_mini *mini, t_command *current, char **envp);
 /* === HANDLE REDIRECTION === */
 void		here_doc_redirection(t_command *current, t_mini *mini);
 void		handle_redirection(t_command *current, t_mini *mini);

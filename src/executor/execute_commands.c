@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 12:32:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:26:38 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,17 @@ static void	find_path(t_command *current, char **envp, t_mini *mini)
 {
 	char	**unix_path;
 
-	unix_path = get_unix_path(mini->lst_env->envp);
-	if (unix_path == NULL)
+	unix_path = get_unix_path(envp);
+	if (unix_path == NULL || *unix_path == NULL)
 	{
-		print_executor_error(": no such file or directory\n", current->argv[0]);
+		free_array(unix_path);
+		is_user_in_bin(mini, current, envp);
+		print_executor_error("No such file or directory", current->argv[0]);
 		clean_exit(mini, envp, 127);
 	}
 	get_path_and_exec(mini, current, envp, unix_path);
 	if (errno == ENOENT)
-		print_executor_error(": command not found\n", current->argv[0]);
+		print_executor_error("command not found", current->argv[0]);
 	free_array(unix_path);
 	clean_exit(mini, envp, 127);
 }
