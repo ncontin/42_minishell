@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 12:07:57 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 13:24:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ static int	check_operator(t_mini *mini)
 	if (is_even_quotes(mini->args) == FALSE)
 	{
 		mini->exit_code = 1;
+		free_array(mini->args);
 		return (1);
 	}
 	if (is_valid_operator(mini->args) == FALSE)
 	{
 		mini->exit_code = 2;
+		free_array(mini->args);
 		return (1);
 	}
 	return (0);
