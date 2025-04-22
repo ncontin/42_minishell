@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:04:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 17:26:57 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:47:20 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_tilde(char **source, int i, t_mini *mini)
 
 	arg = *source;
 	current = *mini->lst_env->envp_cp;
-	if ((arg[i] == '~') && (arg[i + 1] == '\0'))
+	if ((arg[i] == '~') && (arg[i + 1] == '\0' || arg[i + 1] == '\\'))
 	{
 		while (current != NULL)
 		{
