@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 07:58:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 13:44:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	wait_children(t_mini *mini, int fork_count)
 
 static int	is_builtin_command(t_command *current)
 {
-	if (!current) 
+	if (!current)
 		return (0);
 	if (current->prev || current->next)
 		return (0);
