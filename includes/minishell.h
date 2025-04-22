@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 12:02:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:24:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ typedef struct s_mini
 /* === INIT === */
 void		init_mini(t_mini *mini);
 void		init_envp(t_mini *mini);
-int			get_envp_array(t_env *lst_env, char ***envp);
 
 /* === BUILTINS === */
 int			is_builtin(char *str);
@@ -229,6 +228,7 @@ void		expander(t_mini *mini);
 char		*expand_exit_status(char *arg, t_mini *mini);
 char		*expand_shell_vars(char *arg, t_mini *mini);
 void		split_words(t_mini *mini, t_token **tokens);
+void		handle_tilde(char **source, int i, t_mini *mini);
 /* === MERGE ARGS === */
 t_bool		merge_args(t_token **tokens);
 /* === SPLIT ARGS === */
@@ -261,9 +261,14 @@ void		get_path(char **envp, t_env *lst_env);
 char		**get_unix_path(char **envp);
 char		*copy_command(char *unix_path, char *commands);
 int			*is_user_in_bin(t_mini *mini, t_command *current, char **envp);
+/* === GET ENVP === */
+int			get_envp_array(t_env *lst_env, char ***envp);
 /* === HANDLE REDIRECTION === */
 void		here_doc_redirection(t_command *current, t_mini *mini);
 void		handle_redirection(t_command *current, t_mini *mini);
+/* === HANDLE REDIRECTION UTILS === */
+void		duplicate_fd(int oldfd, int newfd, t_mini *mini, t_command *current);
+int			open_file(t_mini *mini, char *filename, int flags, mode_t mode);
 /* ====== HERE_DOC ====== */
 char		*add_line_return(char *source, t_mini *mini);
 int			setup_here_docs(t_mini *mini);

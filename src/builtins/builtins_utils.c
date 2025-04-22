@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/14 17:53:36 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/22 16:29:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_env(t_env_node **env_stack)
 	current = *env_stack;
 	while (current)
 	{
-		if (current->key)
+		if (current->key && current->value != NULL)
 			printf("%s", current->key);
 		if (current->value)
 			printf("=%s", current->value);

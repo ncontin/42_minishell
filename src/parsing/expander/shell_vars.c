@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/22 12:04:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 17:25:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	*expand_shell_vars(char *arg, t_mini *mini)
 		i++;
 	if (arg[i] == '\0')
 		return (arg);
+	else if (arg[i] == '~')
+		handle_tilde(&arg, i, mini);
 	full_str = ft_strdup(arg);
 	while (full_str[i])
 	{
