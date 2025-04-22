@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/21 19:26:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 10:55:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ void		error_pid_executor(t_mini *mini, t_command *current, int *prev_fd);
 void		error_dup2_executor(t_mini *mini, int error_code, int *prev_fd);
 void		error_open_executor(t_mini *mini, int error_code);
 void		print_executor_error(char *msg, char *arg);
-void		error_path(t_mini *mini, char **envp, int error_code, t_command *cmd);
+void		error_path(t_mini *mini, char **envp, int err_code, t_command *cmd);
 void		print_file_error(char *filename, char *message);
 void		get_str_error(t_mini *mini, int here_fd, char *new, char *limiter);
 void		here_doc_error(char *str_error, int here_doc_pipe[2]);

@@ -6,28 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:57:25 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/21 18:47:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 11:04:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	get_path(char **envp, t_env *lst_env)
-{
-	char	**mypath;
-	char	*env_path;
-
-	mypath = NULL;
-	lst_env->envp = envp;
-	env_path = getenv("PATH");
-	if (env_path != NULL)
-	{
-		mypath = ft_split(env_path, ':');
-		if (mypath == NULL)
-			error_msg("Path : memory allocation failed\n", 12);
-	}
-	lst_env->path = mypath;
-}
 
 char	**get_unix_path(char **envp)
 {
@@ -40,6 +23,8 @@ char	**get_unix_path(char **envp)
 		if (!ft_strncmp("PATH", *envp, 4))
 		{
 			env_path = *envp + 5;
+			if (env_path[0] == '\0')
+				break ;
 			mypath = ft_split(env_path, ':');
 			if (mypath == NULL)
 			{
