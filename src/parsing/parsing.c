@@ -6,38 +6,15 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 18:02:36 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/22 12:07:57 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void	print_tokens(t_token **tokens)
-// {
-// 	while (*tokens)
-// 	{
-// 		printf("tokens->argument: %s\n", (*tokens)->argument);
-// 		printf("tokens->quotes: %u\n", (*tokens)->quotes);
-// 		printf("tokens->arg_type: %u\n", (*tokens)->arg_type);
-// 		*tokens = (*tokens)->next;
-// 	}
-// }
-
-t_command	*parsing(t_mini *mini)
+static int	handle_list(t_mini *mini)
 {
-	mini->args = arg_split(mini->input);
-	if (mini->args == NULL)
-	{
-		write(STDERR_FILENO, "arg_split :", 11);
-		write(STDERR_FILENO, "memory allocation failed\n", 25);
-		free_exit(mini);
-		exit(EXIT_FAILURE);
-	}
-	if (is_even_quotes(mini->args) == FALSE)
-		return (NULL);
 	mini->tokens = create_list(mini->args);
-	// print_tokens(&mini->tokens);
-	free_array(mini->args);
 	if (mini->tokens == NULL)
 	{
 		free_exit(mini);
@@ -49,18 +26,42 @@ t_command	*parsing(t_mini *mini)
 		mini->exit_code = 2;
 		free_token_argument(mini->tokens);
 		free_token(mini->tokens);
-		return (NULL);
+		return (1);
 	}
-	expander(mini);
-	if (merge_args(&mini->tokens) == FALSE)
+	return (0);
+}
+
+static int	check_operator(t_mini *mini)
+{
+	if (is_even_quotes(mini->args) == FALSE)
+	{
+		mini->exit_code = 1;
+		return (1);
+	}
+	if (is_valid_operator(mini->args) == FALSE)
+	{
+		mini->exit_code = 2;
+		return (1);
+	}
+	return (0);
+}
+
+t_command	*parsing(t_mini *mini)
+{
+	mini->args = arg_split(mini->input);
+	if (mini->args == NULL)
+		error_arg_split(mini);
+	if (check_operator(mini) == 1)
 		return (NULL);
-	// if (split_words(mini, &mini->tokens) == FALSE)
-	// {
-	// 	free_token(mini->tokens);
-	// 	return (NULL);
-	// }
+	if (handle_list(mini) == 1)
+		return (NULL);
+	expander(mini);
 	assign_type_argument(mini->tokens);
+	if (merge_args(&mini->tokens) == FALSE)
+		error_merge_args(mini);
 	mini->cmds = split_pipe(mini->tokens, NULL, NULL, 0);
+	if (mini->cmds == NULL)
+		error_split_pipe(mini);
 	free_token(mini->tokens);
 	return (mini->cmds);
 }

@@ -12,6 +12,30 @@
 
 #include "minishell.h"
 
+static int	open_file(t_mini *mini, char *filename, int flags, mode_t mode)
+{
+	int	fd;
+
+	fd = open(filename, flags, mode);
+	if (fd == -1)
+	{
+		print_file_error(filename, ": ");
+		print_file_error(strerror(errno), "\n");
+		free_exit(mini);
+		exit(EXIT_FAILURE);
+	}
+	return (fd);
+}
+
+static void	duplicate_fd(t_mini *mini, int oldfd, int newfd)
+{
+	if (dup2(oldfd, newfd) == -1)
+	{
+		free_exit(mini);
+		exit(EXIT_FAILURE);
+	}
+}
+
 void	here_doc_redirection(t_command *current, t_mini *mini)
 {
 	(void)mini;
@@ -26,67 +50,43 @@ void	here_doc_redirection(t_command *current, t_mini *mini)
 	}
 }
 
-static void	append_operator(t_command *current, t_mini *mini, int *j)
+static void	handle_append(t_command *current, t_mini *mini, int *j)
 {
-	int	file_fd;
-	int	i;
+	int		fd;
+	int		i;
+	int		flags;
+	char	*filename;
 
 	i = *j;
-	if (access(current->file[i], F_OK) != 0)
+	filename = current->file[i];
+	flags = O_WRONLY | O_APPEND | O_CREAT;
+	if (access(filename, F_OK) != 0 || access(filename, W_OK) == 0)
 	{
-		file_fd = open(current->file[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
-		if (file_fd == -1)
-		{
-			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(STDERR_FILENO, "\n", 1);
-			free_commands(mini->cmds);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else if (access(current->file[i], W_OK) == 0)
-	{
-		file_fd = open(current->file[i], O_WRONLY | O_APPEND | O_CREAT, 0664);
-		if (file_fd == -1)
-		{
-			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(STDERR_FILENO, "\n", 1);
-			free_commands(mini->cmds);
-			exit(EXIT_FAILURE);
-		}
+		fd = open_file(mini, current->file[i], flags, 0664);
+		duplicate_fd(mini, fd, STDOUT_FILENO);
+		close(fd);
 	}
 	else
 	{
-		write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
-		write(STDERR_FILENO, ": Permission denied\n", 20);
+		print_file_error(current->file[i], ": Permission denied\n");
 		exit (EXIT_FAILURE);
 	}
-	if (dup2(file_fd, STDOUT_FILENO) == -1)
-	{
-		free_commands(mini->cmds);
-		exit(errno);
-	}
-	close(file_fd);
 }
 
-static void	input_operator(t_command *current, t_mini *mini, int *j)
+static void	handle_input(t_command *current, t_mini *mini, int *j)
 {
-	int	file_fd;
-	int	i;
+	int		file_fd;
+	int		i;
 
 	i = *j;
+	errno = 0;
 	if (access(current->file[i], F_OK | R_OK) == 0)
 	{
 		file_fd = open(current->file[i], O_RDONLY);
 		if (file_fd == -1)
 		{
-			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(STDERR_FILENO, "\n", 1);
+			print_file_error(current->file[i], ": ");
+			print_file_error(strerror(errno), "\n");
 			free_commands(mini->cmds);
 			exit(EXIT_FAILURE);
 		}
@@ -99,13 +99,20 @@ static void	input_operator(t_command *current, t_mini *mini, int *j)
 	}
 	else
 	{
-		write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
-		write(STDERR_FILENO, ": No such file or directory\n", 28);
-		exit(EXIT_FAILURE);
+		if (errno == EACCES)
+		{
+			print_file_error(current->file[i], ": Permission denied\n");
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			print_file_error(current->file[i], ": No such file or directory\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 
-static void	output_operator(t_command *current, t_mini *mini, int *j)
+static void	handle_output(t_command *current, t_mini *mini, int *j)
 {
 	int	file_fd;
 	int	i;
@@ -116,10 +123,8 @@ static void	output_operator(t_command *current, t_mini *mini, int *j)
 		file_fd = open(current->file[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		if (file_fd == -1)
 		{
-			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(STDERR_FILENO, "\n", 1);
+			print_file_error(current->file[i], ": ");
+			print_file_error(strerror(errno), "\n");
 			free_commands(mini->cmds);
 			exit(EXIT_FAILURE);
 		}
@@ -129,18 +134,15 @@ static void	output_operator(t_command *current, t_mini *mini, int *j)
 		file_fd = open(current->file[i], O_WRONLY | O_TRUNC | O_CREAT, 0664);
 		if (file_fd == -1)
 		{
-			write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-			write(STDERR_FILENO, "\n", 1);
+			print_file_error(current->file[i], ": ");
+			print_file_error(strerror(errno), "\n");
 			free_commands(mini->cmds);
 			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
-		write(STDERR_FILENO, current->file[i], ft_strlen(current->file[i]));
-		write(STDERR_FILENO, ": Permission denied\n", 20);
+		print_file_error(current->file[i], ": Permission denied\n");
 		exit (EXIT_FAILURE);
 	}
 	if (dup2(file_fd, STDOUT_FILENO) == -1)
@@ -169,11 +171,11 @@ void	handle_redirection(t_command *current, t_mini *mini)
 	while (i < current->nb_operator)
 	{
 		if (current->operator[i] == INPUT)
-			input_operator(current, mini, &i);
+			handle_input(current, mini, &i);
 		else if (current->operator[i] == OUTPUT)
-			output_operator(current, mini, &i);
+			handle_output(current, mini, &i);
 		else if (current->operator[i] == APPEND)
-			append_operator(current, mini, &i);
+			handle_append(current, mini, &i);
 		i++;
 	}
 }

@@ -8,7 +8,6 @@ RM = rm -f
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 SRC =	src/main.c\
-		src/path.c\
 		$(SRC_BUILTINS)\
 		$(SRC_CLEANUP)\
 		$(SRC_ERRORS)\
@@ -40,7 +39,9 @@ SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/close_fd.c\
 
 
-SRC_ERRORS = 	src/errors/error.c\
+SRC_ERRORS = 	src/errors/parsing_error.c\
+				src/errors/executor_error.c\
+				src/errors/redirection_error.c\
 
 SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_args/args_split.c\
@@ -55,10 +56,12 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/check_operator/is_valid_token.c\
 				src/parsing/check_operator/assign_type_argument.c\
 				src/parsing/check_operator/is_even_quotes.c\
+				src/parsing/check_operator/is_valid_operator.c\
 				src/parsing/merge_args/merge_args.c\
 				src/parsing/split_pipes/str_and_operator.c\
 				src/parsing/split_pipes/split_pipes.c\
 				src/parsing/split_pipes/split_pipes_init.c\
+				src/parsing/split_pipes/split_pipe_utils.c\
 				src/parsing/parsing.c\
 				$(SRC_EXPANDER)\
 
@@ -75,10 +78,12 @@ SRC_INIT =		src/init/envp_init.c\
 				src/init/mini_init.c\
 
 SRC_EXECUTOR =	src/executor/executor.c\
+				src/executor/process.c\
+				src/executor/here_doc_close_fd.c\
 				src/executor/handle_redirection.c\
 				src/executor/execute_commands.c\
 				src/executor/dup_create_pipe.c\
-				src/executor/here_doc/signal_here_doc.c\
+				src/executor/path.c\
 				src/executor/here_doc/setup_here_docs.c\
 				src/executor/here_doc/here_doc_utils.c\
 				src/executor/here_doc/here_doc_get_str.c\

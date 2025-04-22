@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/17 10:52:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 10:16:57 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	free_token(t_token *token)
 	{
 		next = current->next;
 		free(current);
+		current = NULL;
 		current = next;
 	}
 }
@@ -38,15 +39,10 @@ void	free_token_argument(t_token *token)
 	while (current != NULL)
 	{
 		if (current->argument != NULL)
+		{
 			free(current->argument);
+			current->argument = NULL;
+		}
 		current = current->next;
 	}
-}
-
-void	msg_and_free(t_token *tokens)
-{
-	write(2, "Create_list :", 13);
-	write(2, "memory allocation failed to create arg\n", 39);
-	free_token_argument(tokens);
-	free_token(tokens);
 }

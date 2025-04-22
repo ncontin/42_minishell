@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   even_quotes.c                                      :+:      :+:    :+:   */
+/*   is_even_quotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 10:31:00 by aroullea          #+#    #+#             */
-/*   Updated: 2025/03/22 12:27:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:47:48 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_bool	handle_quotes(char *args)
+static t_bool	handle_quotes(char *args)
 {
 	int		i;
 	t_bool	dquotes;

@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_signal.c                                  :+:      :+:    :+:   */
+/*   signal_here_doc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/15 12:52:05 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/15 23:07:55 by aroullea         ###   ########.fr       */
+/*   Created: 2025/04/13 12:09:29 by aroullea          #+#    #+#             */
+/*   Updated: 2025/04/18 17:17:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*static void handle_parent_signal(int signo)
+static void	child_handler(int signal)
 {
-    if (signo == SIGINT)
-        printf("\n");
+	if (signal == SIGINT)
+	{
+		g_signal_received = 1;
+		printf("\n");
+	}
 }
 
-void	parent_signal(void)
+void	child_signal(void)
 {
-	struct sigaction    sa;
+	struct sigaction	sa;
 
-    sa.sa_handler = handle_parent_signal;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-    sigaction(SIGINT, &sa, NULL);
-}*/
+	sa.sa_handler = child_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+}
 
 void	executor_signal(void)
 {

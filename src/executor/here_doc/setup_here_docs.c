@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:17:22 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 20:16:32 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:23:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	children(t_mini *mini, t_command *current, int i, int hd_pipe)
 
 	str = NULL;
 	limiter = NULL;
-	here_doc_child_signal();
+	child_signal();
 	current->here_doc_fd = hd_pipe;
 	limiter = add_line_return(current->file[i], mini);
 	if (limiter == NULL)
@@ -68,7 +68,6 @@ static void	children(t_mini *mini, t_command *current, int i, int hd_pipe)
 
 static void	init_read_here_doc(int here_doc_pipe[2], int *current_fd)
 {
-	here_doc_parent_signal();
 	here_doc_pipe[0] = -1;
 	here_doc_pipe[1] = -1;
 	if (*current_fd != -1)

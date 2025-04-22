@@ -1,10 +1,3 @@
-
---------------------------------------------
-zsh> env -i ./minishell
-minishell> cd /bin/
-minishell> ls
-No path found
-
 --------------------------------------------
 minishell> ~
 ~: command not found
@@ -12,8 +5,8 @@ bash> ~
 bash : /home : is a directory
 bash> echo $?
 126
-
 --------------------------------------------
+<<<<<<< HEAD
 minishell> exi
 minishell> ech
 minishell> en
@@ -59,3 +52,5 @@ minishell: command not found
 bash> export PATH=$PATH:.
 bash> minishell
 minishell>
+=======
+>>>>>>> main

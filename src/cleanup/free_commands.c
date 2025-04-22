@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:38:28 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/15 23:45:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:09:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,5 @@ void	free_commands(t_command *cmds)
 		free(current);
 		current = cmds;
 	}
+	cmds = NULL;
 }

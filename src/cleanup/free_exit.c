@@ -30,3 +30,10 @@ void	free_exit(t_mini *mini)
 		mini->lst_env = NULL;
 	}
 }
+
+void	clean_exit(t_mini *mini, char **envp, int exit_code)
+{
+	free_array(envp);
+	free_exit(mini);
+	exit(exit_code);
+}
