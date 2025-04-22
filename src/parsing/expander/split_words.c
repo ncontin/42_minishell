@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/18 18:26:38 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/22 12:48:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ static t_token	*create_token(char *arg)
 static void	add_new_token(t_token *token, char *word, t_token *next_og)
 {
 	t_token	*current;
-	t_token	*next;
+	//t_token	*next;
 	t_token	*new;
 
 	new = create_token(word);
 	current = token;
-	next = token->next;
+	//next = token->next;
 	current->next = new;
 	new->next = next_og;
 	new->prev = current;
