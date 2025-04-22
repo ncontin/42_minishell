@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 21:34:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 21:42:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,7 @@ static int	check_operator(t_mini *mini)
 
 t_command	*parsing(t_mini *mini)
 {
-	int i=0;
 	mini->args = arg_split(mini->input);
-	while (mini->args[i] != NULL)
-	{
-		printf("%s\n", mini->args[i]);
-		i++;
-	}
 	if (mini->args == NULL)
 		error_arg_split(mini);
 	if (check_operator(mini) == 1)
