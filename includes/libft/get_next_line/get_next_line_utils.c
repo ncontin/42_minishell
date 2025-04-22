@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:23:49 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 16:01:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:33:14 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_gnl_strchr(const char *s, int c)
 {
 	while (*s)
 	{
@@ -49,18 +49,6 @@ char	*strings_join(char *s1, char const *s2, size_t k, size_t l)
 	free(s1);
 	return (str);
 }
-
-/*size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}*/
 
 void	ft_cpy(size_t size, char *new_rem, char *end)
 {

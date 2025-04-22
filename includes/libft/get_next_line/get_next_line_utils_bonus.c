@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:23:49 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 16:02:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:59:33 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_gnl_strchr(const char *s, int c)
 {
 	while (*s)
 	{
@@ -93,7 +93,7 @@ char	*ft_small_buf(int fd, char *rem, int nb)
 		}
 		tot += nb;
 		buffer[tot] = '\0';
-		end = ft_strchr(buffer, '\n');
+		end = ft_gnl_strchr(buffer, '\n');
 		if ((tot + BUFFER_SIZE > 1024) || ((nb == 0) && (buffer[0])) || (end))
 		{
 			rem = strings_join(rem, buffer, ft_strlen(rem), ft_strlen(buffer));

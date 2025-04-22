@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/18 13:26:40 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/18 18:26:38 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,29 +75,56 @@ static void	add_new_token(t_token *token, char *word, t_token *next_og)
 		next_og->prev = new;
 }
 
+static void	handle_single_word(t_token *current, char **split_words)
+{
+	free(current->argument);
+	current->argument = ft_strdup(split_words[0]);
+	if (!current->argument)
+	{
+		free_array(split_words);
+		return ;
+	}
+	free_array(split_words);
+}
+
+static void	handle_multiple_words(t_token *current, char **split_words,
+		t_token *next_og)
+{
+	int	i;
+
+	i = 1;
+	free(current->argument);
+	current->argument = ft_strdup(split_words[0]);
+	if (!current->argument)
+	{
+		free_array(split_words);
+		return ;
+	}
+	while (split_words[i])
+	{
+		add_new_token(current, split_words[i], next_og);
+		current = current->next;
+		i++;
+	}
+	free_array(split_words);
+}
+
+static void	handle_empty_result(t_token *current)
+{
+	current->prev->next = current->next;
+	if (current->next)
+		current->next->prev = current->prev;
+	free(current->argument);
+	free(current);
+}
+
 void	split_words(t_mini *mini, t_token **tokens)
 {
 	t_token	*current;
-	char	**split_words;
 	t_token	*next_og;
-	char	*trimmed_word;
+	char	**split_words;
 	int		array_size;
-	int		i;
 
-	// word_splitting(t_token **tokens):
-	// This function iterates through the token list.
-	// If a token has quotes == NO_QUOTES and its argument contains IFS whitespace (e.g.,
-	// 		spaces):
-	// Use a function similar to ft_split (let's call it ft_split_word) to split the argument string by spaces/tabs/newlines. This split function must discard empty results (e.g.,
-	// 	" foo  bar " should split into "foo" and "bar").
-	// If the split results in more than one word:
-	// Update the current token's argument with the first word.
-	// Insert new tokens into the list after the current token for each subsequent word. These new tokens should also have quotes = NO_QUOTES.
-	// If the split results in exactly one word (e.g., trimming occurred):
-	// Update the current token's argument with that single word.
-	// If the split results in zero words (the argument was only whitespace):
-	// Remove the current token from the list entirely.
-	// This function needs careful handling of pointers while modifying the linked list.
 	current = *tokens;
 	while (current)
 	{
@@ -108,35 +135,12 @@ void	split_words(t_mini *mini, t_token **tokens)
 			split_words = ft_split(current->argument, ' ');
 			array_size = get_array_size(split_words);
 			if (array_size > 1)
-			{
-				free(current->argument);
-				current->argument = ft_strdup(split_words[0]);
-				if (!current->argument)
-					return ;
-				i = 1;
-				while (split_words[i])
-				{
-					add_new_token(current, split_words[i], next_og);
-					current = current->next;
-					i++;
-				}
-			}
+				handle_multiple_words(current, split_words, next_og);
 			else if (array_size == 1)
-			{
-				trimmed_word = ft_strtrim(current->argument, " ");
-				free(current->argument);
-				current->argument = ft_strdup(trimmed_word);
-				free(trimmed_word);
-			}
+				handle_single_word(current, split_words);
 			else if (array_size == 0)
-			{
-				current->prev->next = current->next;
-				if (current->next)
-					current->next->prev = current->prev;
-				free(current->argument);
-				free(current);
-			}
-			free_array(split_words);
+				handle_empty_result(current);
+			mini->expanded = 0;
 		}
 		current = next_og;
 	}

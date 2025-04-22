@@ -6,11 +6,22 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 12:07:04 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/18 18:02:36 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// static void	print_tokens(t_token **tokens)
+// {
+// 	while (*tokens)
+// 	{
+// 		printf("tokens->argument: %s\n", (*tokens)->argument);
+// 		printf("tokens->quotes: %u\n", (*tokens)->quotes);
+// 		printf("tokens->arg_type: %u\n", (*tokens)->arg_type);
+// 		*tokens = (*tokens)->next;
+// 	}
+// }
 
 t_command	*parsing(t_mini *mini)
 {
@@ -25,6 +36,7 @@ t_command	*parsing(t_mini *mini)
 	if (is_even_quotes(mini->args) == FALSE)
 		return (NULL);
 	mini->tokens = create_list(mini->args);
+	// print_tokens(&mini->tokens);
 	free_array(mini->args);
 	if (mini->tokens == NULL)
 	{

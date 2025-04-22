@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/18 13:24:20 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/18 18:25:09 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,26 @@ static void	replace_tokens(t_token **tokens)
 	}
 }
 
+static void	handle_expandable_token(t_mini *mini, t_token **tokens,
+		t_token **current)
+{
+	(*tokens)->argument = expand_special_vars((*tokens)->argument, mini);
+	if ((*tokens)->argument == NULL)
+		replace_tokens(tokens);
+	else
+	{
+		split_words(mini, tokens);
+		*current = *tokens;
+		*tokens = (*tokens)->next;
+	}
+}
+
+static void	advance_token(t_token **tokens, t_token **current)
+{
+	*current = *tokens;
+	*tokens = (*tokens)->next;
+}
+
 void	expander(t_mini *mini)
 {
 	t_token	*tokens;
@@ -56,27 +76,11 @@ void	expander(t_mini *mini)
 	while (tokens != NULL)
 	{
 		if (tokens->prev != NULL && tokens->prev->operator== HEREDOC)
-		{
-			current = tokens;
-			tokens = tokens->next;
-		}
+			advance_token(&tokens, &current);
 		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
-		{
-			tokens->argument = expand_special_vars(tokens->argument, mini);
-			if (tokens->argument == NULL)
-				replace_tokens(&tokens);
-			else
-			{
-				split_words(mini, &tokens);
-				current = tokens;
-				tokens = tokens->next;
-			}
-		}
+			handle_expandable_token(mini, &tokens, &current);
 		else
-		{
-			current = tokens;
-			tokens = tokens->next;
-		}
+			advance_token(&tokens, &current);
 	}
 	while (current->prev != NULL)
 		current = current->prev;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:23:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/04 16:01:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:59:24 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ft_add_remain(char *remain)
 	char	*end;
 	size_t	size;
 
-	end = ft_strchr(remain, '\n');
+	end = ft_gnl_strchr(remain, '\n');
 	if (end)
 		size = ft_strlen(end + 1);
 	if (end && size)
@@ -84,7 +84,7 @@ char	*ft_big_buf(int fd, char *buffer, char *rem)
 		rem = strings_join(rem, buffer, ft_strlen(rem), ft_strlen(buffer));
 		if (rem == NULL)
 			break ;
-		end = ft_strchr(buffer, '\n');
+		end = ft_gnl_strchr(buffer, '\n');
 	}
 	free(buffer);
 	return (rem);
