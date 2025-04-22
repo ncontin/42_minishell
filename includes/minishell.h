@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 17:24:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:31:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,7 @@ void		assign_type_argument(t_token *tokens);
 t_bool		is_even_quotes(char **tokens);
 t_bool		is_valid_operator(char **args);
 t_bool		is_valid_token(t_token *tokens);
+int			is_tilde(t_mini *mini);
 /* === CREATE LIST === */
 t_token		*create_list(char **tokens);
 t_token		*init_new_list(t_token *head);
@@ -228,7 +229,6 @@ void		expander(t_mini *mini);
 char		*expand_exit_status(char *arg, t_mini *mini);
 char		*expand_shell_vars(char *arg, t_mini *mini);
 void		split_words(t_mini *mini, t_token **tokens);
-void		handle_tilde(char **source, int i, t_mini *mini);
 /* === MERGE ARGS === */
 t_bool		merge_args(t_token **tokens);
 /* === SPLIT ARGS === */

@@ -57,6 +57,7 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/check_operator/assign_type_argument.c\
 				src/parsing/check_operator/is_even_quotes.c\
 				src/parsing/check_operator/is_valid_operator.c\
+				src/parsing/check_operator/is_tilde.c\
 				src/parsing/merge_args/merge_args.c\
 				src/parsing/split_pipes/str_and_operator.c\
 				src/parsing/split_pipes/split_pipes.c\
@@ -69,7 +70,6 @@ SRC_EXPANDER = 	src/parsing/expander/expander.c\
 				src/parsing/expander/exit_status.c\
 				src/parsing/expander/shell_vars.c\
 				src/parsing/expander/split_words.c\
-				src/parsing/expander/handle_tilde.c\
 
 SRC_READLINE =  src/readline/readline.c\
 

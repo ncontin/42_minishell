@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 13:24:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 21:34:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,20 @@ static int	check_operator(t_mini *mini)
 
 t_command	*parsing(t_mini *mini)
 {
+	int i=0;
 	mini->args = arg_split(mini->input);
+	while (mini->args[i] != NULL)
+	{
+		printf("%s\n", mini->args[i]);
+		i++;
+	}
 	if (mini->args == NULL)
 		error_arg_split(mini);
 	if (check_operator(mini) == 1)
 		return (NULL);
 	if (handle_list(mini) == 1)
 		return (NULL);
+	is_tilde(mini);
 	expander(mini);
 	assign_type_argument(mini->tokens);
 	if (merge_args(&mini->tokens) == FALSE)
