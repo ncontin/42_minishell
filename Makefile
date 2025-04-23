@@ -21,6 +21,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
 				src/builtins/echo.c\
 				src/builtins/cd.c\
+				src/builtins/cd_utils.c\
 				src/builtins/env.c\
 				src/builtins/export.c\
 				src/builtins/unset.c\
@@ -42,6 +43,7 @@ SRC_CLEANUP =	src/cleanup/free_path.c\
 SRC_ERRORS = 	src/errors/parsing_error.c\
 				src/errors/executor_error.c\
 				src/errors/redirection_error.c\
+				src/errors/cd_error.c\
 
 SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_args/args_split.c\

@@ -136,7 +136,7 @@ void	split_words(t_mini *mini, t_token **tokens)
 			array_size = get_array_size(split_words);
 			if (array_size > 1)
 				handle_multiple_words(current, split_words, next_og);
-			else if (array_size == 1)
+			else if (array_size == 1 && !next_og)
 				handle_single_word(current, split_words);
 			else if (array_size == 0)
 				handle_empty_result(current);

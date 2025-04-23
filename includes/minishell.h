@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/23 06:34:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 17:26:34 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,10 @@ void		ft_pwd(t_mini *mini);
 void		ft_echo(char **cmd_args, long long int *exit_code);
 void		free_array(char **array);
 int			ft_cd(t_mini *mini);
+void		update_old_pwd(t_env_node **env_stack, char *old_pwd);
+int			check_cd_path(char *path);
+char		*get_env_value(t_env_node **envp_cp, char *key);
+void		update_pwd(t_env_node **env_stack);
 int			find_min_len(char *s1, char *s2);
 void		print_export(t_env_node **sorted_envp_cp, char **args);
 t_env_node	**copy_envp_list(t_env_node **envp_cp);
@@ -203,6 +207,8 @@ void		print_executor_error(char *msg, char *arg);
 void		error_path(t_mini *mini, char **envp, int err_code, t_command *cmd);
 void		print_file_error(char *filename, char *message);
 void		get_str_error(t_mini *mini, int here_fd, char *new, char *limiter);
+void		print_error_cd(char *msg, char *arg);
+void		print_error_chdir(char *path, char *pwd, t_mini *mini);
 void		here_doc_error(char *str_error, int here_doc_pipe[2]);
 /* ====== READLINE ====== */
 void		line_read(t_mini *mini);
