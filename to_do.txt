@@ -1,5 +1,14 @@
 -----------------------------------------------
 fix cd -
+
+minishell> unset OLDPWD
+minishell> cd -
+minishell: cd: OLDPWD not set
+minishell> cd $HOME
+minishell> pwd
+/home/user
+minishell> cd -
+minishell: cd: OLDPWD not set
 -----------------------------------------------
 bash> echo $"hi" 
 hi
