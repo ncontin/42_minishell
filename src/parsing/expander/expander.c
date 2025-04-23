@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/22 12:03:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 13:40:26 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ static void	replace_tokens(t_token **tokens)
 		free(current);
 	}
 }
+static void	advance_token(t_token **tokens, t_token **current)
+{
+	*current = *tokens;
+	*tokens = (*tokens)->next;
+}
 
 static void	handle_expandable_token(t_mini *mini, t_token **tokens,
 		t_token **current)
@@ -56,15 +61,8 @@ static void	handle_expandable_token(t_mini *mini, t_token **tokens,
 	else
 	{
 		split_words(mini, tokens);
-		*current = *tokens;
-		*tokens = (*tokens)->next;
+		advance_token(tokens, current);
 	}
-}
-
-static void	advance_token(t_token **tokens, t_token **current)
-{
-	*current = *tokens;
-	*tokens = (*tokens)->next;
 }
 
 void	expander(t_mini *mini)

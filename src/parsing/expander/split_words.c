@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/18 18:26:38 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/23 13:40:02 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	add_new_token(t_token *token, char *word, t_token *next_og)
 		next_og->prev = new;
 }
 
-static void	handle_single_word(t_token *current, char **split_words)
+void	handle_single_word(t_token *current, char **split_words)
 {
 	free(current->argument);
 	current->argument = ft_strdup(split_words[0]);
@@ -125,6 +125,7 @@ void	split_words(t_mini *mini, t_token **tokens)
 	char	**split_words;
 	int		array_size;
 
+	(void)mini;
 	current = *tokens;
 	while (current)
 	{
@@ -136,11 +137,10 @@ void	split_words(t_mini *mini, t_token **tokens)
 			array_size = get_array_size(split_words);
 			if (array_size > 1)
 				handle_multiple_words(current, split_words, next_og);
-			else if (array_size == 1)
+			else if (array_size == 1 && !next_og)
 				handle_single_word(current, split_words);
 			else if (array_size == 0)
 				handle_empty_result(current);
-			mini->expanded = 0;
 		}
 		current = next_og;
 	}
