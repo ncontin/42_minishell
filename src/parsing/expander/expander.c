@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/23 18:47:17 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/23 19:04:41 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,21 @@ static void	handle_nl_expand(t_token **tokens)
 	(*tokens)->next->argument = NULL;
 }
 
+static int	is_dollar(t_token **tokens)
+{
+	if ((*tokens)->argument && (*tokens)->argument[0] == '$'
+		&& (*tokens)->argument[1] == '\0')
+		return (1);
+	return (0);
+}
+
+static void	handle_next_arg(t_token **tokens)
+{
+	free((*tokens)->argument);
+	(*tokens)->argument = ft_strdup((*tokens)->next->argument);
+	(*tokens)->next->argument = NULL;
+}
+
 void	expander(t_mini *mini)
 {
 	t_token	*tokens;
@@ -95,12 +110,13 @@ void	expander(t_mini *mini)
 	tokens = mini->tokens;
 	while (tokens != NULL)
 	{
-		if (tokens->argument && tokens->argument[0] == '$' && tokens->next
-			&& tokens->next->argument && is_nl_char(&tokens))
+		if (is_dollar(&tokens) && tokens->next && tokens->next->argument)
 		{
-			handle_nl_expand(&tokens);
+			if (is_nl_char(&tokens))
+				handle_nl_expand(&tokens);
+			else
+				handle_next_arg(&tokens);
 			advance_token(&tokens, &current);
-			continue ;
 		}
 		else if (tokens->prev != NULL && tokens->prev->operator== HEREDOC)
 			advance_token(&tokens, &current);
