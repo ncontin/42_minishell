@@ -1,16 +1,32 @@
 -----------------------------------------------
-fix quotes handling
------------------------------------------------
 fix cd -
 -----------------------------------------------
-echo $"hi" 
+bash> echo $"hi" 
 hi
 
-check if token is linked
+minishell> echo $"hi"
+$hi
+
+check if token is linked and arg[0]=$ arg[1] =\0
 then remove $
 replace hi in front
 ------------------------------------------------
 fix env _=/home/user/git/minishell/./minishell
+------------------------------------------------
+Sometimes exit command is displayed twice
+minishell>exit
+exit
+exit
+------------------------------------------------
+put mini->exit_code = 0 when a builtin is 
+successful
+
+minishell> unset PATH
+minishell> cat 
+cat: No such file or directory
+minishell> cd ..
+minishell> echo $?
+127
 ------------------------------------------------
 need to check valgrind for dup2 and open errors
 ------------------------------------------------
