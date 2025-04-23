@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/23 17:34:14 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/23 19:09:44 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	add_new_token(t_token *token, char *word, t_token *next_og)
 		next_og->prev = new;
 }
 
-void	handle_single_word(t_token *current, char **split_words)
+static void	handle_single_word(t_token *current, char **split_words)
 {
 	free(current->argument);
 	current->argument = ft_strdup(split_words[0]);
