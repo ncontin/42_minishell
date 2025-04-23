@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:48:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 18:31:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 13:43:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	print_executor_error(char *msg, char *arg)
 	write(STDERR_FILENO, arg, ft_strlen(arg));
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
-	write(STDERR_FILENO, "\n", 1);	
+	write(STDERR_FILENO, "\n", 1);
 }
 
 void	error_path(t_mini *mini, char **envp, int error_code, t_command *cmd)
@@ -58,7 +58,7 @@ void	error_path(t_mini *mini, char **envp, int error_code, t_command *cmd)
 	{
 		print_executor_error(": Permission denied\n", cmd->argv[0]);
 		clean_exit(mini, envp, 126);
-	}   
+	}
 	else
 	{
 		print_executor_error(": command not found\n", cmd->argv[0]);

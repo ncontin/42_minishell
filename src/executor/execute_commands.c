@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/21 20:09:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 04:28:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	handle_path(t_command *current, char **envp, t_mini *mini)
 		{
 			if (S_ISDIR(statbuf.st_mode))
 			{
-				print_executor_error(": Is a directory\n", current->argv[0]);
+				print_executor_error("Is a directory", current->argv[0]);
 				clean_exit(mini, envp, 126);
 			}
 			if (execve(current->argv[0], current->argv, envp) == -1)

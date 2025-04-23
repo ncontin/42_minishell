@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 10:31:00 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 17:47:48 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/22 13:24:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ t_bool	is_even_quotes(char **tokens)
 	{
 		even_quotes = handle_quotes(tokens[i]);
 		if (even_quotes == FALSE)
-		{
-			free_array(tokens);
 			return (FALSE);
-		}
 		i++;
 	}
 	return (TRUE);

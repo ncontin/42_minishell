@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/23 13:40:26 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/23 18:47:17 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,28 @@ static void	handle_expandable_token(t_mini *mini, t_token **tokens,
 	}
 }
 
+static int	is_nl_char(t_token **tokens)
+{
+	if (ft_strncmp("\\n", (*tokens)->next->argument, 2) == 0
+		|| ft_strncmp("\\r", (*tokens)->next->argument, 2) == 0
+		|| ft_strncmp("\\t", (*tokens)->next->argument, 2) == 0)
+		return (1);
+	return (0);
+}
+
+static void	handle_nl_expand(t_token **tokens)
+{
+	free((*tokens)->argument);
+	if (ft_strncmp("\\n", (*tokens)->next->argument, 2) == 0)
+		(*tokens)->argument = ft_strdup("\n");
+	else if (ft_strncmp("\\r", (*tokens)->next->argument, 2) == 0)
+		(*tokens)->argument = ft_strdup("\r");
+	else if (ft_strncmp("\\t", (*tokens)->next->argument, 2) == 0)
+		(*tokens)->argument = ft_strdup("\t");
+	free((*tokens)->next->argument);
+	(*tokens)->next->argument = NULL;
+}
+
 void	expander(t_mini *mini)
 {
 	t_token	*tokens;
@@ -73,7 +95,14 @@ void	expander(t_mini *mini)
 	tokens = mini->tokens;
 	while (tokens != NULL)
 	{
-		if (tokens->prev != NULL && tokens->prev->operator== HEREDOC)
+		if (tokens->argument && tokens->argument[0] == '$' && tokens->next
+			&& tokens->next->argument && is_nl_char(&tokens))
+		{
+			handle_nl_expand(&tokens);
+			advance_token(&tokens, &current);
+			continue ;
+		}
+		else if (tokens->prev != NULL && tokens->prev->operator== HEREDOC)
 			advance_token(&tokens, &current);
 		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
 			handle_expandable_token(mini, &tokens, &current);

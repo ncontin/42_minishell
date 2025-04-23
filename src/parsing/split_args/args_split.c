@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 18:32:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/17 10:14:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 04:21:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	**arg_split(char const *s)
 	if (!s)
 		return (NULL);
 	parser = init_parser(s);
-	nb_args = count_args(&parser);
+	nb_args = count_args(&parser, 0);
 	str = (char **) malloc(sizeof(char *) * (nb_args + 1));
 	if (str == NULL)
 		return (NULL);

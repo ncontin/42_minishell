@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/15 16:29:24 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/23 05:36:43 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,19 @@ static char	*handle_home(t_mini *mini, char *pwd)
 			return (NULL);
 		}
 	}
+	else if (mini->cmds->argv[1] != NULL && ft_strncmp(mini->cmds->argv[1], "-",
+			(ft_strlen("-") + 1)) == 0)
+	{
+		path = get_env_value(mini->lst_env->envp_cp, "OLDPWD");
+		if (!path)
+		{
+			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+			free(pwd);
+			return (NULL);
+		}
+		ft_pwd(mini);
+		return (path);
+	}
 	else if (ft_strncmp(mini->cmds->argv[1], "--", (ft_strlen("--") + 1)) == 0)
 	{
 		mini->cmds->argv[1][0] = '.';
@@ -111,13 +124,6 @@ int	ft_cd(t_mini *mini)
 	}
 	if (mini->cmds->argv[1] && !mini->cmds->argv[1][0])
 		return (0);
-	else if (mini->cmds->argv[1] != NULL && ft_strncmp(mini->cmds->argv[1], "-",
-			(ft_strlen("-") + 1)) == 0)
-	{
-		ft_pwd(mini);
-		free(pwd);
-		return (0);
-	}
 	path = handle_home(mini, pwd);
 	if (!path)
 		return (1);

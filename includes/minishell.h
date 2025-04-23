@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 12:02:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 06:34:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ typedef struct s_mini
 /* === INIT === */
 void		init_mini(t_mini *mini);
 void		init_envp(t_mini *mini);
-int			get_envp_array(t_env *lst_env, char ***envp);
 
 /* === BUILTINS === */
 int			is_builtin(char *str);
@@ -215,6 +214,7 @@ void		assign_type_argument(t_token *tokens);
 t_bool		is_even_quotes(char **tokens);
 t_bool		is_valid_operator(char **args);
 t_bool		is_valid_token(t_token *tokens);
+int			is_tilde(t_mini *mini);
 /* === CREATE LIST === */
 t_token		*create_list(char **tokens);
 t_token		*init_new_list(t_token *head);
@@ -232,7 +232,7 @@ void		split_words(t_mini *mini, t_token **tokens);
 /* === MERGE ARGS === */
 t_bool		merge_args(t_token **tokens);
 /* === SPLIT ARGS === */
-int			count_args(t_parser *parser);
+int			count_args(t_parser *parser, int i);
 char		**arg_split(char const *s);
 t_bool		is_operator(char const *c, int no_space, int *len);
 int			wordlen(char const *s, t_bool dquotes, t_bool squotes);
@@ -261,9 +261,15 @@ void		get_path(char **envp, t_env *lst_env);
 char		**get_unix_path(char **envp);
 char		*copy_command(char *unix_path, char *commands);
 int			*is_user_in_bin(t_mini *mini, t_command *current, char **envp);
+/* === GET ENVP === */
+int			get_envp_array(t_env *lst_env, char ***envp);
 /* === HANDLE REDIRECTION === */
 void		here_doc_redirection(t_command *current, t_mini *mini);
 void		handle_redirection(t_command *current, t_mini *mini);
+/* === HANDLE REDIRECTION UTILS === */
+void		duplicate_fd(int oldfd, int newfd, t_mini *mini, t_command *current);
+int			open_file(t_mini *mini, char *filename, int flags, mode_t mode);
+void		check_directory(char *filename);
 /* ====== HERE_DOC ====== */
 char		*add_line_return(char *source, t_mini *mini);
 int			setup_here_docs(t_mini *mini);
