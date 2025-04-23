@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/23 04:21:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 06:34:29 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,6 +269,7 @@ void		handle_redirection(t_command *current, t_mini *mini);
 /* === HANDLE REDIRECTION UTILS === */
 void		duplicate_fd(int oldfd, int newfd, t_mini *mini, t_command *current);
 int			open_file(t_mini *mini, char *filename, int flags, mode_t mode);
+void		check_directory(char *filename);
 /* ====== HERE_DOC ====== */
 char		*add_line_return(char *source, t_mini *mini);
 int			setup_here_docs(t_mini *mini);

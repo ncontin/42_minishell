@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:22:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 16:25:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 06:35:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,19 @@ void	duplicate_fd(int oldfd, int newfd, t_mini *mini, t_command *current)
 		}
 		free_exit(mini);
 		exit(EXIT_FAILURE);
+	}
+}
+
+void	check_directory(char *filename)
+{
+	struct stat	statbuf;
+
+	if (lstat(filename, &statbuf) == 0)
+	{
+		if (S_ISDIR(statbuf.st_mode))
+		{
+			print_executor_error("Is a directory", filename);
+			exit (EXIT_FAILURE);
+		}
 	}
 }
