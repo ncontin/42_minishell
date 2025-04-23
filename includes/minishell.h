@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 20:31:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 04:21:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,7 +232,7 @@ void		split_words(t_mini *mini, t_token **tokens);
 /* === MERGE ARGS === */
 t_bool		merge_args(t_token **tokens);
 /* === SPLIT ARGS === */
-int			count_args(t_parser *parser);
+int			count_args(t_parser *parser, int i);
 char		**arg_split(char const *s);
 t_bool		is_operator(char const *c, int no_space, int *len);
 int			wordlen(char const *s, t_bool dquotes, t_bool squotes);

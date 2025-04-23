@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 16:24:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/23 05:08:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,33 +26,44 @@ void	here_doc_redirection(t_command *current, t_mini *mini)
 	}
 }
 
-static void	handle_append(t_command *current, t_mini *mini, int *j)
+static void	handle_append(t_command *current, t_mini *mini, int *i)
 {
-	int		fd;
-	int		i;
-	int		flags;
-	char	*filename;
+	int			fd;
+	int			flags;
+	char		*filename;
+	struct stat	statbuf;
 
-	i = *j;
-	filename = current->file[i];
+	filename = current->file[*i];
 	flags = O_WRONLY | O_APPEND | O_CREAT;
 	if (access(filename, F_OK) != 0 || access(filename, W_OK) == 0)
 	{
-		fd = open_file(mini, current->file[i], flags, 0664);
+		fd = open_file(mini, filename, flags, 0664);
 		duplicate_fd(fd, STDOUT_FILENO, mini, current);
 		close(fd);
 	}
-	else
+	else 
 	{
-		print_file_error(current->file[i], ": Permission denied\n");
-		exit (EXIT_FAILURE);
+		if (errno == EACCES)
+		{
+			print_file_error(filename, ": Permission denied\n");
+			exit(EXIT_FAILURE);
+		}
+		if (lstat(filename, &statbuf) == 0)
+		{
+			if (S_ISDIR(statbuf.st_mode))
+			{
+				print_executor_error("Is a directory", filename);
+				exit (EXIT_FAILURE);
+			}
+		}
 	}
 }
 
 static void	handle_input(t_command *current, t_mini *mini, int *j)
 {
-	int		fd;
-	int		i;
+	int			fd;
+	int			i;
+	struct stat	statbuf;
 
 	i = *j;
 	errno = 0;
@@ -69,6 +80,14 @@ static void	handle_input(t_command *current, t_mini *mini, int *j)
 			print_file_error(current->file[i], ": Permission denied\n");
 			exit(EXIT_FAILURE);
 		}
+		else if (lstat(current->file[i], &statbuf) == 0)
+		{
+			if (S_ISDIR(statbuf.st_mode))
+			{
+				print_executor_error("Is a directory", current->file[i]);
+				exit (EXIT_FAILURE);
+			}
+		}
 		else
 		{
 			print_file_error(current->file[i], ": No such file or directory\n");
@@ -77,26 +96,36 @@ static void	handle_input(t_command *current, t_mini *mini, int *j)
 	}
 }
 
-static void	handle_output(t_command *current, t_mini *mini, int *j)
+static void	handle_output(t_command *current, t_mini *mini, int *i)
 {
 	int		fd;
-	int		i;
 	int		flags;
-	char	*file;
+	char	*filename;
+	struct stat	statbuf;
 
-	i = *j;
-	file = current->file[i];
+	filename = current->file[*i];
 	flags = O_WRONLY | O_TRUNC | O_CREAT;
-	if (access(file, F_OK) != 0 || access(file, W_OK) == 0)
+	if (access(filename, F_OK) != 0 || access(filename, W_OK) == 0)
 	{
-		fd = open_file(mini, current->file[i], flags, 0664);
+		fd = open_file(mini, filename, flags, 0664);
 		duplicate_fd(fd, STDOUT_FILENO, mini, current);
 		close(fd);
 	}
-	else
+	else 
 	{
-		print_file_error(current->file[i], ": Permission denied\n");
-		exit (EXIT_FAILURE);
+		if (errno == EACCES)
+		{
+			print_file_error(filename, ": Permission denied\n");
+			exit(EXIT_FAILURE);
+		}
+		if (lstat(filename, &statbuf) == 0)
+		{
+			if (S_ISDIR(statbuf.st_mode))
+			{
+				print_executor_error("Is a directory", filename);
+				exit (EXIT_FAILURE);
+			}
+		}
 	}
 	close(fd);
 }
