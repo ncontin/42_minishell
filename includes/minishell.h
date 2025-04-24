@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 17:03:03 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:20:37 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,8 @@ char					*get_key(char *str);
 char					*get_value(char *str);
 void					ft_exit(t_mini *mini, char **cmd_args);
 long long				ft_atoll(const char *nptr, int *overflow);
+char					*del_spaces(char *str);
+int						check_digit(char *str);
 
 /* === SIGNAL === */
 void					executor_signal(void);
@@ -219,13 +221,13 @@ void					line_read(t_mini *mini);
 /* ====== PARSING ====== */
 t_command				*parsing(t_mini *mini);
 /* === CHECK OPERATOR === */
-void		assign_operator(t_token *tokens);
-void		assign_type_argument(t_token *tokens);
-t_bool		is_even_quotes(char **tokens);
-t_bool		is_valid_operator(char **args);
-t_bool		is_valid_token(t_token *tokens);
-int			is_tilde(t_mini *mini);
-void		is_dollar_alone(t_mini *mini);
+void					assign_operator(t_token *tokens);
+void					assign_type_argument(t_token *tokens);
+t_bool					is_even_quotes(char **tokens);
+t_bool					is_valid_operator(char **args);
+t_bool					is_valid_token(t_token *tokens);
+int						is_tilde(t_mini *mini);
+void					is_dollar_alone(t_mini *mini);
 /* === CREATE LIST === */
 t_token					*create_list(char **tokens);
 t_token					*init_new_list(t_token *head);
