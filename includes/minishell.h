@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/23 06:34:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:46:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,11 @@ void		execute_builtin(t_mini *mini, char **argv);
 void		ft_pwd(t_mini *mini);
 void		ft_echo(char **cmd_args, long long int *exit_code);
 void		free_array(char **array);
-int			ft_cd(t_mini *mini);
+int			ft_cd(t_mini *mini, char *path);
+void		update_old_pwd(t_env_node **env_stack, char *old_pwd);
+int			check_cd_path(char *path);
+char		*get_env_value(t_env_node **envp_cp, char *key);
+void		update_pwd(t_env_node **env_stack);
 int			find_min_len(char *s1, char *s2);
 void		print_export(t_env_node **sorted_envp_cp, char **args);
 t_env_node	**copy_envp_list(t_env_node **envp_cp);
@@ -203,6 +207,8 @@ void		print_executor_error(char *msg, char *arg);
 void		error_path(t_mini *mini, char **envp, int err_code, t_command *cmd);
 void		print_file_error(char *filename, char *message);
 void		get_str_error(t_mini *mini, int here_fd, char *new, char *limiter);
+void		print_error_cd(char *msg, char *arg);
+void		print_error_chdir(char *path, char *pwd, t_mini *mini);
 void		here_doc_error(char *str_error, int here_doc_pipe[2]);
 /* ====== READLINE ====== */
 void		line_read(t_mini *mini);
@@ -261,6 +267,9 @@ void		get_path(char **envp, t_env *lst_env);
 char		**get_unix_path(char **envp);
 char		*copy_command(char *unix_path, char *commands);
 int			*is_user_in_bin(t_mini *mini, t_command *current, char **envp);
+void		is_path_a_directory(t_command *current, char **envp, t_mini *mini);
+void    	handle_no_exec(t_command *current, char **envp,
+				t_mini *mini, int error);
 /* === GET ENVP === */
 int			get_envp_array(t_env *lst_env, char ***envp);
 /* === HANDLE REDIRECTION === */
@@ -269,7 +278,9 @@ void		handle_redirection(t_command *current, t_mini *mini);
 /* === HANDLE REDIRECTION UTILS === */
 void		duplicate_fd(int oldfd, int newfd, t_mini *mini, t_command *current);
 int			open_file(t_mini *mini, char *filename, int flags, mode_t mode);
-void		check_directory(char *filename);
+void		check_directory(char *filename, t_mini *mini);
+void		check_no_access(char *filename, int errno_code, t_mini *mini);
+void		no_such_file(char *filename, t_mini *mini);
 /* ====== HERE_DOC ====== */
 char		*add_line_return(char *source, t_mini *mini);
 int			setup_here_docs(t_mini *mini);

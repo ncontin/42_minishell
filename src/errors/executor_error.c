@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:48:42 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 13:43:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 10:58:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	error_path(t_mini *mini, char **envp, int error_code, t_command *cmd)
 {
 	if (error_code == EACCES)
 	{
-		print_executor_error(": Permission denied\n", cmd->argv[0]);
+		print_executor_error("Permission denied", cmd->argv[0]);
 		clean_exit(mini, envp, 126);
 	}
 	else
