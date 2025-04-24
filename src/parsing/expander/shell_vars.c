@@ -6,20 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/23 13:40:14 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/24 11:40:36 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	find_word_len(char *arg, int len)
-{
-	len = 0;
-	while (arg[len] && (ft_isspace(arg[len]) == 0)
-		&& (ft_isspecial(arg[len]) == 0))
-		len++;
-	return (len);
-}
 
 static char	*process_string(char *full_str, t_env_node *current,
 		unsigned long len, int i)
@@ -85,36 +76,46 @@ static char	*replace_env_vars(char *full_str, t_mini *mini, int i)
 	return (full_str);
 }
 
+static char	*process_variables(char *full_str, t_mini *mini, int i)
+{
+	mini->expanded = 0;
+	while (full_str && full_str[i])
+	{
+		if (full_str[i] == '$')
+		{
+			if (full_str[i + 1] && !ft_isspecial(full_str[i + 1]))
+			{
+				full_str = replace_env_vars(full_str, mini, i);
+				mini->expanded = 1;
+				if (full_str && full_str[0] == '\0')
+					return (NULL);
+			}
+		}
+		i++;
+	}
+	return (full_str);
+}
+
 char	*expand_shell_vars(char *arg, t_mini *mini)
 {
 	int		i;
 	char	*full_str;
 
-
-	if (arg == NULL)
+	if (!arg)
 		return (NULL);
 	i = 0;
-	while (ft_isprint(arg[i]) && arg[i] != '$')
+	while (arg[i] && ft_isprint(arg[i]) && arg[i] != '$')
 		i++;
 	if (arg[i] == '\0')
 		return (arg);
 	full_str = ft_strdup(arg);
-	while (full_str[i])
+	if (!full_str)
+		return (NULL);
+	full_str = process_variables(full_str, mini, i);
+	if (!full_str)
 	{
-		if (full_str[i] == '$' && (full_str[i + 1] && (ft_isspecial(full_str[i
-						+ 1]) == 0)))
-		{
-			mini->expanded = 0;
-			full_str = replace_env_vars(full_str, mini, i);
-			mini->expanded = 1;
-			if (full_str && full_str[0] == '\0')
-			{
-				free(arg);
-				free(full_str);
-				return (NULL);
-			}
-		}
-		i++;
+		free(arg);
+		return (NULL);
 	}
 	free(arg);
 	return (full_str);

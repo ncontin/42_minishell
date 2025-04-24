@@ -6,74 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/23 19:09:44 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/24 11:46:38 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	has_space(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i])
-	{
-		if (ft_isspace(str[i]) == 1)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static int	get_array_size(char **array)
-{
-	int	counter;
-
-	counter = 0;
-	while (array[counter])
-		counter++;
-	return (counter);
-}
-
-static t_token	*create_token(char *arg)
-{
-	t_token	*new_token;
-
-	new_token = malloc(sizeof(t_token));
-	if (!new_token)
-		return (NULL);
-	new_token->argument = ft_strdup(arg);
-	if (!new_token->argument)
-	{
-		free(new_token);
-		return (NULL);
-	}
-	new_token->quotes = NO_QUOTES;
-	new_token->linked = FALSE;
-	new_token->operator= NONE;
-	new_token->next = NULL;
-	new_token->prev = NULL;
-	return (new_token);
-}
-
-static void	add_new_token(t_token *token, char *word, t_token *next_og)
-{
-	t_token	*current;
-	t_token	*new;
-
-	// t_token	*next;
-	new = create_token(word);
-	current = token;
-	// next = token->next;
-	current->next = new;
-	new->next = next_og;
-	new->prev = current;
-	if (next_og)
-		next_og->prev = new;
-}
 
 static void	handle_single_word(t_token *current, char **split_words)
 {
