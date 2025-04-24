@@ -85,6 +85,7 @@ SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/handle_redirection.c\
 				src/executor/handle_redirection_utils.c\
 				src/executor/execute_commands.c\
+				src/executor/execute_commands_utils.c\
 				src/executor/dup_create_pipe.c\
 				src/executor/path.c\
 				src/executor/get_envp.c\
