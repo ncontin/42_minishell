@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/23 04:25:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 16:29:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_command	*parsing(t_mini *mini)
 		return (NULL);
 	if (handle_list(mini) == 1)
 		return (NULL);
+	is_dollar_alone(mini);
 	is_tilde(mini);
 	expander(mini);
 	assign_type_argument(mini->tokens);
