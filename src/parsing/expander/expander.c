@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 13:28:33 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/24 16:52:30 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,9 @@ void	expander(t_mini *mini)
 		{
 			if (is_nl_char(&tokens))
 				handle_nl_expand(&tokens);
-			else
-				handle_next_arg(&tokens);
 			advance_token(&tokens, &current);
 		}
-		else if (tokens->prev != NULL && tokens->prev->operator == HEREDOC)
+		else if (tokens->prev != NULL && tokens->prev->operator== HEREDOC)
 			advance_token(&tokens, &current);
 		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
 			handle_expandable_token(mini, &tokens, &current);
