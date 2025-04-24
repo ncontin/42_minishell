@@ -22,11 +22,6 @@ replace hi in front
 ------------------------------------------------
 fix env _=/home/user/git/minishell/./minishell
 ------------------------------------------------
-Sometimes exit command is displayed twice
-minishell>exit
-exit
-exit
-------------------------------------------------
 put mini->exit_code = 0 when a builtin is 
 successful
 

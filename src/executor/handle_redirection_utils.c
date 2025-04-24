@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:22:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/23 06:35:33 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:00:48 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	duplicate_fd(int oldfd, int newfd, t_mini *mini, t_command *current)
 	}
 }
 
-void	check_directory(char *filename)
+void	check_directory(char *filename, t_mini *mini)
 {
 	struct stat	statbuf;
 
@@ -52,7 +52,25 @@ void	check_directory(char *filename)
 		if (S_ISDIR(statbuf.st_mode))
 		{
 			print_executor_error("Is a directory", filename);
+			free_exit(mini);
 			exit (EXIT_FAILURE);
 		}
 	}
+}
+
+void	check_no_access(char *filename, int errno_code, t_mini *mini)
+{
+	if (errno_code == EACCES)
+	{
+		print_file_error(filename, ": Permission denied\n");
+		free_exit(mini);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	no_such_file(char *filename, t_mini *mini)
+{
+	print_file_error(filename, ": No such file or directory\n");
+	free_exit(mini);
+	exit(EXIT_FAILURE);
 }

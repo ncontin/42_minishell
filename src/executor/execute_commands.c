@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/23 04:28:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:46:56 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	get_path_and_exec(t_mini *mini, t_command *cmd, char **envp,
 	char	*path;
 
 	i = 0;
+	errno = 0;
 	while (unix_path[i])
 	{
 		path = copy_command(unix_path[i], cmd->argv[0]);
@@ -40,6 +41,7 @@ static void	get_path_and_exec(t_mini *mini, t_command *cmd, char **envp,
 static void	find_path(t_command *current, char **envp, t_mini *mini)
 {
 	char	**unix_path;
+	int		error_code;
 
 	unix_path = get_unix_path(envp);
 	if (unix_path == NULL || *unix_path == NULL)
@@ -50,10 +52,29 @@ static void	find_path(t_command *current, char **envp, t_mini *mini)
 		clean_exit(mini, envp, 127);
 	}
 	get_path_and_exec(mini, current, envp, unix_path);
-	if (errno == ENOENT)
-		print_executor_error("command not found", current->argv[0]);
+	error_code = errno;
 	free_array(unix_path);
-	clean_exit(mini, envp, 127);
+	handle_no_exec(current, envp, mini, error_code);
+}
+
+static void	handle_path(t_command *current, char **envp, t_mini *mini)
+{
+	if (access(current->argv[0], F_OK) != 0)
+	{
+		print_executor_error(strerror(errno), current->argv[0]);
+		clean_exit(mini, envp, 127);
+	}
+	errno = 0;
+	if (access(current->argv[0], X_OK) == 0)
+	{
+		is_path_a_directory(current, envp, mini);
+		if (execve(current->argv[0], current->argv, envp) == -1)
+		{
+			write(STDERR_FILENO, "execve error\n", 13);
+			clean_exit(mini, envp, errno);
+		}
+	}
+	error_path(mini, envp, errno, current);
 }
 
 static void	check_special_cases(t_command *cmd, char **envp, t_mini *mini)
@@ -80,35 +101,6 @@ static void	check_special_cases(t_command *cmd, char **envp, t_mini *mini)
 		print_executor_error("filename argument required", cmd->argv[0]);
 		clean_exit(mini, envp, 2);
 	}
-}
-
-static void	handle_path(t_command *current, char **envp, t_mini *mini)
-{
-	struct stat	statbuf;
-
-	if (access(current->argv[0], F_OK) != 0)
-	{
-		print_executor_error(strerror(errno), current->argv[0]);
-		clean_exit(mini, envp, 127);
-	}
-	errno = 0;
-	if (access(current->argv[0], X_OK) == 0)
-	{
-		if (lstat(current->argv[0], &statbuf) == 0)
-		{
-			if (S_ISDIR(statbuf.st_mode))
-			{
-				print_executor_error("Is a directory", current->argv[0]);
-				clean_exit(mini, envp, 126);
-			}
-			if (execve(current->argv[0], current->argv, envp) == -1)
-			{
-				write(STDERR_FILENO, "execve error\n", 13);
-				clean_exit(mini, envp, errno);
-			}
-		}
-	}
-	error_path(mini, envp, errno, current);
 }
 
 void	execute_cmd(t_command *cmd, char **envp, t_mini *mini)
