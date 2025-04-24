@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 15:23:19 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 16:55:32 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,6 @@ char					*expand_special_vars(char *arg, t_mini *mini);
 void					replace_tokens(t_token **tokens);
 void					advance_token(t_token **tokens, t_token **current);
 void					handle_nl_expand(t_token **tokens);
-void					handle_next_arg(t_token **tokens);
 /* === MERGE ARGS === */
 t_bool					merge_args(t_token **tokens);
 /* === SPLIT ARGS === */

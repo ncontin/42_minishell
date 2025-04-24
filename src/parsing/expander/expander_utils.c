@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:07:36 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 12:24:33 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/24 16:52:37 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,5 @@ void	handle_nl_expand(t_token **tokens)
 	else if (ft_strncmp("\\t", (*tokens)->next->argument, 2) == 0)
 		(*tokens)->argument = ft_strdup("\t");
 	free((*tokens)->next->argument);
-	(*tokens)->next->argument = NULL;
-}
-
-void	handle_next_arg(t_token **tokens)
-{
-	free((*tokens)->argument);
-	(*tokens)->argument = ft_strdup((*tokens)->next->argument);
 	(*tokens)->next->argument = NULL;
 }
