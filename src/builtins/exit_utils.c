@@ -6,53 +6,49 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/15 16:06:27 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/24 19:20:09 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-long long	ft_atoll(const char *nptr, int *overflow)
-{
-	int			i;
-	int			sign;
-	long long	result;
-	int			digit;
 
-	result = 0;
-	sign = 1;
+
+int	check_digit(char *str)
+{
+	int	i;
+	int	len;
+
 	i = 0;
-	while (nptr[i] == ' ' || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
-	if (nptr[i] == '+' || nptr[i] == '-')
+	len = ft_strlen(str);
+	if (len == 0)
+		return (1);
+	if ((str[0] == '-' || str[0] == '+'))
 	{
-		if (nptr[i] == '-')
-			sign = -1;
+		if (len == 1)
+			return (1);
 		i++;
 	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
+	if (!ft_isdigit(str[i]))
+		return (1);
+	while (str[i])
 	{
-		digit = nptr[i] - '0';
-		if (sign == 1)
-		{
-			if (result > LLONG_MAX / 10 || (result == LLONG_MAX / 10
-					&& digit > 7))
-			{
-				*overflow = 1;
-				return (LLONG_MAX);
-			}
-		}
-		else
-		{
-			if (result > LLONG_MAX / 10 || (result == LLONG_MAX / 10
-					&& digit > 8))
-			{
-				*overflow = 1;
-				return (LLONG_MIN);
-			}
-		}
-		result = (result * 10) + digit;
+		if (!ft_isdigit(str[i]))
+			return (1);
 		i++;
 	}
-	return (result *= sign);
+	return (0);
+}
+
+char	*del_spaces(char *str)
+{
+	char	*res;
+	char	*temp;
+
+	if (!str)
+		return (NULL);
+	temp = ft_strdup(str);
+	res = ft_strtrim(temp, " ");
+	free(temp);
+	return (res);
 }

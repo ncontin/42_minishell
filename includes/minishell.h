@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 18:58:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:44:12 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,8 @@ char					*get_key(char *str);
 char					*get_value(char *str);
 void					ft_exit(t_mini *mini, char **cmd_args);
 long long				ft_atoll(const char *nptr, int *overflow);
+char					*del_spaces(char *str);
+int						check_digit(char *str);
 
 /* === SIGNAL === */
 void					executor_signal(void);
@@ -238,7 +240,7 @@ void					multi_str(char *args, int nb_strings, t_token **head,
 int						is_multi_strings(char *args, int i, t_bool dquote,
 							t_bool squote);
 /* === EXPANDER === */
-void					expander(t_mini *mini);
+int						expander(t_mini *mini);
 char					*expand_exit_status(char *arg, t_mini *mini);
 char					*expand_shell_vars(char *arg, t_mini *mini);
 void					split_words(t_mini *mini, t_token **tokens);
@@ -253,7 +255,7 @@ int						is_nl_char(t_token **tokens);
 char					*expand_special_vars(char *arg, t_mini *mini);
 void					replace_tokens(t_token **tokens);
 void					advance_token(t_token **tokens, t_token **current);
-void					handle_nl_expand(t_token **tokens);
+int						handle_nl_expand(t_token **tokens);
 /* === MERGE ARGS === */
 t_bool					merge_args(t_token **tokens);
 /* === SPLIT ARGS === */

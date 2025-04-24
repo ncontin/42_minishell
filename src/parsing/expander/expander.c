@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 16:52:30 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/24 22:56:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	handle_expandable_token(t_mini *mini, t_token **tokens,
 	}
 }
 
-void	expander(t_mini *mini)
+int	expander(t_mini *mini)
 {
 	t_token	*tokens;
 	t_token	*current;
@@ -36,10 +36,13 @@ void	expander(t_mini *mini)
 		if (is_dollar(&tokens) && tokens->next && tokens->next->argument)
 		{
 			if (is_nl_char(&tokens))
-				handle_nl_expand(&tokens);
+			{
+				if (handle_nl_expand(&tokens) == 1)
+					return (1);
+			}
 			advance_token(&tokens, &current);
 		}
-		else if (tokens->prev != NULL && tokens->prev->operator== HEREDOC)
+		else if (tokens->prev != NULL && tokens->prev->operator == HEREDOC)
 			advance_token(&tokens, &current);
 		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
 			handle_expandable_token(mini, &tokens, &current);
@@ -49,4 +52,5 @@ void	expander(t_mini *mini)
 	while (current->prev != NULL)
 		current = current->prev;
 	mini->tokens = current;
+	return (0);
 }

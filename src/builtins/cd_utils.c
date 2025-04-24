@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 08:41:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:12:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
 	{
 		if (strncmp(current->key, "OLDPWD", 6) == 0)
 		{
-				free(current->value);
-				current->value = old_pwd_copy;
-				return ;
+			free(current->value);
+			current->value = old_pwd_copy;
+			return ;
 		}
 		if (current->next == NULL)
 		{

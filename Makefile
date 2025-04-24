@@ -29,6 +29,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/export_utils.c\
 				src/builtins/exit.c\
 				src/builtins/exit_utils.c\
+				src/builtins/ft_atoll.c\
 
 SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\

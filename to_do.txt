@@ -1,43 +1,66 @@
------------------------------------------------
-fix cd -
-
-minishell> unset OLDPWD
-minishell> cd -
-minishell: cd: OLDPWD not set
-minishell> cd $HOME
-minishell> pwd
-/home/user
-minishell> cd -
-minishell: cd: OLDPWD not set
------------------------------------------------
-bash> echo $"hi" 
-hi
-
-minishell> echo $"hi"
-$hi
-
-check if token is linked and arg[0]=$ arg[1] =\0
-then remove $
-replace hi in front
-------------------------------------------------
+---------------------------------------------------------------------------------------------------
 fix env _=/home/user/git/minishell/./minishell
-------------------------------------------------
-put mini->exit_code = 0 when a builtin is 
-successful
+---------------------------------------------------------------------------------------------------
+minishell> echo $'\n'$'\n'
+Merge_args :memory allocation failed
 
-minishell> unset PATH
-minishell> cat 
-cat: No such file or directory
-minishell> cd ..
-minishell> echo $?
-127
-------------------------------------------------
+==5562== FILE DESCRIPTORS: 3 open (3 std) at exit.
+==5562== 
+==5562== HEAP SUMMARY:
+==5562==     in use at exit: 233,197 bytes in 246 blocks
+==5562==   total heap usage: 698 allocs, 452 frees, 260,229 bytes allocated
+==5562== 
+==5562== 2 bytes in 1 blocks are definitely lost in loss record 3 of 86
+==5562==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==5562==    by 0x113584: ft_strdup (in /home/anthonin/git/minishell/minishell)
+==5562==    by 0x11034B: handle_nl_expand (expander_utils.c:60)
+==5562==    by 0x10F73D: expander (expander.c:39)
+==5562==    by 0x10F5B4: parsing (parsing.c:62)
+==5562==    by 0x11073E: handle_user_input (readline.c:18)
+==5562==    by 0x11084B: line_read (readline.c:42)
+==5562==    by 0x10962B: main (main.c:30)
+==5562== 
+==5562== LEAK SUMMARY:
+==5562==    definitely lost: 2 bytes in 1 blocks
+==5562==    indirectly lost: 0 bytes in 0 blocks
+==5562==      possibly lost: 0 bytes in 0 blocks
+==5562==    still reachable: 0 bytes in 0 blocks
+==5562==         suppressed: 233,195 bytes in 245 blocks
+==5562== 
+==5562== For lists of detected and suppressed errors, rerun with: -s
+==5562== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+----------------------------------------------------------------------------------------------------
 need to check valgrind for dup2 and open errors
-------------------------------------------------
+----------------------------------------------------------------------------------------------------
 need more tests without environment
-------------------------------------------------
-check every allocation memory throughout
-the code 
-------------------------------------------------
-fix norminette errors
-------------------------------------------------
+----------------------------------------------------------------------------------------------------
+check every ALLOCATION MEMORY throughout the code : expander/builtin/executor
+----------------------------------------------------------------------------------------------------
+write a message for user to know if a malloc has failed then return to prompt :
+
+void    handle_nl_expand(t_token **tokens)
+{
+    free((*tokens)->argument);
+    if (ft_strncmp("\\n", (*tokens)->next->argument, 2) == 0)
+    {
+    	(*tokens)->argument = ft_strdup("\n");
+        if (*tokens)->argument == NULL
+        write(STDERR_FILENO, "memory allocation failed in nl_expand\n", 37);
+        return ;
+        --THEN FREE EVERYTHING-- 
+        --RETURN TO PROMPT--
+    }
+    else if (ft_strncmp("\\r", (*tokens)->next->argument, 2) == 0)
+        (*tokens)->argument = ft_strdup("\r");
+    else if (ft_strncmp("\\t", (*tokens)->next->argument, 2) == 0)
+        (*tokens)->argument = ft_strdup("\t");
+    free((*tokens)->next->argument);
+    (*tokens)->next->argument = NULL;
+}
+
+----------------------------------------------------------------------------------------------------
+need to fix allocation memory in parsing -> instead of exit, we have to return to the prompt
+----------------------------------------------------------------------------------------------------
+fix norminette errors ONLY when strdup, substr, strtrim and every malloc allocation are 
+handle with an error message, have NO LEAKS and return to the prompt 
+----------------------------------------------------------------------------------------------------
