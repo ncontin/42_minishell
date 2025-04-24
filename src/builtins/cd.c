@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/23 18:02:18 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:15:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ static char	*handle_previous_path(t_mini *mini, char *pwd)
 	char	*path;
 
 	path = get_env_value(mini->lst_env->envp_cp, "OLDPWD");
-	if (check_cd_path(path) == 1)
-		return (NULL);
 	if (!path)
 	{
+		free(pwd);
 		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+		return (NULL);
+	}
+	else if (check_cd_path(path))
+	{
+		free(pwd);
 		return (NULL);
 	}
 	if (chdir(path) == -1)
@@ -86,7 +90,7 @@ int	ft_cd(t_mini *mini, char *path)
 	if (handle_start_cd(mini, pwd) == 1)
 		return (0);
 	if (mini->cmds->argv[1] != NULL
-		&& ft_strncmp(mini->cmds->argv[1], "-", (ft_strlen("-") + 1)) == 0)
+			&& ft_strncmp(mini->cmds->argv[1], "-", (ft_strlen("-") + 1)) == 0)
 	{
 		path = handle_previous_path(mini, pwd);
 		if (!path)
