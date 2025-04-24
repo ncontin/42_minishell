@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 11:01:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 17:54:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:49:22 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	ft_unset(t_mini *mini, char **cmd_args)
 	if (!mini->lst_env->envp_cp)
 		return ;
 	i = 1;
-	mini->exit_code = 0;
 	while (cmd_args[i])
 	{
 		unset_env(mini->lst_env->envp_cp, cmd_args[i]);

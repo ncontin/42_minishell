@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:19:29 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 23:45:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:18:08 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int	is_new_line(t_token *current)
 {
-	if (ft_strncmp("\\n", current->next->argument, 3) == 0
-		|| ft_strncmp("\\r", current->next->argument, 3) == 0
-		|| ft_strncmp("\\t", current->next->argument, 3) == 0)
+	if (ft_strncmp("\\n", current->next->argument, 3) == 0 || ft_strncmp("\\r",
+			current->next->argument, 3) == 0 || ft_strncmp("\\t",
+			current->next->argument, 3) == 0)
 		return (1);
 	return (0);
 }

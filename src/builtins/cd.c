@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 18:09:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:15:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,17 @@ static char	*handle_previous_path(t_mini *mini, char *pwd)
 	{
 		free(pwd);
 		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-		mini->exit_code = 1;
 		return (NULL);
 	}
 	else if (check_cd_path(path))
 	{
 		free(pwd);
-		mini->exit_code = 1;
 		return (NULL);
 	}
 	if (chdir(path) == -1)
 		print_error_chdir(path, pwd, mini);
 	else
 	{
-		mini->exit_code = 0;
 		update_old_pwd(mini->lst_env->envp_cp, pwd);
 		update_pwd(mini->lst_env->envp_cp);
 		free(pwd);
@@ -49,21 +46,22 @@ static char	*handle_home(t_mini *mini, char *pwd)
 
 	if (!mini->cmds->argv[1] || ft_strncmp(mini->cmds->argv[1], "~", 1) == 0)
 	{
-		mini->exit_code = 0;
 		path = get_env_value(mini->lst_env->envp_cp, "HOME");
 		if (!path)
 		{
-			mini->exit_code = 1;
 			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 			free(pwd);
 			return (NULL);
 		}
 	}
-	else
+	else if (ft_strncmp(mini->cmds->argv[1], "--", (ft_strlen("--") + 1)) == 0)
 	{
+		mini->cmds->argv[1][0] = '.';
+		mini->cmds->argv[1][1] = '.';
 		path = mini->cmds->argv[1];
-		mini->exit_code = 0;
 	}
+	else
+		path = mini->cmds->argv[1];
 	return (path);
 }
 
