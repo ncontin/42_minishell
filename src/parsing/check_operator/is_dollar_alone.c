@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_dollar_alone.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:19:29 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 17:17:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 18:18:08 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static int	is_new_line(t_token *current)
 {
-	  if (ft_strncmp("\\n", current->next->argument, 3) == 0
-        || ft_strncmp("\\r", current->next->argument, 3) == 0
-        || ft_strncmp("\\t", current->next->argument, 3) == 0)
-        return (1);
-    return (0);
+	if (ft_strncmp("\\n", current->next->argument, 3) == 0 || ft_strncmp("\\r",
+			current->next->argument, 3) == 0 || ft_strncmp("\\t",
+			current->next->argument, 3) == 0)
+		return (1);
+	return (0);
 }
 
 static void	remove_dollar(t_token **current, t_token **next)
@@ -33,7 +33,7 @@ static void	remove_dollar(t_token **current, t_token **next)
 
 void	is_dollar_alone(t_mini *mini)
 {
-	t_token *current;
+	t_token	*current;
 	t_token	*next;
 	char	*str;
 
@@ -44,7 +44,8 @@ void	is_dollar_alone(t_mini *mini)
 		if (current->argument)
 		{
 			str = current->argument;
-			if ((ft_strncmp(str, "$", ft_strlen(str) + 1) == 0) && current->linked == TRUE)
+			if ((ft_strncmp(str, "$", ft_strlen(str) + 1) == 0)
+				&& current->linked == TRUE)
 			{
 				if (is_new_line(current) == 0)
 					remove_dollar(&current, &next);

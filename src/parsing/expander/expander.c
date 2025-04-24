@@ -39,7 +39,7 @@ void	expander(t_mini *mini)
 				handle_nl_expand(&tokens);
 			advance_token(&tokens, &current);
 		}
-		else if (tokens->prev != NULL && tokens->prev->operator== HEREDOC)
+		else if (tokens->prev != NULL && tokens->prev->operator == HEREDOC)
 			advance_token(&tokens, &current);
 		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
 			handle_expandable_token(mini, &tokens, &current);

@@ -6,35 +6,29 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 13:28:38 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/24 18:17:43 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	handle_single_word(t_token *current, char **split_words)
+static void	handle_first_word(t_token *current, char **split_words)
 {
-	char	*og_arg;
-	char	*new_arg;
-
-	og_arg = ft_strdup(current->argument);
-	if (!og_arg)
-		return ;
 	free(current->argument);
-	new_arg = ft_strdup(split_words[0]);
-	if (has_space(og_arg) && current->next)
-	{
-		current->argument = ft_strjoin(new_arg, " ");
-		free(new_arg);
-	}
-	else
-		current->argument = new_arg;
-	free(og_arg);
+	current->argument = ft_strdup(split_words[0]);
 	if (!current->argument)
 	{
 		free_array(split_words);
 		return ;
 	}
+	current->quotes = NO_QUOTES;
+	current->linked = FALSE;
+	current->operator = NONE;
+}
+
+static void	handle_single_word(t_token *current, char **split_words)
+{
+	handle_first_word(current, split_words);
 	free_array(split_words);
 }
 
@@ -44,13 +38,7 @@ static void	handle_multiple_words(t_token *current, char **split_words,
 	int	i;
 
 	i = 1;
-	free(current->argument);
-	current->argument = ft_strdup(split_words[0]);
-	if (!current->argument)
-	{
-		free_array(split_words);
-		return ;
-	}
+	handle_first_word(current, split_words);
 	while (split_words[i])
 	{
 		add_new_token(current, split_words[i], next_og);
