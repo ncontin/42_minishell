@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/23 18:25:29 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/24 08:41:38 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	check_cd_path(char *path)
 	}
 	if (stat(path, &statbuf) != 0)
 	{
-		write(STDERR_FILENO, "cd: stat error\n", 20);
+		write(STDERR_FILENO, "cd: stat error\n", 16);
 		return (1);
 	}
 	if (!S_ISDIR(statbuf.st_mode))
