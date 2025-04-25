@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/21 17:45:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 10:58:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 		if (*prev_fd != -1)
 			close(*prev_fd);
 		free_exit(mini);
+		exit(EXIT_FAILURE);
 	}
 	execute_cmd(current, envp, mini);
 }

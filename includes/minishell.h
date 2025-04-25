@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 23:44:12 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 10:29:38 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ void					close_fd(int *pipe_fd);
 void					error_msg(char *message, int error);
 void					error_arg_split(t_mini *mini);
 void					error_merge_args(t_mini *mini);
-void					error_create_list(t_token *tokens, t_token *current);
+void					error_create_list(t_token **tokens, t_token *current);
 void					error_split_pipe(t_mini *mini);
 void					error_pid_executor(t_mini *mini, t_command *current,
 							int *prev_fd);

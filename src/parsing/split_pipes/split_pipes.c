@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/18 14:37:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 09:49:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,7 @@ t_command	*split_pipe(t_token *tokens, t_command *cmds, t_command *new, int i)
 	{
 		new_cmd(&new, &cmds, current);
 		if (new == NULL)
-		{
-			free_token_argument(current);
-			free_token(tokens);
 			return (NULL);
-		}
 		if (is_command(current->arg_type) == TRUE)
 			handle_command(new, current, &i);
 		else if (is_recognized_operator(current->operator) == TRUE)

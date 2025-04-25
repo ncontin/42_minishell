@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 23:41:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 10:38:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@ static void	handle_user_input(t_mini *mini)
 	mini->cmds = parsing(mini);
 	if (mini->cmds == NULL)
 	{
-		if (mini->tokens != NULL)
-		{
-			free_token_argument(mini->tokens);
-			free_token(mini->tokens);
-			free_exit(mini);
-		}
+		free_token_argument(mini->tokens);
+		free_token(mini->tokens);
+		mini->tokens = NULL;
 	}
 	else
 	{

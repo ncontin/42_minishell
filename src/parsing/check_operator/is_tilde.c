@@ -6,40 +6,39 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:04:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 23:24:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 09:26:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	rep_tilde(char **source, char *arg, t_env_node *env)
+static int	rep_tilde(char **source, t_env_node *env)
 {
 	char	*str;
-	
+	char	*new_arg;
+
 	str = ft_strdup(env->value);
 	if (str == NULL)
 	{
 		write(STDERR_FILENO, "Memory allocation failed for is_tilde\n", 38);
 		return (1);
 	}
-	*source = ft_strjoin(str, arg + 1);
-	if (*source == NULL)
+	new_arg = ft_strjoin(str, (*source) + 1);
+	free(str);
+	if (new_arg == NULL)
 	{
-		free(str);
 		write(STDERR_FILENO, "Memory allocation failed for is_tilde\n", 38);
 		return (1);
 	}
-	free(str);
-	free(arg);
+	free(*source);
+	*source = new_arg;
 	return (0);
 }
 
 static int	handle_tilde(char **source, t_mini *mini)
 {
 	t_env_node	*current;
-	char		*arg;
 
-	arg = *source;
 	current = *mini->lst_env->envp_cp;
 	while (current != NULL)
 	{
@@ -47,7 +46,7 @@ static int	handle_tilde(char **source, t_mini *mini)
 		{
 			if (current->value != NULL)
 			{
-				if (rep_tilde(source, arg, current) == 1)
+				if (rep_tilde(source, current) == 1)
 					return (1);
 				return (0);
 			}
