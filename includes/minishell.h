@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 11:34:58 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/25 12:33:48 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,8 +241,8 @@ int						is_multi_strings(char *args, int i, t_bool dquote,
 							t_bool squote);
 /* === EXPANDER === */
 int						expander(t_mini *mini);
-char					*expand_exit_status(char *arg, t_mini *mini);
-char					*expand_shell_vars(char *arg, t_mini *mini);
+char					*expand_exit_status(char *arg, t_mini *mini, int *err_code);
+char					*expand_shell_vars(char *arg, t_mini *mini, int *err_code);
 void					split_words(t_mini *mini, t_token **tokens);
 int						find_word_len(char *arg, int len);
 int						get_array_size(char **array);
@@ -252,7 +252,7 @@ void					add_new_token(t_token *token, char *word,
 							t_token *next_og);
 int						is_dollar(t_token **tokens);
 int						is_nl_char(t_token **tokens);
-char					*expand_special_vars(char *arg, t_mini *mini);
+char					*expand_special_vars(char *arg, t_mini *mini, int *err_code);
 void					replace_tokens(t_token **tokens);
 void					advance_token(t_token **tokens, t_token **current);
 int						handle_nl_expand(t_token **tokens);
