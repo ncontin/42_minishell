@@ -1,4 +1,14 @@
 ----------------------------------------------------------------------------------------------------
+minishell> unset HOME
+minishell> echo ~
+~
+
+ncontin@1D6:/nfs/homes/ncontin/42/common_core/42_minishell$ unset HOME
+ncontin@1D6:/nfs/homes/ncontin/42/common_core/42_minishell$ echo ~
+/nfs/homes/ncontin
+ncontin@1D6:/nfs/homes/ncontin/42/common_core/42_minishell$
+
+----------------------------------------------------------------------------------------------------
 fix env _=/home/user/git/minishell/./minishell
 ----------------------------------------------------------------------------------------------------
 need to check valgrind for dup2 and open errors
@@ -11,8 +21,22 @@ need to fix allocation memory in parsing -> instead of exit, we have to return t
 ----------------------------------------------------------------------------------------------------
 write a message for user to know if a malloc has failed then return to the main prompt
 ----------------------------------------------------------------------------------------------------
-fix norminette errors ONLY when strdup, substr, strtrim and every malloc allocation are 
-handle with an error message, have NO LEAKS if they failed and return to the prompt 
+fix norminette errors ONLY when strdup, substr, strtrim and every malloc allocation are
+handle with an error message, have NO LEAKS if they failed and return to the prompt
 ----------------------------------------------------------------------------------------------------
 no need to add new features
 ----------------------------------------------------------------------------------------------------
+leaks to verify and fix
+/bin/echo $mini_test
+ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la > > out | cat << stop3
+|ls | ls
+touch "
+| echo -n oui
+| | |
+/bin/echo $TESTNOTFOUND
+export X=""
+export X=" "
+export X="   "
+----------------------------------------------------------------------------------------------------
+error code to fix
+unset TES;T

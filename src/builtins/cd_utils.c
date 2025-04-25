@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 12:12:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:53:52 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,23 @@ char	*get_env_value(t_env_node **envp_cp, char *key)
 	return (NULL);
 }
 
-static void	add_old_pwd(t_env_node *last, char *old_pwd)
-{
-	t_env_node	*new;
+// static void	add_old_pwd(t_env_node *last, char *old_pwd)
+// {
+// 	t_env_node	*new;
 
-	new = (t_env_node *)malloc(sizeof(t_env_node));
-	if (new == NULL)
-		return ;
-	new->key = ft_strdup("OLDPWD");
-	if (new->key == NULL)
-	{
-		free(new);
-		return ;
-	}
-	new->value = old_pwd;
-	new->next = NULL;
-	last->next = new;
-}
+// 	new = (t_env_node *)malloc(sizeof(t_env_node));
+// 	if (new == NULL)
+// 		return ;
+// 	new->key = ft_strdup("OLDPWD");
+// 	if (new->key == NULL)
+// 	{
+// 		free(new);
+// 		return ;
+// 	}
+// 	new->value = old_pwd;
+// 	new->next = NULL;
+// 	last->next = new;
+// }
 
 int	check_cd_path(char *path)
 {
@@ -112,11 +112,11 @@ void	update_old_pwd(t_env_node **env_stack, char *old_pwd)
 			current->value = old_pwd_copy;
 			return ;
 		}
-		if (current->next == NULL)
-		{
-			add_old_pwd(current, old_pwd_copy);
-			break ;
-		}
+		// if (current->next == NULL)
+		// {
+		// 	add_old_pwd(current, old_pwd_copy);
+		// 	break ;
+		// }
 		current = current->next;
 	}
 }

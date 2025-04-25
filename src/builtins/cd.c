@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 07:07:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:09:41 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int	ft_cd(t_mini *mini, char *path)
 	pwd = getcwd(NULL, 0);
 	if (handle_start_cd(mini, pwd) == 1)
 		return (0);
-	if (mini->cmds->argv[1] != NULL
-			&& ft_strncmp(mini->cmds->argv[1], "-", (ft_strlen("-") + 1)) == 0)
+	if (mini->cmds->argv[1] != NULL && ft_strncmp(mini->cmds->argv[1], "-",
+			(ft_strlen("-") + 1)) == 0)
 	{
 		path = handle_previous_path(mini, pwd);
 		if (!path)
