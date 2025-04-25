@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 12:33:48 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 12:39:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ int						is_multi_strings(char *args, int i, t_bool dquote,
 /* === EXPANDER === */
 int						expander(t_mini *mini);
 char					*expand_exit_status(char *arg, t_mini *mini, int *err_code);
-char					*expand_shell_vars(char *arg, t_mini *mini, int *err_code);
+char					*expand_shell_vars(char *arg, t_mini *mini);
 void					split_words(t_mini *mini, t_token **tokens);
 int						find_word_len(char *arg, int len);
 int						get_array_size(char **array);
