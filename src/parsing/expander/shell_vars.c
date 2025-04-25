@@ -6,19 +6,21 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 12:38:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 19:38:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*process_string(char *full_str, t_env_node *current,
-		unsigned long len, int i)
+static char	*process_string(char *full_str, t_env_node *current, int i, int *err_code)
 {
-	char	*before_str;
-	char	*after_str;
-	char	*temp;
+	char			*before_str;
+	char			*after_str;
+	char			*temp;
+	unsigned long	len;
 
+	(void)err_code;
+	len = find_word_len(&full_str[i + 1], i);
 	before_str = ft_substr(full_str, 0, i);
 	after_str = ft_substr(full_str, i + len + 1, ft_strlen(full_str) - i - len
 			- 1);
@@ -50,12 +52,13 @@ static char	*process_no_args(char *full_str, unsigned long len, int i)
 	return (temp);
 }
 
-static char	*replace_env_vars(char *full_str, t_mini *mini, int i)
+static char	*replace_env_vars(char *full_str, t_mini *mini, int i, int *err_code)
 {
 	t_env_node		*current;
 	unsigned long	len;
 	int				find;
 
+	(void)err_code;
 	find = 0;
 	current = *mini->lst_env->envp_cp;
 	while (current)
@@ -64,7 +67,7 @@ static char	*replace_env_vars(char *full_str, t_mini *mini, int i)
 		if (ft_strncmp(&full_str[i + 1], current->key, len) == 0
 			&& ft_strlen(current->key) == len)
 		{
-			full_str = process_string(full_str, current, len, i);
+			full_str = process_string(full_str, current, i, err_code);
 			i += ft_strlen(current->value) - 1;
 			find = 1;
 			break ;
@@ -76,7 +79,7 @@ static char	*replace_env_vars(char *full_str, t_mini *mini, int i)
 	return (full_str);
 }
 
-static char	*process_variables(char *full_str, t_mini *mini, int i)
+static char	*process_variables(char *full_str, t_mini *mini, int i, int *err_code)
 {
 	mini->expanded = 0;
 	while (full_str && full_str[i])
@@ -85,7 +88,7 @@ static char	*process_variables(char *full_str, t_mini *mini, int i)
 		{
 			if (full_str[i + 1] && !ft_isspecial(full_str[i + 1]))
 			{
-				full_str = replace_env_vars(full_str, mini, i);
+				full_str = replace_env_vars(full_str, mini, i, err_code);
 				mini->expanded = 1;
 				if (full_str && full_str[0] == '\0')
 					return (NULL);
@@ -96,7 +99,7 @@ static char	*process_variables(char *full_str, t_mini *mini, int i)
 	return (full_str);
 }
 
-char	*expand_shell_vars(char *arg, t_mini *mini)
+char	*expand_shell_vars(char *arg, t_mini *mini, int *err_code)
 {
 	int		i;
 	char	*full_str;
@@ -110,8 +113,11 @@ char	*expand_shell_vars(char *arg, t_mini *mini)
 		return (arg);
 	full_str = ft_strdup(arg);
 	if (!full_str)
+	{
+		*err_code = 1;
 		return (NULL);
-	full_str = process_variables(full_str, mini, i);
+	}
+	full_str = process_variables(full_str, mini, i, err_code);
 	if (!full_str)
 	{
 		free(arg);
