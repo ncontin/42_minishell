@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 16:55:46 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 15:10:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:36:45 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_error_cd(char *msg, char *arg)
 {
-	write(STDERR_FILENO, "cd:", 3);
+	write(STDERR_FILENO, "cd: ", 4);
 	write(STDERR_FILENO, arg, ft_strlen(arg));
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
