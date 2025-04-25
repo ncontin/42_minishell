@@ -7,12 +7,12 @@ need more tests without environment
 ----------------------------------------------------------------------------------------------------
 check every ALLOCATION MEMORY throughout the code : expander/builtin/executor
 
-need to fix allocation memory in parsing -> instead of exit, we have to return to the prompt
+need to fix allocation memory in parsing -> instead of exit, we have to return to the main prompt
 ----------------------------------------------------------------------------------------------------
-write a message for user to know if a malloc has failed then return to prompt
+write a message for user to know if a malloc has failed then return to the main prompt
 ----------------------------------------------------------------------------------------------------
 fix norminette errors ONLY when strdup, substr, strtrim and every malloc allocation are 
-handle with an error message, have NO LEAKS and return to the prompt 
+handle with an error message, have NO LEAKS if they failed and return to the prompt 
 ----------------------------------------------------------------------------------------------------
 no need to add new features
 ----------------------------------------------------------------------------------------------------
