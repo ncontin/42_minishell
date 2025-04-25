@@ -57,7 +57,7 @@ handle with an error message, have NO LEAKS if they failed and return to the pro
 no need to add new features
 ----------------------------------------------------------------------------------------------------
 leaks to verify and fix
-/bin/echo $mini_test
+/bin/echo $mini_test 
 ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la > > out | cat << stop3
 |ls | ls
 touch "
@@ -70,3 +70,5 @@ export X="   "
 ----------------------------------------------------------------------------------------------------
 error code to fix
 unset TES;T
+----------------------------------------------------------------------------------------------------
+exit code = 130 after Ctrl + C

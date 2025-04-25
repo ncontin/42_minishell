@@ -72,6 +72,7 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 
 SRC_EXPANDER = 	src/parsing/expander/expander.c\
 				src/parsing/expander/exit_status.c\
+				src/parsing/expander/exit_status_utils.c\
 				src/parsing/expander/shell_vars.c\
 				src/parsing/expander/split_words.c\
 				src/parsing/expander/expander_utils.c\
