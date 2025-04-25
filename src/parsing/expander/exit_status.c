@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:53 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 13:23:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:54:11 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@
 	return (full_str);
 }*/
 
-char	*expand_exit_status(char *arg, t_mini *mini, int *err_code)
+char	*expand_exit_status(char *arg, t_mini *mini)
 {
 	char	*exit_str;
 	int		len;
@@ -94,10 +94,7 @@ char	*expand_exit_status(char *arg, t_mini *mini, int *err_code)
 	len = ft_strlen(arg);
 	exit_str = ft_itoa(mini->exit_code);
 	if (exit_str == NULL)
-	{
-		*err_code = 1;
 		return (NULL);
-	}
 	if (ft_strncmp(arg, "$?", 2) == 0 && len == 2)
 	{
 		free(arg);
