@@ -1,43 +1,18 @@
------------------------------------------------
-fix cd -
-
-minishell> unset OLDPWD
-minishell> cd -
-minishell: cd: OLDPWD not set
-minishell> cd $HOME
-minishell> pwd
-/home/user
-minishell> cd -
-minishell: cd: OLDPWD not set
------------------------------------------------
-bash> echo $"hi" 
-hi
-
-minishell> echo $"hi"
-$hi
-
-check if token is linked and arg[0]=$ arg[1] =\0
-then remove $
-replace hi in front
-------------------------------------------------
+----------------------------------------------------------------------------------------------------
 fix env _=/home/user/git/minishell/./minishell
-------------------------------------------------
-put mini->exit_code = 0 when a builtin is 
-successful
-
-minishell> unset PATH
-minishell> cat 
-cat: No such file or directory
-minishell> cd ..
-minishell> echo $?
-127
-------------------------------------------------
+----------------------------------------------------------------------------------------------------
 need to check valgrind for dup2 and open errors
-------------------------------------------------
+----------------------------------------------------------------------------------------------------
 need more tests without environment
-------------------------------------------------
-check every allocation memory throughout
-the code 
-------------------------------------------------
-fix norminette errors
-------------------------------------------------
+----------------------------------------------------------------------------------------------------
+check every ALLOCATION MEMORY throughout the code : expander/builtin/executor
+
+need to fix allocation memory in parsing -> instead of exit, we have to return to the main prompt
+----------------------------------------------------------------------------------------------------
+write a message for user to know if a malloc has failed then return to the main prompt
+----------------------------------------------------------------------------------------------------
+fix norminette errors ONLY when strdup, substr, strtrim and every malloc allocation are 
+handle with an error message, have NO LEAKS if they failed and return to the prompt 
+----------------------------------------------------------------------------------------------------
+no need to add new features
+----------------------------------------------------------------------------------------------------

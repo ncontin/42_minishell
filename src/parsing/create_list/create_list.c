@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 17:27:12 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 12:03:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 10:48:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_token	*new_list(char *args, int nb_strings, t_token *head)
 		current->argument = rm_quotes(args, size);
 		if (current->argument == NULL)
 		{
-			error_create_list(head, current);
+			error_create_list(&head, current);
 			return (NULL);
 		}
 		lst_add_new(&head, current);
@@ -51,7 +51,7 @@ t_token	*create_list(char **tokens)
 		nb_strings = is_multi_strings(tokens[i], 0, FALSE, FALSE);
 		head = new_list(tokens[i], nb_strings, head);
 		if (head == NULL)
-			return (NULL);
+			break ;
 		i++;
 	}
 	free_array(tokens);

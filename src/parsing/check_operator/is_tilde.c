@@ -6,55 +6,54 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:04:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/23 18:40:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 09:26:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	error_handle_tilde(t_mini *mini)
-{
-	write(STDERR_FILENO, "Memory allocation failed for is_tilde\n", 38);
-	free_token_argument(mini->tokens);
-	free_token(mini->tokens);
-	free_exit(mini);
-	exit (EXIT_FAILURE);
-}
-
-static void	rep_tilde(char **source, t_mini *mini, char *arg, t_env_node *env)
+static int	rep_tilde(char **source, t_env_node *env)
 {
 	char	*str;
+	char	*new_arg;
 
 	str = ft_strdup(env->value);
 	if (str == NULL)
-		error_handle_tilde(mini);
-	*source = ft_strjoin(str, arg + 1);
-	if (*source == NULL)
 	{
-		free(str);
-		error_handle_tilde(mini);
+		write(STDERR_FILENO, "Memory allocation failed for is_tilde\n", 38);
+		return (1);
 	}
+	new_arg = ft_strjoin(str, (*source) + 1);
 	free(str);
-	free(arg);
+	if (new_arg == NULL)
+	{
+		write(STDERR_FILENO, "Memory allocation failed for is_tilde\n", 38);
+		return (1);
+	}
+	free(*source);
+	*source = new_arg;
+	return (0);
 }
 
-static void	handle_tilde(char **source, t_mini *mini)
+static int	handle_tilde(char **source, t_mini *mini)
 {
 	t_env_node	*current;
-	char		*arg;
 
-	arg = *source;
 	current = *mini->lst_env->envp_cp;
 	while (current != NULL)
 	{
 		if (strncmp(current->key, "HOME", ft_strlen(current->key) + 1) == 0)
 		{
 			if (current->value != NULL)
-				rep_tilde(source, mini, arg, current);
-			return ;
+			{
+				if (rep_tilde(source, current) == 1)
+					return (1);
+				return (0);
+			}
 		}
 		current = current->next;
 	}
+	return (0);
 }
 
 int	is_tilde(t_mini *mini)
@@ -71,7 +70,8 @@ int	is_tilde(t_mini *mini)
 				if (current->linked == FALSE || (current->linked == TRUE
 						&& current->next->argument != NULL
 						&& current->next->argument[0] == '/'))
-					handle_tilde(&current->argument, mini);
+					if (handle_tilde(&current->argument, mini) == 1)
+						return (1);
 			}
 		}
 		current = current->next;

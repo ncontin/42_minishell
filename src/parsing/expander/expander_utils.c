@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:07:36 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 16:52:37 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/25 05:52:38 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,41 @@ void	advance_token(t_token **tokens, t_token **current)
 	*tokens = (*tokens)->next;
 }
 
-void	handle_nl_expand(t_token **tokens)
+static void	remove_next_token(t_token **current)
 {
-	free((*tokens)->argument);
+	t_token	*next;
+
+	next = (*current)->next;
+	if ((*current)->prev != NULL)
+	{
+		(*current)->prev->next = (*current)->next;
+		(*current)->next->prev = (*current)->prev;
+	}
+	else
+		(*current)->next->prev = NULL;
+	free((*current)->argument);
+	free(*current);
+	*current = next;
+}
+
+int	handle_nl_expand(t_token **tokens)
+{
+	char	*new;
+
+	new = NULL;
 	if (ft_strncmp("\\n", (*tokens)->next->argument, 2) == 0)
-		(*tokens)->argument = ft_strdup("\n");
+		new = ft_strdup("\n");
 	else if (ft_strncmp("\\r", (*tokens)->next->argument, 2) == 0)
-		(*tokens)->argument = ft_strdup("\r");
+		new = ft_strdup("\r");
 	else if (ft_strncmp("\\t", (*tokens)->next->argument, 2) == 0)
-		(*tokens)->argument = ft_strdup("\t");
+		new = ft_strdup("\t");
+	if (new == NULL)
+	{
+		write(STDERR_FILENO, "memory allocation failed in nl_expand\n", 38);
+		return (1);
+	}
 	free((*tokens)->next->argument);
-	(*tokens)->next->argument = NULL;
+	(*tokens)->next->argument = new;
+	remove_next_token(tokens);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 19:22:46 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/25 11:34:58 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ void					close_fd(int *pipe_fd);
 void					error_msg(char *message, int error);
 void					error_arg_split(t_mini *mini);
 void					error_merge_args(t_mini *mini);
-void					error_create_list(t_token *tokens, t_token *current);
+void					error_create_list(t_token **tokens, t_token *current);
 void					error_split_pipe(t_mini *mini);
 void					error_pid_executor(t_mini *mini, t_command *current,
 							int *prev_fd);
@@ -240,7 +240,7 @@ void					multi_str(char *args, int nb_strings, t_token **head,
 int						is_multi_strings(char *args, int i, t_bool dquote,
 							t_bool squote);
 /* === EXPANDER === */
-void					expander(t_mini *mini);
+int						expander(t_mini *mini);
 char					*expand_exit_status(char *arg, t_mini *mini);
 char					*expand_shell_vars(char *arg, t_mini *mini);
 void					split_words(t_mini *mini, t_token **tokens);
@@ -255,7 +255,7 @@ int						is_nl_char(t_token **tokens);
 char					*expand_special_vars(char *arg, t_mini *mini);
 void					replace_tokens(t_token **tokens);
 void					advance_token(t_token **tokens, t_token **current);
-void					handle_nl_expand(t_token **tokens);
+int						handle_nl_expand(t_token **tokens);
 /* === MERGE ARGS === */
 t_bool					merge_args(t_token **tokens);
 /* === SPLIT ARGS === */

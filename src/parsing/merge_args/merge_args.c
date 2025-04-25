@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 15:26:03 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 18:12:11 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/25 09:34:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,7 @@ t_bool	merge_args(t_token **tokens)
 		if (current->linked == TRUE && is_arg)
 		{
 			if (concat_args(current, current->next, NULL) == FALSE)
-			{
-				free_token_argument(*tokens);
-				free_token(*tokens);
 				return (FALSE);
-			}
 		}
 		current = current->next;
 	}
