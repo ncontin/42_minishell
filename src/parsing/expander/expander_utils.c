@@ -6,18 +6,16 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:07:36 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 16:38:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 17:51:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_special_vars(char *arg, t_mini *mini, int *err_code)
+char	*expand_special_vars(char *arg, t_mini *mini)
 {
 	arg = expand_shell_vars(arg, mini);
-	arg = expand_exit_status(arg, mini, err_code);
-	if (*err_code == 1)
-		return (NULL);
+	arg = expand_exit_status(arg, mini);
 	return (arg);
 }
 
