@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:53 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 12:25:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:23:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*process_string(char *full_str, int i, char *exit_str, int *err_code)
+/*static char	*process_string(char *full_str, int i, char *exit_str, int *err_code)
 {
 	char	*before_str;
 	char	*after_str;
@@ -53,9 +53,9 @@ static char	*process_string(char *full_str, int i, char *exit_str, int *err_code
 		return (NULL);
 	}
 	return (full_str);
-}
+}*/
 
-static char	*replace_exit_var(char *arg, char *exit_str, int *err_code)
+/*static char	*replace_exit_var(char *arg, char *exit_str, int *err_code)
 {
 	int		i;
 	char	*full_str;
@@ -81,13 +81,13 @@ static char	*replace_exit_var(char *arg, char *exit_str, int *err_code)
 	free(exit_str);
 	free(arg);
 	return (full_str);
-}
+}*/
 
 char	*expand_exit_status(char *arg, t_mini *mini, int *err_code)
 {
 	char	*exit_str;
 	int		len;
-	char	*full_str;
+	//char	*full_str;
 
 	if (arg == NULL)
 		return (NULL);
@@ -105,7 +105,12 @@ char	*expand_exit_status(char *arg, t_mini *mini, int *err_code)
 	}
 	else
 	{
+		free(exit_str);
+		return (arg);
+	}
+	/*else
+	{
 		full_str = replace_exit_var(arg, exit_str, err_code);
 		return (full_str);
-	}
+	}*/
 }
