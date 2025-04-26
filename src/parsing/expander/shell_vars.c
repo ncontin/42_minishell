@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 10:51:26 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:30:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static char	*process_variables(char *full_str, t_mini *mini, int i,
 			{
 				full_str = replace_env_var(full_str, mini, i, err_code);
 				mini->expanded = 1;
+				i--;
 				if (full_str && full_str[0] == '\0')
 				{
 					free(full_str);
