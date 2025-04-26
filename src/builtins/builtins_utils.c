@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/22 16:29:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:00:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	find_equal(char *str)
 	return (-1);
 }
 
-char	*get_key(char *str)
+char	*get_key(char *str, int *err_code)
 {
 	char	*key;
 	int		equal_index;
@@ -55,16 +55,28 @@ char	*get_key(char *str)
 	if (str[equal_index - 1] && str[equal_index - 1] == '+')
 		equal_index -= 1;
 	key = ft_substr(str, 0, equal_index);
+	if (key == NULL)
+	{
+		*err_code = 1;
+		write(STDERR_FILENO, "get key memory allocation failed\n", 33);
+	}
 	return (key);
 }
 
-char	*get_value(char *str)
+char	*get_value(char *str, int *err_code)
 {
 	char	*value;
 	int		equal_index;
 
 	equal_index = find_equal(str);
+	if (str[equal_index] == '\0')
+		return (NULL);
 	value = ft_substr(str, equal_index + 1, ft_strlen(str) - (equal_index + 1));
+	if (value == NULL)
+	{
+		*err_code = 1;
+		write(STDERR_FILENO, "get key memory allocation failed\n", 33);
+	}
 	return (value);
 }
 

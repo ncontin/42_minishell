@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 16:20:38 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/22 15:02:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:16:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	copy_env(t_env_node **ft_envp, char *env, t_mini *mini)
 {
 	t_env_node	*node;
 	t_env_node	*last;
+	int			err_code;
 
 	node = malloc(sizeof(t_env_node));
 	if (!node)
@@ -26,8 +27,25 @@ static void	copy_env(t_env_node **ft_envp, char *env, t_mini *mini)
 		free_stack(ft_envp);
 		exit (EXIT_FAILURE);
 	}
-	node->key = get_key(env);
-	node->value = get_value(env);
+	node->key = get_key(env, &err_code);
+	if (err_code == 1)
+	{
+		free(node);
+		free_array(mini->lst_env->path);
+		free(mini->lst_env);
+		free_stack(ft_envp);
+		exit (EXIT_FAILURE);
+	}
+	node->value = get_value(env, &err_code);
+	if (err_code == 1)
+	{
+		free(node->key);
+		free(node);
+		free_array(mini->lst_env->path);
+		free(mini->lst_env);
+		free_stack(ft_envp);
+		exit (EXIT_FAILURE);
+	}
 	node->next = NULL;
 	if (!(*ft_envp))
 		*ft_envp = node;

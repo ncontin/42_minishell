@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 19:18:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 04:57:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,8 @@ void					ft_unset(t_mini *mini, char **cmd_args);
 void					print_env(t_env_node **env_stack);
 t_env_node				*find_last(t_env_node **my_envp);
 int						find_equal(char *str);
-char					*get_key(char *str);
-char					*get_value(char *str);
+char					*get_key(char *str, int *err_code);
+char					*get_value(char *str, int *err_code);
 void					ft_exit(t_mini *mini, char **cmd_args);
 long long				ft_atoll(const char *nptr, int *overflow);
 char					*del_spaces(char *str);

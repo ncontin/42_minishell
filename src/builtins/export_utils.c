@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:47:09 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/23 11:18:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:09:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,12 @@ static void	copy_env_node(t_env_node *current, t_env_node **ft_envp)
 	if (!node)
 		return ;
 	node->key = ft_strdup(current->key);
+	//if (node->key == NULL) 
 	if (current->value)
+	{
 		node->value = ft_strdup(current->value);
+		//if (node->value == NULL)
+	}
 	else
 		node->value = NULL;
 	node->next = NULL;
@@ -99,18 +103,21 @@ t_env_node	**copy_envp_list(t_env_node **envp_cp)
 void	replace_env(t_env_node *env_to_replace, char *arg)
 {
 	int	equal_index;
+	int	err_code;
 
+	err_code = 0;
 	equal_index = find_equal(arg);
 	free(env_to_replace->key);
 	free(env_to_replace->value);
 	if (equal_index > 0)
 	{
-		env_to_replace->key = get_key(arg);
-		env_to_replace->value = get_value(arg);
+		env_to_replace->key = get_key(arg, &err_code);
+		env_to_replace->value = get_value(arg, &err_code);
 	}
 	else
 	{
 		env_to_replace->key = ft_strdup(arg);
+		//if (env_to_replace->key == NULL)
 		env_to_replace->value = NULL;
 	}
 }

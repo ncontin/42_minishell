@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/15 00:06:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:06:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,21 @@ static void	add_export_env(t_env *lst_env, char *arg)
 {
 	t_env_node	*env;
 	t_env_node	*last;
+	int			err_code;
 
+	err_code = 0;
 	env = malloc(sizeof(t_env_node));
 	if (!env)
 		return ;
 	if (find_equal(arg) > 0)
 	{
-		env->key = get_key(arg);
-		env->value = get_value(arg);
+		env->key = get_key(arg, &err_code);
+		env->value = get_value(arg, &err_code);
 	}
 	else
 	{
 		env->key = ft_strdup(arg);
+		//if (env->key == NULL)
 		env->value = NULL;
 	}
 	env->next = NULL;
@@ -155,10 +158,13 @@ void	join_env_value(t_env_node *env_to_replace, char *arg)
 	//int		equal_index;
 	char	*temp;
 	char	*str_to_join;
+	int		err_code;
 
-	str_to_join = get_value(arg);
+	err_code = 0;
+	str_to_join = get_value(arg, &err_code);
 	//equal_index = find_equal(arg);
 	temp = ft_strdup(env_to_replace->value);
+	//if (temp == NULL)
 	free(env_to_replace->value);
 	env_to_replace->value = ft_strjoin(temp, str_to_join);
 	free(temp);

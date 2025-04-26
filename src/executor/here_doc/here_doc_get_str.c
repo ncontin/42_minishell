@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:29:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 12:56:19 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:12:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,16 @@ static char	*read_line(t_mini *mini, int here_doc_fd, char *new, char *limiter)
 
 static int	expand(t_mini *mini, t_command *current, char *limiter, char **str)
 {
+	int	err_code;
+
+	err_code = 0;
 	if ((ft_strncmp(limiter, *str, ft_strlen(limiter) + 1)) == 0)
 	{
 		free(*str);
 		return (1);
 	}
 	if (current->limiter_quotes == NO_QUOTES)
-		*str = expand_shell_vars(*str, mini);
+		*str = expand_shell_vars(*str, mini, &err_code);
 	return (0);
 }
 

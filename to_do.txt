@@ -1,33 +1,4 @@
 ----------------------------------------------------------------------------------------------------
-EXPANDER LEAK
-minishell> echo $HOME$USER$?
-==116083== Invalid read of size 1
-==116083==    at 0x10FF04: process_variables (shell_vars.c:82)
-==116083==    by 0x10FFDA: expand_shell_vars (shell_vars.c:114)
-==116083==    by 0x1102F6: expand_special_vars (expander_utils.c:20)
-==116083==    by 0x10F639: handle_expandable_token (expander.c:21)
-==116083==    by 0x10F7AE: expander (expander.c:55)
-==116083==    by 0x10F526: parsing (parsing.c:67)
-==116083==    by 0x110943: handle_user_input (readline.c:18)
-==116083==    by 0x110A8A: line_read (readline.c:51)
-==116083==    by 0x10962B: main (main.c:30)
-==116083==  Address 0x4b56c6f is 0 bytes after a block of size 15 alloc'd
-==116083==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==116083==    by 0x113C60: ft_strjoin (in /home/user/git/minishell/minishell)
-==116083==    by 0x10FCF4: process_no_args (shell_vars.c:46)
-==116083==    by 0x10FE30: replace_env_vars (shell_vars.c:75)
-==116083==    by 0x10FEC3: process_variables (shell_vars.c:88)
-==116083==    by 0x10FFDA: expand_shell_vars (shell_vars.c:114)
-==116083==    by 0x1102F6: expand_special_vars (expander_utils.c:20)
-==116083==    by 0x10F639: handle_expandable_token (expander.c:21)
-==116083==    by 0x10F7AE: expander (expander.c:55)
-==116083==    by 0x10F526: parsing (parsing.c:67)
-==116083==    by 0x110943: handle_user_input (readline.c:18)
-==116083==    by 0x110A8A: line_read (readline.c:51)
-==116083==
-/home/user
->minishell
-------------------------------------------------------------------------
 >minishell
 minishell> unset HOME
 minishell> echo ~
@@ -46,8 +17,6 @@ need to check valgrind for dup2 and open errors
 need more tests without environment
 ----------------------------------------------------------------------------------------------------
 check every ALLOCATION MEMORY throughout the code : expander/builtin/executor
-
-need to fix allocation memory in parsing -> instead of exit, we have to return to the main prompt
 ----------------------------------------------------------------------------------------------------
 write a message for user to know if a malloc has failed then return to the main prompt
 ----------------------------------------------------------------------------------------------------
@@ -72,3 +41,19 @@ error code to fix
 unset TES;T
 ----------------------------------------------------------------------------------------------------
 exit code = 130 after Ctrl + C
+----------------------------------------------------------------------------------------------------
+in here_doc_get_str.c, need to handle err_code if expand shell vars failed.
+----------------------------------------------------------------------------------------------------
+minishell> echo $HOME$'\n'
+/home/user$\n
+minishell>
+
+easy fix before expander : 
+token 0 == echo 
+token 1 == $HOME$
+token 2 == \n
+
+if (token[len - 1] == $ && linked == TRUE)
+--> create new token : argument = $, linked = TRUE. Add new token betwen token1 and token2
+--> remove last $ from $HOME --> Good Game Well Played
+----------------------------------------------------------------------------------------------------
