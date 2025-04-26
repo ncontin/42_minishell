@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:23:32 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 12:42:03 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:43:56 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ int	has_space(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (ft_isspace(str[i]) == 1 && ft_isprint(str[i + 1]))
-			return (1);
-		if (ft_isprint(str[i]) == 1 && ft_isspace(str[i + 1]))
+		if (ft_isspace(str[i]) == 1)
 			return (1);
 		i++;
 	}

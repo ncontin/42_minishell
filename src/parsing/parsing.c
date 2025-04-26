@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/26 13:29:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:22:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	prepare_tokens(t_mini *mini)
 		return (1);
 	if (process_tokens(mini) == 1)
 		return (1);
-	if (expander(mini) == 1)
+	if (expander(mini, NULL, NULL) == 1)
 	{
 		write(STDERR_FILENO, "memory allocation failed in expander\n", 37);
 		return (1);

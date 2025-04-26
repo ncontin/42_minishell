@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:07:36 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 12:04:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:59:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,7 @@ int	handle_nl_expand(t_token **tokens)
 	else if (ft_strncmp("\\t", (*tokens)->next->argument, 2) == 0)
 		new = ft_strdup("\t");
 	if (new == NULL)
-	{
-		write(STDERR_FILENO, "memory allocation failed in nl_expand\n", 38);
 		return (1);
-	}
 	free((*tokens)->next->argument);
 	(*tokens)->next->argument = new;
 	remove_next_token(tokens);

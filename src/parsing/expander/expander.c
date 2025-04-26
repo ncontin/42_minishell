@@ -6,14 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 12:04:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:25:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handle_expandable_token(t_mini *mini, t_token **tokens,
-		t_token **current)
+static int	expandable_token(t_mini *mini, t_token **tokens, t_token **current)
 {
 	int	err_code;
 
@@ -32,29 +31,33 @@ static int	handle_expandable_token(t_mini *mini, t_token **tokens,
 	return (0);
 }
 
-int	expander(t_mini *mini)
+static int	handle_dollar(t_token **tokens, t_token **current)
 {
-	t_token	*tokens;
-	t_token	*current;
+	if (is_nl_char(tokens))
+	{
+		if (handle_nl_expand(tokens) == 1)
+			return (1);
+	}
+	advance_token(tokens, current);
+	return (0);
+}
 
+int	expander(t_mini *mini, t_token *tokens, t_token *current)
+{
 	tokens = mini->tokens;
 	current = NULL;
 	while (tokens != NULL)
 	{
 		if (is_dollar(&tokens) && tokens->next && tokens->next->argument)
 		{
-			if (is_nl_char(&tokens))
-			{
-				if (handle_nl_expand(&tokens) == 1)
-					return (1);
-			}
-			advance_token(&tokens, &current);
+			if (handle_dollar(&tokens, &current) == 1)
+				return (1);
 		}
 		else if (tokens->prev != NULL && tokens->prev->operator == HEREDOC)
 			advance_token(&tokens, &current);
 		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
 		{
-			if (handle_expandable_token(mini, &tokens, &current) == 1)
+			if (expandable_token(mini, &tokens, &current) == 1)
 				return (1);
 		}
 		else

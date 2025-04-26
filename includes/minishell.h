@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/26 13:28:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:22:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ void					multi_str(char *args, int nb_strings, t_token **head,
 int						is_multi_strings(char *args, int i, t_bool dquote,
 							t_bool squote);
 /* === EXPANDER === */
-int						expander(t_mini *mini);
+int 					expander(t_mini *mini, t_token *tokens, t_token *current);
 char					*expand_exit_status(char *arg, t_mini *mini);
 void					free_three(char *a, char *b, char *c);
 char					*get_current_value(char *value);

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 12:23:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 16:20:02 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	split_words(t_mini *mini, t_token **tokens)
 	{
 		next_og = current->next;
 		if (current->quotes == NO_QUOTES && has_space(current->argument)
-			&& mini->expanded == 1)
+			&& mini->expanded == 1 && current->linked == FALSE)
 		{
 			split_words = ft_split(current->argument, ' ');
 			array_size = get_array_size(split_words);
