@@ -6,35 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 19:38:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 10:51:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*process_string(char *full_str, t_env_node *current, int i, int *err_code)
-{
-	char			*before_str;
-	char			*after_str;
-	char			*temp;
-	unsigned long	len;
-
-	(void)err_code;
-	len = find_word_len(&full_str[i + 1], i);
-	before_str = ft_substr(full_str, 0, i);
-	after_str = ft_substr(full_str, i + len + 1, ft_strlen(full_str) - i - len
-			- 1);
-	if (!current->value)
-		temp = ft_strjoin(before_str, "");
-	else
-		temp = ft_strjoin(before_str, current->value);
-	free(before_str);
-	free(full_str);
-	full_str = ft_strjoin(temp, after_str);
-	free(after_str);
-	free(temp);
-	return (full_str);
-}
 
 static char	*process_no_args(char *full_str, unsigned long len, int i)
 {
@@ -52,7 +28,7 @@ static char	*process_no_args(char *full_str, unsigned long len, int i)
 	return (temp);
 }
 
-static char	*replace_env_vars(char *full_str, t_mini *mini, int i, int *err_code)
+static char	*replace_env_var(char *full_str, t_mini *mini, int i, int *err_code)
 {
 	t_env_node		*current;
 	unsigned long	len;
@@ -67,7 +43,7 @@ static char	*replace_env_vars(char *full_str, t_mini *mini, int i, int *err_code
 		if (ft_strncmp(&full_str[i + 1], current->key, len) == 0
 			&& ft_strlen(current->key) == len)
 		{
-			full_str = process_string(full_str, current, i, err_code);
+			full_str = get_env_var(full_str, current, i, err_code);
 			i += ft_strlen(current->value) - 1;
 			find = 1;
 			break ;
@@ -79,7 +55,8 @@ static char	*replace_env_vars(char *full_str, t_mini *mini, int i, int *err_code
 	return (full_str);
 }
 
-static char	*process_variables(char *full_str, t_mini *mini, int i, int *err_code)
+static char	*process_variables(char *full_str, t_mini *mini, int i,
+		int *err_code)
 {
 	mini->expanded = 0;
 	while (full_str && full_str[i])
@@ -88,10 +65,13 @@ static char	*process_variables(char *full_str, t_mini *mini, int i, int *err_cod
 		{
 			if (full_str[i + 1] && !ft_isspecial(full_str[i + 1]))
 			{
-				full_str = replace_env_vars(full_str, mini, i, err_code);
+				full_str = replace_env_var(full_str, mini, i, err_code);
 				mini->expanded = 1;
 				if (full_str && full_str[0] == '\0')
+				{
+					free(full_str);
 					return (NULL);
+				}
 			}
 		}
 		i++;

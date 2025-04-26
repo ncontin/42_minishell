@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/26 06:34:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 10:24:14 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,6 @@ int						is_builtin(char *str);
 void					execute_builtin(t_mini *mini, char **argv);
 void					ft_pwd(t_mini *mini);
 void					ft_echo(char **cmd_args, long long int *exit_code);
-void					free_array(char **array);
 int						ft_cd(t_mini *mini, char *path);
 void					update_old_pwd(t_env_node **env_stack, char *old_pwd);
 int						check_cd_path(char *path);
@@ -245,9 +244,12 @@ int						is_multi_strings(char *args, int i, t_bool dquote,
 int						expander(t_mini *mini);
 char					*expand_exit_status(char *arg, t_mini *mini);
 void					free_three(char *a, char *b, char *c);
+char					*get_current_value(char *value);
 char 					*handle_strjoin(char *s1, char *s2);
 char					*handle_substr(char *src, int start, size_t len);
 char					*expand_shell_vars(char *arg, t_mini *mini, int *err_code);
+char					*get_env_var(char *full_str, t_env_node *current, 
+							int i, int *err_code);
 void					split_words(t_mini *mini, t_token **tokens);
 int						find_word_len(char *arg, int len);
 int						get_array_size(char **array);

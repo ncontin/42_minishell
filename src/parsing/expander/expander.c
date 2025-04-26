@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 19:36:36 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 08:22:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 static int	handle_expandable_token(t_mini *mini, t_token **tokens,
 		t_token **current)
 {
-	int err_code;
+	int	err_code;
 
 	err_code = 0;
-	(*tokens)->argument = expand_special_vars((*tokens)->argument, mini, &err_code);
+	(*tokens)->argument = expand_special_vars((*tokens)->argument, mini,
+			&err_code);
 	if (err_code == 1)
 		return (1);
 	if ((*tokens)->argument == NULL)

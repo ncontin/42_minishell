@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:26:38 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 17:45:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 11:02:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,15 @@ void	free_three(char *a, char *b, char *c)
 		free(b);
 	if (c)
 		free(c);
+}
+
+char	*get_current_value(char *value)
+{
+	char	*result;
+
+	if (value)
+		result = value;
+	else
+		result = "";
+	return (result);
 }

@@ -23,7 +23,7 @@ write a message for user to know if a malloc has failed then return to the main 
 fix norminette errors ONLY when strdup, substr, strtrim and every malloc allocation are
 handle with an error message, have NO LEAKS if they failed and return to the prompt
 ----------------------------------------------------------------------------------------------------
-no need to add new features
+do we add a file to manage the command history when minishell is closed ?
 ----------------------------------------------------------------------------------------------------
 leaks to verify and fix
 /bin/echo $mini_test 
@@ -40,8 +40,6 @@ export X="   "
 error code to fix
 unset TES;T
 ----------------------------------------------------------------------------------------------------
-exit code = 130 after Ctrl + C
-----------------------------------------------------------------------------------------------------
 in here_doc_get_str.c, need to handle err_code if expand shell vars failed.
 ----------------------------------------------------------------------------------------------------
 minishell> echo $HOME$'\n'
@@ -55,5 +53,73 @@ token 2 == \n
 
 if (token[len - 1] == $ && linked == TRUE)
 --> create new token : argument = $, linked = TRUE. Add new token betwen token1 and token2
---> remove last $ from $HOME --> Good Game Well Played
+--> remove last $ from $HOME
+
+is there another way to fix this ?
 ----------------------------------------------------------------------------------------------------
+bash> export
+--
+declare -x XDG_SESSION_TYPE="x11"
+declare -x XMODIFIERS="@im=ibus"
+declare -x ZSH="/home/user/.oh-my-zsh"
+
+minishell> export
+--
+declare -x XDG_SESSION_TYPE="x11"
+declare -x XMODIFIERS="@im=ibus"
+declare -x ZSH="/home/user/.oh-my-zsh"
+declare -x _="/home/user/git/minishell/./minishell"
+need to test export in school
+----------------------------------------------------------------------------------------------------
+minishell> export X=" "
+minishell> /bin/echo "1"$X'2'
+==263785== Invalid read of size 8
+==263785==    at 0x1107E2: advance_token (expander_utils.c:55)
+==263785==    by 0x10F7F0: handle_expandable_token (expander.c:30)
+==263785==    by 0x10F910: expander (expander.c:56)
+==263785==    by 0x10F62E: prepare_tokens (parsing.c:67)
+==263785==    by 0x10F71E: parsing (parsing.c:95)
+==263785==    by 0x110CFE: handle_user_input (readline.c:18)
+==263785==    by 0x110E5C: line_read (readline.c:55)
+==263785==    by 0x10962B: main (main.c:30)
+==263785==  Address 0x4b5b028 is 24 bytes inside a block of size 40 free'd
+==263785==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263785==    by 0x110567: handle_empty_result (split_words.c:57)
+==263785==    by 0x11063B: split_words (split_words.c:82)
+==263785==    by 0x10F7DD: handle_expandable_token (expander.c:29)
+==263785==    by 0x10F910: expander (expander.c:56)
+==263785==    by 0x10F62E: prepare_tokens (parsing.c:67)
+==263785==    by 0x10F71E: parsing (parsing.c:95)
+==263785==    by 0x110CFE: handle_user_input (readline.c:18)
+==263785==    by 0x110E5C: line_read (readline.c:55)
+==263785==    by 0x10962B: main (main.c:30)
+==263785==  Block was alloc'd at
+==263785==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263785==    by 0x10D6FB: init_new_list (create_list_init.c:19)
+==263785==    by 0x10DA53: multi_str (handle_multi_str.c:77)
+==263785==    by 0x10D2FF: new_list (create_list.c:37)
+==263785==    by 0x10D37F: create_list (create_list.c:52)
+==263785==    by 0x10F48F: process_tokens (parsing.c:17)
+==263785==    by 0x10F616: prepare_tokens (parsing.c:65)
+==263785==    by 0x10F71E: parsing (parsing.c:95)
+==263785==    by 0x110CFE: handle_user_input (readline.c:18)
+==263785==    by 0x110E5C: line_read (readline.c:55)
+==263785==    by 0x10962B: main (main.c:30)
+==263785== 
+==263800== Memcheck, a memory error detector
+==263800== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==263800== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==263800== Command: /bin/echo 12
+==263800== 
+12
+==263800== 
+==263800== FILE DESCRIPTORS: 1 open (1 std) at exit.
+==263800== 
+==263800== HEAP SUMMARY:
+==263800==     in use at exit: 0 bytes in 0 blocks
+==263800==   total heap usage: 31 allocs, 31 frees, 5,017 bytes allocated
+==263800== 
+==263800== All heap blocks were freed -- no leaks are possible
+==263800== 
+==263800== For lists of detected and suppressed errors, rerun with: -s
+==263800== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
