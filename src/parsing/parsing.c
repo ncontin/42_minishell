@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 10:11:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 07:08:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handle_list(t_mini *mini)
+static int	process_tokens(t_mini *mini)
 {
 	mini->tokens = create_list(mini->args);
 	if (mini->tokens == NULL)
@@ -35,7 +35,7 @@ static int	handle_list(t_mini *mini)
 	return (0);
 }
 
-static int	check_operator(t_mini *mini)
+static int	validate_operators(t_mini *mini)
 {
 	if (is_even_quotes(mini->args) == FALSE)
 	{
@@ -52,35 +52,48 @@ static int	check_operator(t_mini *mini)
 	return (0);
 }
 
-t_command	*parsing(t_mini *mini)
+static int	prepare_tokens(t_mini *mini)
 {
 	mini->args = arg_split(mini->input);
-	if (mini->args == NULL)
+	if (!mini->args)
 	{
 		error_arg_split(mini);
-		return (NULL);
+		return (1);
 	}
-	if (check_operator(mini) == 1)
-		return (NULL);
-	if (handle_list(mini) == 1)
-		return (NULL);
+	if (validate_operators(mini) == 1)
+		return (1);
+	if (process_tokens(mini) == 1)
+		return (1);
 	if (expander(mini) == 1)
 	{
 		write(STDERR_FILENO, "memory allocation failed in expander\n", 37);
-		return (NULL);
+		return (1);
 	}
 	assign_type_argument(mini->tokens);
-	if (merge_args(&mini->tokens) == FALSE)
+	return (0);
+}
+
+static t_command	*build_commands(t_mini *mini)
+{
+	if (!merge_args(&mini->tokens))
 	{
 		error_merge_args(mini);
 		return (NULL);
 	}
 	mini->cmds = split_pipe(mini->tokens, NULL, NULL, 0);
-	if (mini->cmds == NULL)
+	if (!mini->cmds)
 	{
 		error_split_pipe(mini);
 		return (NULL);
 	}
 	free_token(mini->tokens);
+	return (mini->cmds);
+}
+
+t_command	*parsing(t_mini *mini)
+{
+	if (prepare_tokens(mini) == 1)
+		return (NULL);
+	mini->cmds = build_commands(mini);
 	return (mini->cmds);
 }

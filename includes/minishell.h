@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/26 04:57:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 06:34:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,8 @@ void					get_str_error(t_mini *mini, int here_fd, char *new,
 void					print_error_cd(char *msg, char *arg);
 void					print_error_chdir(char *path, char *pwd, t_mini *mini);
 void					here_doc_error(char *str_error, int here_doc_pipe[2]);
+void					copy_env_error(t_env_node **ft_envp, t_mini *mini);
+void					envp_to_list_error(t_mini *mini);
 /* ====== READLINE ====== */
 void					line_read(t_mini *mini);
 /* ====== PARSING ====== */

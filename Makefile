@@ -45,6 +45,7 @@ SRC_ERRORS = 	src/errors/parsing_error.c\
 				src/errors/executor_error.c\
 				src/errors/redirection_error.c\
 				src/errors/cd_error.c\
+				src/errors/init_error.c\
 
 SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_args/args_split.c\
