@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/26 07:44:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:36:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static void	handle_user_input(t_mini *mini)
 		free_commands(mini->cmds);
 		mini->cmds = NULL;
 		mini->tokens = NULL;
-		free(mini->input);
-		mini->input = NULL;
 	}
+	free(mini->input);
+	mini->input = NULL;
 }
 
 void	line_read(t_mini *mini)

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 08:22:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 12:04:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	expander(t_mini *mini)
 	t_token	*current;
 
 	tokens = mini->tokens;
+	current = NULL;
 	while (tokens != NULL)
 	{
 		if (is_dollar(&tokens) && tokens->next && tokens->next->argument)
