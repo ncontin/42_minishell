@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 10:38:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 07:44:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@ void	line_read(t_mini *mini)
 	{
 		handle_signals();
 		mini->input = readline("minishell> ");
-		g_signal_received = 0;
+		if (g_signal_received == 1)
+		{
+			g_signal_received = 0;
+			(mini->exit_code = 130);
+		}
 		if (!mini->input)
 		{
 			if (!mini->cmds)
