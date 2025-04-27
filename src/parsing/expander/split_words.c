@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/27 18:07:45 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 21:08:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ static int	handle_first_word(t_token *current, char **split_words)
 		free_array(split_words);
 		return (1);
 	}
-	if (current->prev != NULL && ft_isspace(current->argument[0]))
+	if (current->prev != NULL && current->prev->linked == TRUE
+		&& ft_isspace(current->argument[0]))
 		current->prev->linked = FALSE;
-	else if (current->prev != NULL && !ft_isspace(current->argument[0]))
+	else if (current->prev != NULL && current->prev->linked == TRUE
+		&& !ft_isspace(current->argument[0]))
 		current->prev->linked = TRUE;
 	free(current->argument);
 	current->argument = str;
@@ -40,11 +42,11 @@ static int	handle_words(t_token *current, char **split_words, t_token *next_og)
 	t_bool	link;
 	size_t	len;
 
-	link = TRUE;
-	len = ft_strlen(current->argument);
-	if (ft_isspace(current->argument[len - 1]))
-		link = FALSE;
 	i = 1;
+	link = FALSE;
+	len = ft_strlen(current->argument);
+	if (!ft_isspace(current->argument[len - 1]) && current->linked == TRUE)
+		link = TRUE;
 	if (handle_first_word(current, split_words) == 1)
 		return (1);
 	while (split_words[i])
@@ -65,6 +67,7 @@ static int	handle_words(t_token *current, char **split_words, t_token *next_og)
 static void	handle_empty_result(t_token **current)
 {
 	(*current)->prev->next = (*current)->next;
+	(*current)->prev->linked = FALSE;
 	if ((*current)->next)
 		(*current)->next->prev = (*current)->prev;
 	free((*current)->argument);
@@ -93,7 +96,10 @@ static int	process_current(t_token **current, t_token *next_og)
 		free_array(split_words);
 	}
 	else if (array_size == 0)
+	{
 		handle_empty_result(current);
+		free_array(split_words);
+	}
 	return (0);
 }
 
