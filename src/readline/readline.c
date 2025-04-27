@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 14:10:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 13:36:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,7 @@ void	line_read(t_mini *mini)
 	while (1)
 	{
 		handle_signals();
-		if (isatty(fileno(stdin)))
-            mini->input = readline("minishell> ");
-        else
-        {
-            char *line = get_next_line(fileno(stdin));
-            if (!line)
-                mini->input = NULL;
-            else
-            {
-                mini->input = ft_strtrim(line, "\n"); // Enlève le \n à la fin
-                free(line);
-            }
-        }
+		mini->input = readline("minishell> ");
 		if (g_signal_received == 1)
 		{
 			g_signal_received = 0;
