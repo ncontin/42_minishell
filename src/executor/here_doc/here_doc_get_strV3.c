@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:29:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 14:26:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:12:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ static char	*read_line(t_mini *mini, int here_doc_fd, char *new, char *limiter)
 {
 	char	*str;
 
-	if (isatty(fileno(stdin)))
-        write(1, "> ", 2);
+	write(1, "> ", 2);
 	str = get_next_line(0);
 	if (g_signal_received)
 		get_str_error(mini, here_doc_fd, new, limiter);

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 14:42:26 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 13:22:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 15:20:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static char	*get_str(char *args, int *size, t_token *current, char quote_char)
 	return (args + i);
 }
 
-static char *next_token(char *str, t_token **head, t_token *current)
+static char	*next_token(char *str, t_token **head, t_token *current)
 {
 	int		size;
 	char	*next_str;

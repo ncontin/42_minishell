@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:19:29 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 18:18:08 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/27 16:03:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	is_dollar_alone(t_mini *mini)
 	while (current != NULL)
 	{
 		next = NULL;
-		if (current->argument)
+		if (current->argument && current->quotes == NO_QUOTES)
 		{
 			str = current->argument;
 			if ((ft_strncmp(str, "$", ft_strlen(str) + 1) == 0)

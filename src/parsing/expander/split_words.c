@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:31:05 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/27 09:31:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 18:07:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,36 @@
 
 static int	handle_first_word(t_token *current, char **split_words)
 {
-	free(current->argument);
-	current->argument = ft_strdup(split_words[0]);
-	if (!current->argument)
+	char	*str;
+
+	str = ft_strdup(split_words[0]);
+	if (str == NULL)
 	{
 		free_array(split_words);
 		return (1);
 	}
+	if (current->prev != NULL && ft_isspace(current->argument[0]))
+		current->prev->linked = FALSE;
+	else if (current->prev != NULL && !ft_isspace(current->argument[0]))
+		current->prev->linked = TRUE;
+	free(current->argument);
+	current->argument = str;
 	current->quotes = NO_QUOTES;
 	current->linked = FALSE;
 	current->operator = NONE;
 	return (0);
 }
 
-static int	handle_single_word(t_token *current, char **split_words)
-{
-	if (handle_first_word(current, split_words) == 1)
-		return (1);
-	free_array(split_words);
-	return (0);
-}
-
 static int	handle_words(t_token *current, char **split_words, t_token *next_og)
 {
-	int	i;
+	int		i;
+	t_bool	link;
+	size_t	len;
 
+	link = TRUE;
+	len = ft_strlen(current->argument);
+	if (ft_isspace(current->argument[len - 1]))
+		link = FALSE;
 	i = 1;
 	if (handle_first_word(current, split_words) == 1)
 		return (1);
@@ -52,6 +57,7 @@ static int	handle_words(t_token *current, char **split_words, t_token *next_og)
 		current = current->next;
 		i++;
 	}
+	current->linked = link;
 	free_array(split_words);
 	return (0);
 }
@@ -66,38 +72,45 @@ static void	handle_empty_result(t_token **current)
 	*current = NULL;
 }
 
+static int	process_current(t_token **current, t_token *next_og)
+{
+	char	**split_words;
+	int		array_size;
+
+	split_words = ft_split((*current)->argument, ' ');
+	if (split_words == NULL)
+		return (1);
+	array_size = get_array_size(split_words);
+	if (array_size > 1)
+	{
+		if (handle_words(*current, split_words, next_og) == 1)
+			return (1);
+	}
+	else if (array_size == 1)
+	{
+		if (handle_first_word(*current, split_words) == 1)
+			return (1);
+		free_array(split_words);
+	}
+	else if (array_size == 0)
+		handle_empty_result(current);
+	return (0);
+}
+
 int	split_words(t_mini *mini, t_token **tokens)
 {
 	t_token	*current;
 	t_token	*next_og;
-	char	**split_words;
-	int		array_size;
 
 	current = *tokens;
-	while (current)
+	next_og = current->next;
+	if (current->quotes == NO_QUOTES && has_space(current->argument))
 	{
-		next_og = current->next;
-		if (current->quotes == NO_QUOTES && has_space(current->argument)
-			&& mini->expanded == 1 && current->linked == FALSE)
+		if (mini->expanded == 1)
 		{
-			split_words = ft_split(current->argument, ' ');
-			if (split_words == NULL)
+			if (process_current(&current, next_og) == 1)
 				return (1);
-			array_size = get_array_size(split_words);
-			if (array_size > 1)
-			{
-				if (handle_words(current, split_words, next_og) == 1)
-					return (1);
-			}
-			else if (array_size == 1)
-			{
-				if (handle_single_word(current, split_words) == 1)
-					return (1);
-			}
-			else if (array_size == 0)
-				handle_empty_result(&current);
 		}
-		current = next_og;
 	}
 	return (0);
 }
