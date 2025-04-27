@@ -6,25 +6,52 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/27 10:42:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 12:38:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*process_no_args(char *full_str, unsigned long len, int i)
+static int	get_parts(char *full_str, int i, char **before, char **after)
 {
-	char	*before_str;
-	char	*after_str;
+	size_t	len;
+	size_t	size;
+
+	len = find_word_len(&full_str[i + 1], i);
+	*before = handle_substr(full_str, 0, i);
+	if (*before == NULL)
+		return (1);
+	size = ft_strlen(full_str) - i - len - 1;
+	*after = handle_substr(full_str, i + len + 1, size);
+	if (*after == NULL)
+	{
+		free(*before);
+		*before = NULL;
+		return (1);
+	}
+	return (0);
+}
+
+static char	*no_args(char *full_str, int i, int *err_code)
+{
+	char	*before;
+	char	*after;
 	char	*temp;
 
-	before_str = ft_substr(full_str, 0, i);
-	after_str = ft_substr(full_str, i + len + 1, ft_strlen(full_str) - i - len
-			- 1);
-	temp = ft_strjoin(before_str, after_str);
-	free(before_str);
-	free(after_str);
-	free(full_str);
+	if (get_parts(full_str, i, &before, &after) == 1)
+	{
+		free(full_str);
+		*err_code = 1;
+		return (NULL);
+	}
+	temp = handle_strjoin(before, after);
+	if (temp == NULL)
+	{
+		free_three(before, after, full_str);
+		*err_code = 1;
+		return (NULL);
+	}
+	free_three(before, after, full_str);
 	return (temp);
 }
 
@@ -32,10 +59,7 @@ static char	*replace_env_var(char *full_str, t_mini *mini, int i, int *err_code)
 {
 	t_env_node		*current;
 	unsigned long	len;
-	int				find;
 
-	(void)err_code;
-	find = 0;
 	current = *mini->lst_env->envp_cp;
 	while (current)
 	{
@@ -45,19 +69,14 @@ static char	*replace_env_var(char *full_str, t_mini *mini, int i, int *err_code)
 		{
 			full_str = get_env_var(full_str, current, i, err_code);
 			return (full_str);
-			//i += ft_strlen(current->value) - 1;
-			//find = 1;
-			//break ;
 		}
 		current = current->next;
 	}
-	if (find == 0)
-		full_str = process_no_args(full_str, len, i);
+	full_str = no_args(full_str, i, err_code);
 	return (full_str);
 }
 
-static char	*process_variables(char *full_str, t_mini *mini, int i,
-		int *err_code)
+static char	*process_var(char *full_str, t_mini *mini, int i, int *err_code)
 {
 	mini->expanded = 0;
 	while (full_str && full_str[i])
@@ -99,7 +118,7 @@ char	*expand_shell_vars(char *arg, t_mini *mini, int *err_code)
 		*err_code = 1;
 		return (NULL);
 	}
-	full_str = process_variables(full_str, mini, i, err_code);
+	full_str = process_var(full_str, mini, i, err_code);
 	if (!full_str)
 	{
 		free(arg);
