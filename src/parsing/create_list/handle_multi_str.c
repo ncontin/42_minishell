@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 14:42:26 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 11:09:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 13:22:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,28 @@ static char	*get_str(char *args, int *size, t_token *current, char quote_char)
 	return (args + i);
 }
 
-void	multi_str(char *args, int nb_strings, t_token **head, int i)
+static char *next_token(char *str, t_token **head, t_token *current)
 {
 	int		size;
 	char	*next_str;
+
+	next_str = get_str(str, &size, current, '\0');
+	current->argument = rm_quotes(str, size);
+	if (current->argument == NULL)
+	{
+		error_create_list(head, current);
+		return (NULL);
+	}
+	str = next_str;
+	lst_add_new(head, current);
+	return (next_str);
+}
+
+void	multi_str(char *args, int nb_strings, t_token **head, int i)
+{
 	char	*string;
 	t_token	*current;
 
-	size = 0;
 	string = args;
 	while (i < nb_strings)
 	{
@@ -80,15 +94,12 @@ void	multi_str(char *args, int nb_strings, t_token **head, int i)
 			*head = NULL;
 			return ;
 		}
-		next_str = get_str(string, &size, current, '\0');
-		current->argument = rm_quotes(string, size);
-		if (current->argument == NULL)
+		string = next_token(string, head, current);
+		if (string == NULL)
 		{
-			error_create_list(head, current);
+			*head = NULL;
 			return ;
 		}
-		string = next_str;
-		lst_add_new(head, current);
 		i++;
 		if (i != nb_strings)
 			current->linked = TRUE;
