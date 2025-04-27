@@ -6,11 +6,22 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 17:25:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:52:52 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*expand_special_vars(char *arg, t_mini *mini, int *err_code)
+{
+	arg = expand_shell_vars(arg, mini, err_code);
+	if (*err_code == 1 || arg == NULL)
+		return (NULL);
+	arg = expand_exit_status(arg, mini);
+	if (arg == NULL)
+		*err_code = 1;
+	return (arg);
+}
 
 static int	expandable_token(t_mini *mini, t_token **tokens, t_token **current)
 {
@@ -25,7 +36,8 @@ static int	expandable_token(t_mini *mini, t_token **tokens, t_token **current)
 		replace_tokens(tokens);
 	else
 	{
-		split_words(mini, tokens);
+		if (split_words(mini, tokens) == 1)
+			return (1);
 		advance_token(tokens, current);
 	}
 	return (0);

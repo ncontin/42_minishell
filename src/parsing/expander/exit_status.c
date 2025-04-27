@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:53 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 09:46:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:53:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,13 @@ char	*expand_exit_status(char *arg, t_mini *mini)
 	int		len;
 	char	*full_str;
 
-	if (arg == NULL)
-		return (NULL);
 	len = ft_strlen(arg);
 	exit_str = ft_itoa(mini->exit_code);
 	if (exit_str == NULL)
+	{
+		free(arg);
 		return (NULL);
+	}
 	if (ft_strncmp(arg, "$?", 2) == 0 && len == 2)
 	{
 		free(arg);

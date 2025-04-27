@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 14:42:26 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 10:49:44 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:09:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ void	multi_str(char *args, int nb_strings, t_token **head, int i)
 	{
 		current = init_new_list(*head);
 		if (current == NULL)
+		{
+			*head = NULL;
 			return ;
+		}
 		next_str = get_str(string, &size, current, '\0');
 		current->argument = rm_quotes(string, size);
 		if (current->argument == NULL)

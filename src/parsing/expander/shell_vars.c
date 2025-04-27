@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 18:30:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:42:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ static char	*replace_env_var(char *full_str, t_mini *mini, int i, int *err_code)
 			&& ft_strlen(current->key) == len)
 		{
 			full_str = get_env_var(full_str, current, i, err_code);
-			i += ft_strlen(current->value) - 1;
-			find = 1;
-			break ;
+			return (full_str);
+			//i += ft_strlen(current->value) - 1;
+			//find = 1;
+			//break ;
 		}
 		current = current->next;
 	}

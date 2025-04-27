@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:45:19 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 11:49:11 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/27 09:13:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,19 @@ t_token	*create_token(char *arg)
 	return (new_token);
 }
 
-void	add_new_token(t_token *token, char *word, t_token *next_og)
+int	add_new_token(t_token *token, char *word, t_token *next_og)
 {
 	t_token	*current;
 	t_token	*new;
 
 	new = create_token(word);
+	if (new == NULL)
+		return (1);
 	current = token;
 	current->next = new;
 	new->next = next_og;
 	new->prev = current;
 	if (next_og)
 		next_og->prev = new;
+	return (0);
 }
