@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 13:09:41 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/28 17:58:04 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char	*handle_previous_path(t_mini *mini, char *pwd)
 	else
 	{
 		mini->exit_code = 0;
-		update_old_pwd(mini->lst_env->envp_cp, pwd);
+		update_old_pwd(mini->lst_env->envp_cp);
 		update_pwd(mini->lst_env->envp_cp);
 		free(pwd);
 		ft_pwd(mini);
@@ -107,7 +107,7 @@ int	ft_cd(t_mini *mini, char *path)
 		print_error_chdir(path, pwd, mini);
 		return (mini->exit_code);
 	}
-	update_old_pwd(mini->lst_env->envp_cp, pwd);
+	update_old_pwd(mini->lst_env->envp_cp);
 	update_pwd(mini->lst_env->envp_cp);
 	free(pwd);
 	return (0);
