@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 18:49:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 19:25:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct s_token
 	char				*argument;
 	t_quotes			quotes;
 	t_bool				linked;
+	t_bool				hd_expand;
 	t_operator			operator;
 	t_arg_type			arg_type;
 	struct s_token		*next;
