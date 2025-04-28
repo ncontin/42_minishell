@@ -6,13 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 19:20:09 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/28 13:04:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 int	check_digit(char *str)
 {
@@ -48,7 +46,9 @@ char	*del_spaces(char *str)
 	if (!str)
 		return (NULL);
 	temp = ft_strdup(str);
+	// no protection yet
 	res = ft_strtrim(temp, " ");
+	// no protection yet
 	free(temp);
 	return (res);
 }

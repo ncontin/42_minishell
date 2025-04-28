@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 11:15:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 12:49:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 	return (NULL);
 }
 
-static void	add_export_env(t_env *lst_env, char *arg)
+static int	add_export_env(t_env *lst_env, char *arg)
 {
 	t_env_node	*env;
 	t_env_node	*last;
@@ -41,16 +41,37 @@ static void	add_export_env(t_env *lst_env, char *arg)
 	err_code = 0;
 	env = malloc(sizeof(t_env_node));
 	if (!env)
-		return ;
+	{
+		write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+		return (1);
+	}
 	if (find_equal(arg) > 0)
 	{
 		env->key = get_key(arg, &err_code);
+		if (err_code == 1)
+		{
+			free(env);
+			write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+			return (1);
+		}
 		env->value = get_value(arg, &err_code);
+		if (err_code == 1)
+		{
+			free(env->key);
+			free(env);
+			write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+			return (1);
+		}
 	}
 	else
 	{
 		env->key = ft_strdup(arg);
-		//if (env->key == NULL)
+		if (env->key == NULL)
+		{
+			free(env);
+			write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+			return (1);
+		}
 		env->value = NULL;
 	}
 	env->next = NULL;
@@ -61,6 +82,7 @@ static void	add_export_env(t_env *lst_env, char *arg)
 		last = find_last(lst_env->envp_cp);
 		last->next = env;
 	}
+	return (0);
 }
 
 static void	swap_nodes(t_env_node *current, t_env_node *temp)
@@ -153,20 +175,40 @@ static int	is_valid_identifier(t_mini *mini, char *arg)
 	return (1);
 }
 
-void	join_env_value(t_env_node *env_to_replace, char *arg)
+static int	join_env_value(t_env_node *env_to_replace, char *arg)
 {
 	char	*temp;
 	char	*str_to_join;
+	char	*tmp_value;
 	int		err_code;
 
 	err_code = 0;
 	str_to_join = get_value(arg, &err_code);
+	if (err_code == 1)
+	{
+		write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+		return (1);
+	}
 	temp = ft_strdup(env_to_replace->value);
-	//if (temp == NULL)
+	if (temp == NULL)
+	{
+		write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+		free(str_to_join);
+		return (1);
+	}
+	tmp_value = ft_strjoin(temp, str_to_join);
+	if (tmp_value == NULL)
+	{
+		write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+		free(str_to_join);
+		free(temp);
+		return (1);
+	}
 	free(env_to_replace->value);
-	env_to_replace->value = ft_strjoin(temp, str_to_join);
+	env_to_replace->value = tmp_value;
 	free(temp);
 	free(str_to_join);
+	return (0);
 }
 
 void	ft_export(t_mini *mini, char **cmd_args)
@@ -202,7 +244,10 @@ void	ft_export(t_mini *mini, char **cmd_args)
 					return ;
 			}
 			else if (env_to_replace && cmd_args[i][equal_index - 1] == '+')
-				join_env_value(env_to_replace, cmd_args[i]);
+			{
+				if (join_env_value(env_to_replace, cmd_args[i]) == 1)
+					return ;
+			}
 			else
 				add_export_env(mini->lst_env, cmd_args[i]);
 		}
