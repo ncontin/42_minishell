@@ -48,14 +48,6 @@ declare -x ZSH="/home/user/.oh-my-zsh"
 declare -x _="/home/user/git/minishell/./minishell"
 need to test export in school
 ----------------------------------------------------------------------------------------------------
-minishell> export Z="    "
-minishell> echo "1"$Z'2'
-1    2
-
-bash> export Z="    "
-bash> echo "1"$Z'2'
-1 2
-----------------------------------------------------------------------------------------------------
 bash> unset HOME
 bash> echo ~
 /home/user

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 05:06:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 09:42:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,12 @@ static int	is_valid_identifier(t_mini *mini, char *arg)
 
 void	join_env_value(t_env_node *env_to_replace, char *arg)
 {
-	//int		equal_index;
 	char	*temp;
 	char	*str_to_join;
 	int		err_code;
 
 	err_code = 0;
 	str_to_join = get_value(arg, &err_code);
-	//equal_index = find_equal(arg);
 	temp = ft_strdup(env_to_replace->value);
 	//if (temp == NULL)
 	free(env_to_replace->value);
@@ -182,7 +180,7 @@ void	ft_export(t_mini *mini, char **cmd_args)
 		return ;
 	if (cmd_args[1] && !is_valid_option(mini, cmd_args))
 		return ;
-	mini->lst_env->sorted_envp_cp = copy_envp_list(mini->lst_env->envp_cp);
+	mini->lst_env->sorted_envp_cp = copy_envp_list(mini->lst_env->envp_cp, mini);
 	if (!mini->lst_env->sorted_envp_cp)
 		return ;
 	sort_env(mini->lst_env->sorted_envp_cp);

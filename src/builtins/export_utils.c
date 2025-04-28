@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:47:09 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 05:09:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 10:25:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,34 @@ t_env_node	*find_min(t_env_node **envp_cp)
 	return (min);
 }
 
-static void	copy_env_node(t_env_node *current, t_env_node **ft_envp)
+static int	copy_env_node(t_env_node *current, t_env_node **ft_envp, t_mini *mini)
 {
 	t_env_node	*node;
 	t_env_node	*last;
 
 	node = malloc(sizeof(t_env_node));
 	if (!node)
-		return ;
+	{
+		copy_env_node_error(ft_envp, mini);
+		return (1);
+	}
 	node->key = ft_strdup(current->key);
-	//if (node->key == NULL) 
-	if (current->value)
+	if (node->key == NULL) 
+	{
+		free(node);
+		copy_env_node_error(ft_envp, mini);
+		return (1);
+	}
+	if (current->value != NULL)
 	{
 		node->value = ft_strdup(current->value);
-		//if (node->value == NULL)
+		if (node->value == NULL)
+		{
+			free(node->key);
+			free(node);
+			copy_env_node_error(ft_envp, mini);
+			return (1);
+		}
 	}
 	else
 		node->value = NULL;
@@ -80,9 +94,10 @@ static void	copy_env_node(t_env_node *current, t_env_node **ft_envp)
 		last = find_last(ft_envp);
 		last->next = node;
 	}
+	return (0);
 }
 
-t_env_node	**copy_envp_list(t_env_node **envp_cp)
+t_env_node	**copy_envp_list(t_env_node **envp_cp, t_mini *mini)
 {
 	t_env_node	**ft_envp;
 	t_env_node	*current;
@@ -90,11 +105,15 @@ t_env_node	**copy_envp_list(t_env_node **envp_cp)
 	current = *envp_cp;
 	ft_envp = malloc(sizeof(t_env_node *));
 	if (!ft_envp)
+	{
+		ft_envp_error(mini);
 		return (NULL);
+	}
 	*ft_envp = NULL;
 	while (current)
 	{
-		copy_env_node(current, ft_envp);
+		if (copy_env_node(current, ft_envp, mini) == 1)
+			return (NULL);
 		current = current->next;
 	}
 	return (ft_envp);

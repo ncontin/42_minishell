@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:12:56 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 11:56:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 08:38:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,17 @@ int	*is_user_in_bin(t_mini *mini, t_command *cmd, char **envp)
 {
 	char	*path;
 	char	*bin_folder;
-	char	**current;
 
-	current = envp;
-	while (current && *current)
+	bin_folder = getcwd(NULL, 0);
+	if (ft_strncmp(bin_folder, "/usr/bin", 8) == 0)
 	{
-		if ((ft_strncmp(*current, "PWD", 3)) == 0)
+		path = copy_command(bin_folder, cmd->argv[0]);
+		if (execve(path, cmd->argv, envp) == -1)
 		{
-			bin_folder = *current + 4;
-			if (ft_strncmp(bin_folder, "/usr/bin", 8) == 0)
-			{
-				path = copy_command(bin_folder, cmd->argv[0]);
-				if (execve(path, cmd->argv, envp) == -1)
-				{
-					write(STDERR_FILENO, "execve error\n", 13);
-					free(path);
-					clean_exit(mini, envp, 1);
-				}
-			}
+			write(STDERR_FILENO, "execve error\n", 13);
+			free(path);
+			clean_exit(mini, envp, 1);
 		}
-		current++;
 	}
 	return (0);
 }

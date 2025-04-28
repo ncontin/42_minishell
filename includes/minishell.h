@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 10:34:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 10:23:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ char					*get_env_value(t_env_node **envp_cp, char *key);
 void					update_pwd(t_env_node **env_stack);
 int						find_min_len(char *s1, char *s2);
 void					print_export(t_env_node **sorted_envp_cp, char **args);
-t_env_node				**copy_envp_list(t_env_node **envp_cp);
+t_env_node				**copy_envp_list(t_env_node **envp_cp, t_mini *mini);
 void					replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini, char **cmd_args);
 void					ft_export(t_mini *mini, char **cmd_args);
@@ -217,6 +217,8 @@ void					print_error_chdir(char *path, char *pwd, t_mini *mini);
 void					here_doc_error(char *str_error, int here_doc_pipe[2]);
 void					copy_env_error(t_env_node **ft_envp, t_mini *mini);
 void					envp_to_list_error(t_mini *mini);
+void					ft_envp_error(t_mini *mini);
+void					copy_env_node_error(t_env_node **ft_envp, t_mini *mini);
 /* ====== READLINE ====== */
 void					line_read(t_mini *mini);
 /* ====== PARSING ====== */
