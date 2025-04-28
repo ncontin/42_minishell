@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:47:09 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 11:19:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:25:54 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,8 @@ int	replace_env(t_env_node *env_to_replace, char *arg)
 			write(STDERR_FILENO, "memory allocation failed in export\n", 34);
 			return (1);
 		}
+		free(env_to_replace->key);
+		free(env_to_replace->value);
 		env_to_replace->key = tmp.key;
 		env_to_replace->value = NULL;
 	}
