@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 17:27:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:49:42 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ typedef struct s_mini
 {
 	int					error;
 	char				*input;
+	char				*hd_input;
 	char				**args;
 	long long int		exit_code;
 	int					expanded;
@@ -330,5 +331,6 @@ void					here_doc_exit(t_mini *mini, char *limiter, char *str,
 							int *hd_pipe);
 char					*here_doc_get_str(char *limiter, t_mini *mini,
 							char *str, t_command *current);
+void					expand_error(t_mini *mini, char *limiter, char *str);
 
 #endif

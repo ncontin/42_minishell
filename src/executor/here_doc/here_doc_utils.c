@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:45:52 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/16 18:28:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:48:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,17 @@ void	here_doc_exit(t_mini *mini, char *limiter, char *str, int *hd_pipe)
 	free(limiter);
 	free(str);
 	free_exit(mini);
-	close(hd_pipe[1]);
+	if (hd_pipe != NULL)
+		close(hd_pipe[1]);
+}
+
+void	expand_error(t_mini *mini, char *limiter, char *str)
+{
+	write(STDERR_FILENO, "Memory allocation failed in expander\n", 37);
+	if (str != NULL)
+		free(str);
+	free(limiter);
+	free(mini->hd_input);
+	free_exit(mini);
+	exit(2);
 }
