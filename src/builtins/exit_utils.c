@@ -6,13 +6,11 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 19:20:09 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/28 12:11:18 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 int	check_digit(char *str)
 {
@@ -51,4 +49,11 @@ char	*del_spaces(char *str)
 	res = ft_strtrim(temp, " ");
 	free(temp);
 	return (res);
+}
+
+int	is_double_dash(char **cmd_args)
+{
+	if (cmd_args && ft_strncmp(cmd_args[1], "--\0", 3) == 0)
+		return (1);
+	return (0);
 }

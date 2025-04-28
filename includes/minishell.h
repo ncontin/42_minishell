@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 10:34:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 12:11:39 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ void					ft_exit(t_mini *mini, char **cmd_args);
 long long				ft_atoll(const char *nptr, int *overflow);
 char					*del_spaces(char *str);
 int						check_digit(char *str);
+int						is_double_dash(char **cmd_args);
 
 /* === SIGNAL === */
 void					executor_signal(void);
@@ -241,24 +242,28 @@ void					multi_str(char *args, int nb_strings, t_token **head,
 int						is_multi_strings(char *args, int i, t_bool dquote,
 							t_bool squote);
 /* === EXPANDER === */
-int 					expander(t_mini *mini, t_token *tokens, t_token *current);
+int						expander(t_mini *mini, t_token *tokens,
+							t_token *current);
 char					*expand_exit_status(char *arg, t_mini *mini);
 void					free_three(char *a, char *b, char *c);
 char					*get_current_value(char *value);
-char 					*handle_strjoin(char *s1, char *s2);
+char					*handle_strjoin(char *s1, char *s2);
 char					*handle_substr(char *src, int start, size_t len);
-char					*expand_shell_vars(char *arg, t_mini *mini, int *err_code);
-char					*get_env_var(char *full_str, t_env_node *current, 
-							int i, int *err_code);
+char					*expand_shell_vars(char *arg, t_mini *mini,
+							int *err_code);
+char					*get_env_var(char *full_str, t_env_node *current, int i,
+							int *err_code);
 int						split_words(t_mini *mini, t_token **tokens);
 int						find_word_len(char *arg, int len);
 int						get_array_size(char **array);
 int						has_space(char *str);
 t_token					*create_token(char *arg);
-int						add_new_token(t_token *token, char *word, t_token *next_og);
+int						add_new_token(t_token *token, char *word,
+							t_token *next_og);
 int						is_dollar(t_token **tokens);
 int						is_nl_char(t_token **tokens);
-//char					*expand_special_vars(char *arg, t_mini *mini, int *err_code);
+// char					*expand_special_vars(char *arg, t_mini *mini,
+						int *err_code);
 void					replace_tokens(t_token **tokens);
 void					advance_token(t_token **tokens, t_token **current);
 int						handle_nl_expand(t_token **tokens);

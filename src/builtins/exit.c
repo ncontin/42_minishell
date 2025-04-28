@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/24 19:20:14 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/28 12:11:11 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	ft_exit(t_mini *mini, char **cmd_args)
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (cmd_args && cmd_args[1])
 	{
+		if (is_double_dash(cmd_args))
+			perform_exit(mini, mini->exit_code);
 		if (!validate_exit_arg(mini, cmd_args[1], &arg))
 			return ;
 		if (cmd_args[2])
