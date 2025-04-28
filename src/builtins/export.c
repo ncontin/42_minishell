@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 09:42:23 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:15:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,10 @@ void	ft_export(t_mini *mini, char **cmd_args)
 			if (equal_index < 0)
 				equal_index = ft_strlen(cmd_args[i]);
 			if (env_to_replace && cmd_args[i][equal_index - 1] != '+')
-				replace_env(env_to_replace, cmd_args[i]);
+			{
+				if (replace_env(env_to_replace, cmd_args[i]) == 1)
+					return ;
+			}
 			else if (env_to_replace && cmd_args[i][equal_index - 1] == '+')
 				join_env_value(env_to_replace, cmd_args[i]);
 			else

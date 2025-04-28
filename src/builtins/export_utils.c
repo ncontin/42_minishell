@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:47:09 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 10:25:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 11:19:16 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,24 +119,41 @@ t_env_node	**copy_envp_list(t_env_node **envp_cp, t_mini *mini)
 	return (ft_envp);
 }
 
-void	replace_env(t_env_node *env_to_replace, char *arg)
+int	replace_env(t_env_node *env_to_replace, char *arg)
 {
-	int	equal_index;
-	int	err_code;
+	int			equal_index;
+	int			err_code;
+	t_env_node	tmp;
 
 	err_code = 0;
 	equal_index = find_equal(arg);
-	free(env_to_replace->key);
-	free(env_to_replace->value);
 	if (equal_index > 0)
 	{
-		env_to_replace->key = get_key(arg, &err_code);
-		env_to_replace->value = get_value(arg, &err_code);
+		tmp.key = get_key(arg, &err_code);
+		if (err_code == 1)
+			return (1);
+		tmp.value = get_value(arg, &err_code);
+		if (err_code == 1)
+		{
+			free(tmp.key);
+			return (1);
+		}
+		free(env_to_replace->key);
+		free(env_to_replace->value);
+		env_to_replace->key = tmp.key;
+		env_to_replace->value = tmp.value;
+		return (0);
 	}
 	else
 	{
-		env_to_replace->key = ft_strdup(arg);
-		//if (env_to_replace->key == NULL)
+		tmp.key = ft_strdup(arg);
+		if (tmp.key == NULL)
+		{
+			write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+			return (1);
+		}
+		env_to_replace->key = tmp.key;
 		env_to_replace->value = NULL;
 	}
+	return (0);
 }
