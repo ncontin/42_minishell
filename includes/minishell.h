@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 11:14:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:27:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,7 @@ int						str_and_operator(t_command *new, t_token *tokens);
 void					executor(t_mini *mini, t_command *current, int prev_fd,
 							int count);
 /* === PROCESS === */
+void					update_underscore(t_command *cmd, t_env_node **envp_cp);
 void					parent_process(int *prev_fd, t_command *current);
 void					child_process(t_command *current, int *prev_fd,
 							t_mini *mini);
@@ -307,6 +308,7 @@ void					is_path_a_directory(t_command *current, char **envp,
 							t_mini *mini);
 void					handle_no_exec(t_command *current, char **envp,
 							t_mini *mini, int error);
+void					update_underscore_path(char *path, t_env_node **envp_cp);
 /* === GET ENVP === */
 int						get_envp_array(t_env *lst_env, char ***envp);
 /* === HANDLE REDIRECTION === */

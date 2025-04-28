@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 10:58:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:43:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 
 	envp = NULL;
 	child_signal();
+	update_underscore(current, mini->lst_env->envp_cp);
 	if (current->next != NULL && current->next->check_here_doc == FALSE)
 	{
 		close(current->pipe_fd[0]);
@@ -37,6 +38,46 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 		exit(EXIT_FAILURE);
 	}
 	execute_cmd(current, envp, mini);
+}
+
+static int	find_last_argument(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL)
+		i++;
+	i--;
+	return (i);
+}
+
+void	update_underscore(t_command *cmd, t_env_node **envp_cp)
+{
+	t_env_node	*current;
+	char		*tmp;
+	int			i;
+
+	if (cmd->argv[0][0] == '\0')
+		return ;
+	current = *envp_cp;
+	i = find_last_argument(cmd->argv);
+	while (current != NULL)
+	{
+		if (strncmp(current->key, "_", ft_strlen(current->key) + 1) == 0)
+		{
+			tmp = ft_strdup(cmd->argv[i]);
+			if (tmp == NULL)
+			{
+				free(current->value);
+				current->value = NULL;
+				return ;
+			}
+			free(current->value);
+			current->value = tmp;
+			return ;
+		}
+		current = current->next;
+	}
 }
 
 void	parent_process(int *prev_fd, t_command *current)

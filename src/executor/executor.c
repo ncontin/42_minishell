@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 13:44:03 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:15:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	handle_start(t_command *current, t_mini *mini)
 	}
 	if (is_builtin_command(current))
 	{
+		update_underscore(current, mini->lst_env->envp_cp);
 		execute_builtin(mini, current->argv);
 		return (1);
 	}
@@ -87,6 +88,8 @@ void	executor(t_mini *mini, t_command *current, int prev_fd, int fork_count)
 {
 	if (handle_start(current, mini))
 		return ;
+	if (current->next == NULL)
+		update_underscore(current, mini->lst_env->envp_cp);
 	while (current != NULL)
 	{
 		if (create_pipe(current, &prev_fd, mini))

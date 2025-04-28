@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:12:56 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 08:38:36 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:44:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,22 @@ void	is_path_a_directory(t_command *current, char **envp, t_mini *mini)
 			print_executor_error("Is a directory", current->argv[0]);
 			clean_exit(mini, envp, 126);
 		}
+	}
+}
+
+void	update_underscore_path(char *path, t_env_node **envp_cp)
+{
+	t_env_node	*current;
+
+	current = *envp_cp;
+	while (current != NULL)
+	{
+		if (strncmp(current->key, "_", ft_strlen(current->key) + 1) == 0)
+		{
+			free(current->value);
+			current->value = path;
+			return ;
+		}
+		current = current->next;
 	}
 }
