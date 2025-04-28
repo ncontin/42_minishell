@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 15:52:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 11:08:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 19:40:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_token	*init_new_list(t_token *head)
 	current->operator = NONE;
 	current->next = NULL;
 	current->prev = NULL;
+	current->hd_expand = TRUE;
 	return (current);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 15:24:11 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/25 09:49:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 19:59:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ static void	handle_operator(t_command *new, t_token *current, int *j)
 	new->operator[*j] = current->operator;
 	if (current->operator == HEREDOC && current->next != NULL)
 	{
-		new->limiter_quotes = current->next->quotes;
+		if (current->next->hd_expand == TRUE)
+			new->limiter_quotes = current->next->quotes;
+		else
+			new->limiter_quotes = SINGLE;
 		new->check_here_doc = TRUE;
 	}
 }

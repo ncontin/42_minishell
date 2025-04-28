@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 17:57:41 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/28 21:36:19 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct s_token
 	char				*argument;
 	t_quotes			quotes;
 	t_bool				linked;
+	t_bool				hd_expand;
 	t_operator			operator;
 	t_arg_type			arg_type;
 	struct s_token		*next;
@@ -140,6 +141,7 @@ typedef struct s_mini
 {
 	int					error;
 	char				*input;
+	char				*hd_input;
 	char				**args;
 	long long int		exit_code;
 	int					expanded;
@@ -164,8 +166,8 @@ char					*get_env_value(t_env_node **envp_cp, char *key);
 void					update_pwd(t_env_node **env_stack);
 int						find_min_len(char *s1, char *s2);
 void					print_export(t_env_node **sorted_envp_cp, char **args);
-t_env_node				**copy_envp_list(t_env_node **envp_cp);
-void					replace_env(t_env_node *env_to_replace, char *arg);
+t_env_node				**copy_envp_list(t_env_node **envp_cp, t_mini *mini);
+int						replace_env(t_env_node *env_to_replace, char *arg);
 void					ft_env(t_mini *mini, char **cmd_args);
 void					ft_export(t_mini *mini, char **cmd_args);
 void					ft_unset(t_mini *mini, char **cmd_args);
@@ -218,6 +220,8 @@ void					print_error_chdir(char *path, char *pwd, t_mini *mini);
 void					here_doc_error(char *str_error, int here_doc_pipe[2]);
 void					copy_env_error(t_env_node **ft_envp, t_mini *mini);
 void					envp_to_list_error(t_mini *mini);
+void					ft_envp_error(t_mini *mini);
+void					copy_env_node_error(t_env_node **ft_envp, t_mini *mini);
 /* ====== READLINE ====== */
 void					line_read(t_mini *mini);
 /* ====== PARSING ====== */
@@ -286,6 +290,7 @@ int						str_and_operator(t_command *new, t_token *tokens);
 void					executor(t_mini *mini, t_command *current, int prev_fd,
 							int count);
 /* === PROCESS === */
+void					update_underscore(t_command *cmd, t_env_node **envp_cp);
 void					parent_process(int *prev_fd, t_command *current);
 void					child_process(t_command *current, int *prev_fd,
 							t_mini *mini);
@@ -310,6 +315,7 @@ void					is_path_a_directory(t_command *current, char **envp,
 							t_mini *mini);
 void					handle_no_exec(t_command *current, char **envp,
 							t_mini *mini, int error);
+void					update_underscore_path(char *path, t_env_node **envp_cp);
 /* === GET ENVP === */
 int						get_envp_array(t_env *lst_env, char ***envp);
 /* === HANDLE REDIRECTION === */
@@ -331,5 +337,6 @@ void					here_doc_exit(t_mini *mini, char *limiter, char *str,
 							int *hd_pipe);
 char					*here_doc_get_str(char *limiter, t_mini *mini,
 							char *str, t_command *current);
+void					expand_error(t_mini *mini, char *limiter, char *str);
 
 #endif

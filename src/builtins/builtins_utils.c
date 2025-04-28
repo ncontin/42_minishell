@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 05:00:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 12:59:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_value(char *str, int *err_code)
 	if (value == NULL)
 	{
 		*err_code = 1;
-		write(STDERR_FILENO, "get key memory allocation failed\n", 33);
+		write(STDERR_FILENO, "get value memory allocation failed\n", 35);
 	}
 	return (value);
 }

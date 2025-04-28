@@ -23,13 +23,13 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/cd.c\
 				src/builtins/cd_utils.c\
 				src/builtins/env.c\
-				src/builtins/export.c\
 				src/builtins/unset.c\
 				src/builtins/builtins_utils.c\
-				src/builtins/export_utils.c\
 				src/builtins/exit.c\
 				src/builtins/exit_utils.c\
 				src/builtins/ft_atoll.c\
+				src/builtins/export/export.c\
+				src/builtins/export/export_utils.c\
 
 SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\
@@ -46,6 +46,7 @@ SRC_ERRORS = 	src/errors/parsing_error.c\
 				src/errors/redirection_error.c\
 				src/errors/cd_error.c\
 				src/errors/init_error.c\
+				src/errors/export_error.c\
 
 SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_args/args_split.c\

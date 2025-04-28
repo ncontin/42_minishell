@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 11:46:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:43:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	get_path_and_exec(t_mini *mini, t_command *cmd, char **envp,
 		path = copy_command(unix_path[i], cmd->argv[0]);
 		if (access(path, X_OK) == 0)
 		{
+			update_underscore_path(path, mini->lst_env->envp_cp);
 			if (execve(path, cmd->argv, envp) == -1)
 			{
 				write(STDERR_FILENO, "execve error\n", 13);
@@ -81,7 +82,7 @@ static void	check_special_cases(t_command *cmd, char **envp, t_mini *mini)
 {
 	if (!cmd->argv)
 		clean_exit(mini, envp, 0);
-	else if (cmd->argv[0][0] == '\0')
+	if (cmd->argv[0][0] == '\0')
 	{
 		write(STDERR_FILENO, "Command \'\' not found\n", 21);
 		clean_exit(mini, envp, 127);

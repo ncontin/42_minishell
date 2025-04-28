@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 18:00:41 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/28 21:37:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	update_old_pwd(t_env_node **env_stack)
 		return ;
 	old_pwd_copy = ft_strdup(old_pwd);
 	if (!old_pwd_copy)
+		//no protection yet
 		return ;
 	current = *env_stack;
 	while (current)
