@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:29:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 14:26:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:52:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ static char	*read_line(t_mini *mini, int here_doc_fd, char *new, char *limiter)
 {
 	char	*str;
 
-	if (isatty(fileno(stdin)))
-        write(1, "> ", 2);
+	write(1, "> ", 2);
 	str = get_next_line(0);
 	if (g_signal_received)
 		get_str_error(mini, here_doc_fd, new, limiter);
@@ -35,7 +34,11 @@ static int	expand(t_mini *mini, t_command *current, char *limiter, char **str)
 		return (1);
 	}
 	if (current->limiter_quotes == NO_QUOTES)
+	{
 		*str = expand_shell_vars(*str, mini, &err_code);
+		if (err_code == 1)
+			expand_error(mini, limiter, *str);
+	}
 	return (0);
 }
 
@@ -94,7 +97,7 @@ char	*add_line_return(char *source, t_mini *mini)
 }
 
 char	*here_doc_get_str(char *limiter, t_mini *mini, char *str,
-			t_command *current)
+		t_command *current)
 {
 	char	*new;
 
@@ -107,6 +110,7 @@ char	*here_doc_get_str(char *limiter, t_mini *mini, char *str,
 			write(1, "\nHere doc : delimited by end of file\n", 37);
 			return (new);
 		}
+		mini->hd_input = new;
 		if (expand(mini, current, limiter, &str) == 1)
 			break ;
 		new = join_strings(new, str, ft_strlen(new), ft_strlen(str));
