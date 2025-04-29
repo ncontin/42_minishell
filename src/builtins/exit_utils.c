@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 21:37:38 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:05:09 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ char	*del_spaces(char *str)
 	if (!str)
 		return (NULL);
 	temp = ft_strdup(str);
-	// no protection yet
+	// still no protection yet
 	res = ft_strtrim(temp, " ");
-	// no protection yet
+	// still no protection yet
 	free(temp);
 	return (res);
 }
