@@ -70,6 +70,7 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/check_operator/is_valid_operator.c\
 				src/parsing/check_operator/is_tilde.c\
 				src/parsing/check_operator/is_dollar_alone.c\
+				src/parsing/check_operator/check_dollar.c\
 				src/parsing/merge_args/merge_args.c\
 				src/parsing/split_pipes/str_and_operator.c\
 				src/parsing/split_pipes/split_pipes.c\

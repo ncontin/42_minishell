@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 09:35:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:07:12 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static int	process_tokens(t_mini *mini)
 		mini->exit_code = 2;
 		return (1);
 	}
+	if (check_dollar(mini) == 1)
+		return (1);
 	is_dollar_alone(mini);
 	if (is_tilde(mini) == 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 14:23:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 16:41:23 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,7 @@ t_bool					is_valid_operator(char **args);
 t_bool					is_valid_token(t_token *tokens);
 int						is_tilde(t_mini *mini);
 void					is_dollar_alone(t_mini *mini);
+int						check_dollar(t_mini *mini);
 /* === CREATE LIST === */
 t_token					*create_list(char **tokens);
 t_token					*init_new_list(t_token *head);
