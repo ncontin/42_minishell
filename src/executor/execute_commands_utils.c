@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:12:56 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 04:22:14 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:49:24 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ int	*is_user_in_bin(t_mini *mini, t_command *cmd, char **envp)
 	char	*bin_folder;
 
 	bin_folder = getcwd(NULL, 0);
+	if (bin_folder == NULL)
+	{
+		write(STDERR_FILENO, "Memory allocation failed", 24);
+		write(STDERR_FILENO, "in user_in_bin\n", 14);
+		clean_exit(mini, envp, 2);
+	}
 	if (ft_strncmp(bin_folder, "/usr/bin", 8) == 0)
 	{
 		path = copy_command(bin_folder, cmd->argv[0]);

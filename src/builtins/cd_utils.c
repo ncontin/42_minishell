@@ -6,18 +6,24 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 21:37:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:56:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	update_pwd(t_env_node **env_stack)
+int	update_pwd(t_env_node **env_stack)
 {
 	char		*pwd;
 	t_env_node	*current;
 
 	pwd = getcwd(NULL, 0);
+	if (pwd == NULL)
+	{
+		write(STDERR_FILENO, "Memory allocation failed", 24);
+		write(STDERR_FILENO, "to update pwd\n", 14);
+		return (1);
+	}
 	current = *env_stack;
 	while (current)
 	{
@@ -28,6 +34,7 @@ void	update_pwd(t_env_node **env_stack)
 		}
 		current = current->next;
 	}
+	return (0);
 }
 
 char	*get_env_value(t_env_node **envp_cp, char *key)
@@ -71,7 +78,7 @@ int	check_cd_path(char *path)
 	return (0);
 }
 
-void	update_old_pwd(t_env_node **env_stack)
+int	update_old_pwd(t_env_node **env_stack)
 {
 	t_env_node	*current;
 	char		*old_pwd_copy;
@@ -79,11 +86,14 @@ void	update_old_pwd(t_env_node **env_stack)
 
 	old_pwd = get_env_value(env_stack, "PWD");
 	if (!old_pwd)
-		return ;
+		return (1);
 	old_pwd_copy = ft_strdup(old_pwd);
 	if (!old_pwd_copy)
-		//no protection yet
-		return ;
+	{
+		write(STDERR_FILENO, "Memory allocation failed", 24);
+		write(STDERR_FILENO, "to update old_pwd\n", 18);
+		return (1);
+	}
 	current = *env_stack;
 	while (current)
 	{
@@ -91,8 +101,9 @@ void	update_old_pwd(t_env_node **env_stack)
 		{
 			free(current->value);
 			current->value = old_pwd_copy;
-			return ;
+			return (0);
 		}
 		current = current->next;
 	}
+	return (0);
 }

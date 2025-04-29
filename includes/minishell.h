@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 09:40:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 11:36:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,10 +160,10 @@ void					execute_builtin(t_mini *mini, char **argv);
 void					ft_pwd(t_mini *mini);
 void					ft_echo(char **cmd_args, long long int *exit_code);
 int						ft_cd(t_mini *mini, char *path);
-void					update_old_pwd(t_env_node **env_stack);
+int						update_old_pwd(t_env_node **env_stack);
 int						check_cd_path(char *path);
 char					*get_env_value(t_env_node **envp_cp, char *key);
-void					update_pwd(t_env_node **env_stack);
+int						update_pwd(t_env_node **env_stack);
 int						find_min_len(char *s1, char *s2);
 void					print_export(t_env_node **sorted_envp_cp, char **args);
 t_env_node				**copy_envp_list(t_env_node **envp_cp, t_mini *mini);
@@ -277,8 +277,6 @@ int						add_new_token(t_token *token, char *word,
 							t_token *next_og);
 int						is_dollar(t_token **tokens);
 int						is_nl_char(t_token **tokens);
-// char					*expand_special_vars(char *arg, t_mini *mini,
-// int *err_code);
 void					replace_tokens(t_token **tokens);
 void					advance_token(t_token **tokens, t_token **current);
 int						handle_nl_expand(t_token **tokens);

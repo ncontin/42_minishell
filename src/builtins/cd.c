@@ -6,16 +6,14 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:28:12 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 17:58:04 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/29 11:55:37 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*handle_previous_path(t_mini *mini, char *pwd)
+static char	*handle_previous_path(t_mini *mini, char *pwd, char *path)
 {
-	char	*path;
-
 	path = get_env_value(mini->lst_env->envp_cp, "OLDPWD");
 	if (!path)
 	{
@@ -35,8 +33,10 @@ static char	*handle_previous_path(t_mini *mini, char *pwd)
 	else
 	{
 		mini->exit_code = 0;
-		update_old_pwd(mini->lst_env->envp_cp);
-		update_pwd(mini->lst_env->envp_cp);
+		if (update_old_pwd(mini->lst_env->envp_cp) == 1)
+			mini->exit_code = 2;
+		if (update_pwd(mini->lst_env->envp_cp) == 1)
+			mini->exit_code = 2;
 		free(pwd);
 		ft_pwd(mini);
 	}
@@ -89,12 +89,18 @@ int	ft_cd(t_mini *mini, char *path)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
+	if (pwd == NULL)
+	{
+		mini->exit_code = 1;
+        perror("pwd");
+		return (1);
+	}
 	if (handle_start_cd(mini, pwd) == 1)
 		return (0);
 	if (mini->cmds->argv[1] != NULL && ft_strncmp(mini->cmds->argv[1], "-",
-			(ft_strlen("-") + 1)) == 0)
+				(ft_strlen("-") + 1)) == 0)
 	{
-		path = handle_previous_path(mini, pwd);
+		path = handle_previous_path(mini, pwd, NULL);
 		if (!path)
 			return (1);
 		return (mini->exit_code);
@@ -107,8 +113,18 @@ int	ft_cd(t_mini *mini, char *path)
 		print_error_chdir(path, pwd, mini);
 		return (mini->exit_code);
 	}
-	update_old_pwd(mini->lst_env->envp_cp);
-	update_pwd(mini->lst_env->envp_cp);
+	if (update_old_pwd(mini->lst_env->envp_cp) == 1)
+	{
+		mini->exit_code = 2;
+		free(pwd);
+		return (1);
+	}
+	if (update_pwd(mini->lst_env->envp_cp) == 1)
+	{
+		mini->exit_code = 2;
+		free(pwd);
+		return (1);
+	}
 	free(pwd);
 	return (0);
 }
