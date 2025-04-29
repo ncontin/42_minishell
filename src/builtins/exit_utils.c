@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/29 15:05:09 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:21:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,18 @@ char	*del_spaces(char *str)
 	if (!str)
 		return (NULL);
 	temp = ft_strdup(str);
-	// still no protection yet
+	if (temp == NULL)
+	{
+		write(STDERR_FILENO, "allocazione di memoria fallita\n", 31);
+		return (NULL);
+	}
 	res = ft_strtrim(temp, " ");
-	// still no protection yet
 	free(temp);
+	if (res == NULL)
+	{
+		write(STDERR_FILENO, "allocazione di memoria fallita\n", 31);
+		return (NULL);
+	}
 	return (res);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 12:11:11 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/04/29 15:17:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	check_overflow(const char *nptr, int *overflow)
 		return (0);
 	*overflow = 0;
 	ft_atoll(nptr, overflow);
-	return (*overflow == 1);
+	return (*overflow == 1); //nessuna assegnazione di variabili in un return
 }
 
 static void	print_error(t_mini *mini, char *arg)
@@ -47,7 +47,7 @@ static int	validate_exit_arg(t_mini *mini, char *arg_str, char **arg)
 
 	overflow = 0;
 	*arg = del_spaces(arg_str);
-	if (!*arg)
+	if (*arg == NULL)
 	{
 		perror("minishell: exit");
 		mini->exit_code = 1;
