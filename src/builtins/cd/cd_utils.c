@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 11:56:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 13:39:04 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,7 @@ int	update_old_pwd(t_env_node **env_stack)
 	old_pwd_copy = ft_strdup(old_pwd);
 	if (!old_pwd_copy)
 	{
-		write(STDERR_FILENO, "Memory allocation failed", 24);
-		write(STDERR_FILENO, "to update old_pwd\n", 18);
+		write(STDERR_FILENO, "Memory allocation failed in old_pwd\n", 36);
 		return (1);
 	}
 	current = *env_stack;
@@ -106,4 +105,28 @@ int	update_old_pwd(t_env_node **env_stack)
 		current = current->next;
 	}
 	return (0);
+}
+
+char	*handle_home(t_mini *mini, char *pwd)
+{
+	char	*path;
+
+	if (!mini->cmds->argv[1] || ft_strncmp(mini->cmds->argv[1], "~", 1) == 0)
+	{
+		mini->exit_code = 0;
+		path = get_env_value(mini->lst_env->envp_cp, "HOME");
+		if (!path)
+		{
+			mini->exit_code = 1;
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			free(pwd);
+			return (NULL);
+		}
+	}
+	else
+	{
+		mini->exit_code = 0;
+		path = mini->cmds->argv[1];
+	}
+	return (path);
 }

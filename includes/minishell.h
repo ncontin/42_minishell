@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 11:36:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 14:23:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,9 @@ int						is_builtin(char *str);
 void					execute_builtin(t_mini *mini, char **argv);
 void					ft_pwd(t_mini *mini);
 void					ft_echo(char **cmd_args, long long int *exit_code);
-int						ft_cd(t_mini *mini, char *path);
+void					ft_cd(t_mini *mini, char *path);
+char					*handle_home(t_mini *mini, char *pwd);
+void					handle_previous_path(t_mini *mini, char *pwd);
 int						update_old_pwd(t_env_node **env_stack);
 int						check_cd_path(char *path);
 char					*get_env_value(t_env_node **envp_cp, char *key);

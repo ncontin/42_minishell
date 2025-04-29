@@ -20,14 +20,15 @@ SRC =	src/main.c\
 SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/pwd.c\
 				src/builtins/echo.c\
-				src/builtins/cd.c\
-				src/builtins/cd_utils.c\
 				src/builtins/env.c\
 				src/builtins/unset.c\
 				src/builtins/builtins_utils.c\
 				src/builtins/exit.c\
 				src/builtins/exit_utils.c\
 				src/builtins/ft_atoll.c\
+				src/builtins/cd/cd.c\
+				src/builtins/cd/cd_utils.c\
+				src/builtins/cd/previous_path.c\
 				src/builtins/export/export.c\
 				src/builtins/export/export_utils.c\
 				src/builtins/export/add_env.c\

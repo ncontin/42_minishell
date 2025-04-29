@@ -1,15 +1,4 @@
 ----------------------------------------------------------------------------------------------------
-need to check valgrind for dup2 and open errors
-----------------------------------------------------------------------------------------------------
-check every ALLOCATION MEMORY throughout the code : expander/builtin/executor
-----------------------------------------------------------------------------------------------------
-write a message for user to know if a malloc has failed then return to the main prompt
-----------------------------------------------------------------------------------------------------
-fix norminette errors ONLY when strdup, substr, strtrim and every malloc allocation are
-handle with an error message, have NO LEAKS if they failed and return to the prompt
-----------------------------------------------------------------------------------------------------
-do we add a file to manage the command history when minishell is closed ?
-----------------------------------------------------------------------------------------------------
 error code to fix
 unset TES;T
 ----------------------------------------------------------------------------------------------------
@@ -27,12 +16,4 @@ if (token[len - 1] == $ && linked == TRUE)
 --> remove last $ from $HOME
 
 is there another way to fix this ?
-----------------------------------------------------------------------------------------------------
-bash> unset HOME
-bash> echo ~
-/home/user
-
-minishell> unset HOME
-minishell> echo ~
-~
 ----------------------------------------------------------------------------------------------------
