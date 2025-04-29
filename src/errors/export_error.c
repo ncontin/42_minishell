@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 09:43:19 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 05:37:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 05:56:16 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,28 @@ void	copy_env_node_error(t_env_node **ft_envp, t_mini *mini)
 		free_stack(ft_envp);
 }
 
-int	handle_join_env_error(char *str1, char *str2)
+void	handle_join_env_error(char *str1, char *str2)
 {
 	write(STDERR_FILENO, "memory allocation failed in export\n", 34);
 	if (str1)
 		free(str1);
 	if (str2)
 		free(str2);
-	return (1);
+}
+
+void	print_id_error(t_mini *mini, char *arg)
+{
+	mini->exit_code = 1;
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+}
+
+void	handle_add_export_error(t_env_node *env, char *key)
+{
+	write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+	if (key)
+		free(key);
+	if (env)
+		free(env);
 }

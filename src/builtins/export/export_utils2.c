@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/29 05:34:42 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 06:12:12 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,59 +30,6 @@ t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 		current = current->next;
 	}
 	return (NULL);
-}
-
-int	add_export_env(t_env *lst_env, char *arg)
-{
-	t_env_node	*env;
-	t_env_node	*last;
-	int			err_code;
-
-	err_code = 0;
-	env = malloc(sizeof(t_env_node));
-	if (!env)
-	{
-		write(STDERR_FILENO, "memory allocation failed in export\n", 34);
-		return (1);
-	}
-	if (find_equal(arg) > 0)
-	{
-		env->key = get_key(arg, &err_code);
-		if (err_code == 1)
-		{
-			free(env);
-			write(STDERR_FILENO, "memory allocation failed in export\n", 34);
-			return (1);
-		}
-		env->value = get_value(arg, &err_code);
-		if (err_code == 1)
-		{
-			free(env->key);
-			free(env);
-			write(STDERR_FILENO, "memory allocation failed in export\n", 34);
-			return (1);
-		}
-	}
-	else
-	{
-		env->key = ft_strdup(arg);
-		if (env->key == NULL)
-		{
-			free(env);
-			write(STDERR_FILENO, "memory allocation failed in export\n", 34);
-			return (1);
-		}
-		env->value = NULL;
-	}
-	env->next = NULL;
-	if (!(*lst_env->envp_cp))
-		*lst_env->envp_cp = env;
-	else
-	{
-		last = find_last(lst_env->envp_cp);
-		last->next = env;
-	}
-	return (0);
 }
 
 void	swap_nodes(t_env_node *current, t_env_node *temp)
@@ -120,14 +67,6 @@ void	sort_env(t_env_node **envp_cp)
 		}
 		current = current->next;
 	}
-}
-
-void	print_id_error(t_mini *mini, char *arg)
-{
-	mini->exit_code = 1;
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
 }
 
 int	is_valid_option(t_mini *mini, char **cmd_args)

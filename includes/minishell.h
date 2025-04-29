@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 05:35:12 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 06:08:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,9 @@ void					copy_env_error(t_env_node **ft_envp, t_mini *mini);
 void					envp_to_list_error(t_mini *mini);
 void					ft_envp_error(t_mini *mini);
 void					copy_env_node_error(t_env_node **ft_envp, t_mini *mini);
-int						handle_join_env_error(char *str1, char *str2);
+void					handle_join_env_error(char *str1, char *str2);
+void					print_id_error(t_mini *mini, char *arg);
+void					handle_add_export_error(t_env_node *env, char *key);
 /* ====== READLINE ====== */
 void					line_read(t_mini *mini);
 /* ====== PARSING ====== */
