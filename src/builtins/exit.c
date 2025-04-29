@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/29 15:17:39 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 21:35:39 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ static int	check_overflow(const char *nptr, int *overflow)
 		return (0);
 	*overflow = 0;
 	ft_atoll(nptr, overflow);
-	return (*overflow == 1); //nessuna assegnazione di variabili in un return
+	if (*overflow == 1)
+		return (1);
+	return (0);
 }
 
 static void	print_error(t_mini *mini, char *arg)

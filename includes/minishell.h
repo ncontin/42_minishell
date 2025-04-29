@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 18:12:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 21:26:13 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@
 # include <sys/types.h>
 
 extern int				g_signal_received;
-
-# define HISTORY_FILE "minishell_history"
 
 typedef enum e_bool
 {
@@ -155,7 +153,6 @@ typedef struct s_mini
 /* === INIT === */
 void					init_mini(t_mini *mini);
 void					init_envp(t_mini *mini);
-void					load_history_file();
 
 /* === BUILTINS === */
 int						is_builtin(char *str);
@@ -194,8 +191,8 @@ void					sort_env(t_env_node **envp_cp);
 void					print_id_error(t_mini *mini, char *arg);
 int						is_valid_option(t_mini *mini, char **cmd_args);
 int						is_valid_identifier(t_mini *mini, char *arg);
-int						join_env_value(t_env_node *env_to_replace, char *arg, t_mini *mini);
-
+int						join_env_value(t_env_node *env_to_replace, char *arg,
+							t_mini *mini);
 /* === SIGNAL === */
 void					executor_signal(void);
 void					child_signal(void);
@@ -330,7 +327,8 @@ void					is_path_a_directory(t_command *current, char **envp,
 							t_mini *mini);
 void					handle_no_exec(t_command *current, char **envp,
 							t_mini *mini, int error);
-void					update_underscore_path(char *path, t_env_node **envp_cp);
+void					update_underscore_path(char *path,
+							t_env_node **envp_cp);
 /* === GET ENVP === */
 int						get_envp_array(t_env *lst_env, char ***envp);
 /* === HANDLE REDIRECTION === */

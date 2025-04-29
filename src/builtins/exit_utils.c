@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/29 15:21:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 21:33:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ char	*del_spaces(char *str)
 	temp = ft_strdup(str);
 	if (temp == NULL)
 	{
-		write(STDERR_FILENO, "allocazione di memoria fallita\n", 31);
+		write(STDERR_FILENO, "memory allocation failed in exit\n", 33);
 		return (NULL);
 	}
 	res = ft_strtrim(temp, " ");
 	free(temp);
 	if (res == NULL)
 	{
-		write(STDERR_FILENO, "allocazione di memoria fallita\n", 31);
+		write(STDERR_FILENO, "memory allocation failed in exit\n", 33);
 		return (NULL);
 	}
 	return (res);

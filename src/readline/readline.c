@@ -6,28 +6,15 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:27:15 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 18:14:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 21:23:43 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	save_to_file(char *input)
-{
-	int	fd;
-
-	fd = open(HISTORY_FILE, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	if (fd == -1)
-		return ;
-	write(fd, input, ft_strlen(input));
-	write(fd, "\n", 1);
-	close (fd);
-}
-
 static void	handle_user_input(t_mini *mini)
 {
 	add_history(mini->input);
-	save_to_file(mini->input);
 	mini->cmds = parsing(mini);
 	if (mini->cmds == NULL)
 	{
