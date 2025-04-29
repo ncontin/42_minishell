@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 05:45:58 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 06:16:28 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:24:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	append_env_node(t_env *lst_env, t_env_node *env)
 	}
 }
 
-int	add_export_env(t_env *lst_env, char *arg)
+int	add_export_env(t_env *lst_env, char *arg, t_mini *mini)
 {
 	t_env_node	*env;
 
@@ -77,7 +77,10 @@ int	add_export_env(t_env *lst_env, char *arg)
 		return (1);
 	}
 	if (fill_env_node(env, arg) == 1)
+	{
+		mini->exit_code = 2;
 		return (1);
+	}
 	append_env_node(lst_env, env);
 	return (0);
 }

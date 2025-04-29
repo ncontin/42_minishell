@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 04:47:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 06:28:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:47:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ static void	process_export(t_mini *mini, char **cmd_args, int i)
 		}
 		else if (env_to_replace && cmd_args[i][equal_index - 1] == '+')
 		{
-			if (join_env_value(env_to_replace, cmd_args[i]) == 1)
+			if (join_env_value(env_to_replace, cmd_args[i], mini) == 1)
 				return ;
 		}
 		else
-			add_export_env(mini->lst_env, cmd_args[i]);
+			add_export_env(mini->lst_env, cmd_args[i], mini);
 	}
 }
 

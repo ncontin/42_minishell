@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/26 17:22:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:35:30 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	process_tokens(t_mini *mini)
 	mini->tokens = create_list(mini->args);
 	if (mini->tokens == NULL)
 	{
-		mini->exit_code = 1;
+		mini->exit_code = 2;
 		return (1);
 	}
 	assign_operator(mini->tokens);
@@ -66,6 +66,7 @@ static int	prepare_tokens(t_mini *mini)
 		return (1);
 	if (expander(mini, NULL, NULL) == 1)
 	{
+		mini->exit_code = 2;
 		write(STDERR_FILENO, "memory allocation failed in expander\n", 37);
 		return (1);
 	}

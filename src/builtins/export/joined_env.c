@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 06:56:48 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 07:08:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:41:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,21 @@ static int	allocate_temp_and_str(t_env_node *env_to_replace, char *arg,
 	return (0);
 }
 
-int	join_env_value(t_env_node *env_to_replace, char *arg)
+int	join_env_value(t_env_node *env_to_replace, char *arg, t_mini *mini)
 {
 	char	*temp;
 	char	*str_to_join;
 	char	*tmp_value;
 
 	if (allocate_temp_and_str(env_to_replace, arg, &temp, &str_to_join))
+	{
+		mini->exit_code = 2;
 		return (1);
+	}
 	tmp_value = ft_strjoin(temp, str_to_join);
 	if (tmp_value == NULL)
 	{
+		mini->exit_code = 2;
 		handle_join_env_error(str_to_join, temp);
 		return (1);
 	}

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 06:08:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 09:40:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,13 +183,13 @@ char					*del_spaces(char *str);
 int						check_digit(char *str);
 int						is_double_dash(char **cmd_args);
 t_env_node				*check_existing_env(t_env *lst_env, char *arg);
-int						add_export_env(t_env *lst_env, char *arg);
+int						add_export_env(t_env *lst_env, char *arg, t_mini *mini);
 void					swap_nodes(t_env_node *current, t_env_node *temp);
 void					sort_env(t_env_node **envp_cp);
 void					print_id_error(t_mini *mini, char *arg);
 int						is_valid_option(t_mini *mini, char **cmd_args);
 int						is_valid_identifier(t_mini *mini, char *arg);
-int						join_env_value(t_env_node *env_to_replace, char *arg);
+int						join_env_value(t_env_node *env_to_replace, char *arg, t_mini *mini);
 
 /* === SIGNAL === */
 void					executor_signal(void);
