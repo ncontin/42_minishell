@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:10:37 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 11:13:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:47:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int argc, char **argv, char **envp)
 	init_mini(&mini);
 	get_path(envp, mini.lst_env);
 	init_envp(&mini);
+	load_history_file();
 	line_read(&mini);
 	return (0);
 }

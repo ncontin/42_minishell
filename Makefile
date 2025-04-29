@@ -94,6 +94,7 @@ SRC_READLINE =  src/readline/readline.c\
 SRC_INIT =		src/init/envp_init.c\
 				src/init/init_utils.c\
 				src/init/mini_init.c\
+				src/init/history_files.c\
 
 SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/process.c\
