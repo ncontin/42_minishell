@@ -1,67 +1,115 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_utils.c                                     :+:      :+:    :+:   */
+/*   export_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/25 16:47:09 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/29 07:44:11 by aroullea         ###   ########.fr       */
+/*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
+/*   Updated: 2025/04/29 06:57:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	display_export(t_env_node *current)
+t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 {
-	size_t	len;
+	t_env_node	*current;
+	int			equal_index;
 
+	current = *lst_env->envp_cp;
+	equal_index = find_equal(arg);
+	if (equal_index < 0)
+		equal_index = ft_strlen(arg);
+	else if (arg[equal_index - 1] == '+')
+		equal_index -= 1;
 	while (current)
 	{
-		len = ft_strlen(current->key) + 1;
-		if (ft_strncmp(current->key, "_", len) != 0)
-		{
-			if (current->key)
-				printf("declare -x %s", current->key);
-			if (current->value)
-				printf("=\"%s\"", current->value);
-			printf("\n");
-		}
+		if (ft_strncmp(arg, current->key, equal_index) == 0)
+			return (current);
 		current = current->next;
+	}
+	return (NULL);
+}
+
+void	swap_nodes(t_env_node *current, t_env_node *temp)
+{
+	char	*temp_key;
+	char	*temp_value;
+
+	if (ft_strncmp(current->key, temp->key, find_min_len(current->key,
+				temp->key)) > 0)
+	{
+		temp_key = current->key;
+		temp_value = current->value;
+		current->key = temp->key;
+		current->value = temp->value;
+		temp->key = temp_key;
+		temp->value = temp_value;
 	}
 }
 
-void	print_export(t_env_node **sorted_envp_cp, char **args)
+void	sort_env(t_env_node **envp_cp)
 {
 	t_env_node	*current;
+	t_env_node	*temp;
 
-	if (!(*sorted_envp_cp) && !sorted_envp_cp)
+	if (!envp_cp || !*envp_cp)
 		return ;
-	if (args[0] && !args[1])
+	current = *envp_cp;
+	while (current)
 	{
-		if (sorted_envp_cp && *sorted_envp_cp)
+		temp = current->next;
+		while (temp)
 		{
-			current = *sorted_envp_cp;
-			display_export(current);
+			swap_nodes(current, temp);
+			temp = temp->next;
 		}
+		current = current->next;
 	}
 }
 
-t_env_node	*find_min(t_env_node **envp_cp)
+int	is_valid_option(t_mini *mini, char **cmd_args)
 {
-	t_env_node	*current;
-	t_env_node	*min;
-
-	if (!*envp_cp)
-		return (NULL);
-	min = *envp_cp;
-	current = (*envp_cp)->next;
-	while (current)
+	if (!cmd_args[1] || !cmd_args[1][0])
+		return (0);
+	if (ft_strncmp(cmd_args[1], "--", 2) == 0 && cmd_args[1][2])
 	{
-		if (ft_strncmp(min->key, current->key, find_min_len(min->key,
-					current->key)) > 0)
-			min = current;
-		current = current->next;
+		ft_putstr_fd("minishell: export: ", 2);
+		ft_putstr_fd(mini->cmds->argv[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		ft_putstr_fd("export: usage: export [name[=value]\n", 2);
+		mini->exit_code = 2;
+		return (0);
 	}
-	return (min);
+	return (1);
+}
+
+int	is_valid_identifier(t_mini *mini, char *arg)
+{
+	int	i;
+	int	equal_index;
+
+	if (!arg || !arg[0])
+		return (0);
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
+	{
+		print_id_error(mini, arg);
+		return (0);
+	}
+	equal_index = find_equal(arg);
+	if (equal_index < 0)
+		equal_index = ft_strlen(arg);
+	if (arg[equal_index - 1] == '+')
+		equal_index -= 1;
+	i = 0;
+	while (++i < equal_index)
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+		{
+			print_id_error(mini, arg);
+			return (0);
+		}
+	}
+	return (1);
 }
