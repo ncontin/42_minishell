@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 19:29:57 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 18:52:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 04:16:59 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,28 +99,28 @@ char	*add_line_return(char *source, t_mini *mini)
 char	*here_doc_get_str(char *limiter, t_mini *mini, char *str,
 		t_command *current)
 {
-	char	*new;
+	size_t	len;
 
-	new = NULL;
+	mini->hd_input = NULL;
 	while (1)
 	{
-		str = read_line(mini, current->here_doc_fd, new, limiter);
+		str = read_line(mini, current->here_doc_fd, mini->hd_input, limiter);
 		if (str == NULL)
 		{
 			write(1, "\nHere doc : delimited by end of file\n", 37);
-			return (new);
+			return (mini->hd_input);
 		}
-		mini->hd_input = new;
 		if (expand(mini, current, limiter, &str) == 1)
 			break ;
-		new = join_strings(new, str, ft_strlen(new), ft_strlen(str));
+		len = ft_strlen(mini->hd_input);
+		mini->hd_input = join_strings(mini->hd_input, str, len, ft_strlen(str));
 		free(str);
-		if (new == NULL)
+		if (mini->hd_input == NULL)
 		{
 			here_doc_error("join_strings: memory allocation failed", NULL);
-			get_str_error(mini, current->here_doc_fd, new, limiter);
+			get_str_error(mini, current->here_doc_fd, mini->hd_input, limiter);
 			exit (EXIT_FAILURE);
 		}
 	}
-	return (new);
+	return (mini->hd_input);
 }

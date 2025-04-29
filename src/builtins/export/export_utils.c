@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:47:09 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 11:25:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 04:24:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_env_node	*find_min(t_env_node **envp_cp)
 	return (min);
 }
 
-static int	copy_env_node(t_env_node *current, t_env_node **ft_envp, t_mini *mini)
+static int	copy_env(t_env_node *current, t_env_node **ft_envp, t_mini *mini)
 {
 	t_env_node	*node;
 	t_env_node	*last;
@@ -67,7 +67,7 @@ static int	copy_env_node(t_env_node *current, t_env_node **ft_envp, t_mini *mini
 		return (1);
 	}
 	node->key = ft_strdup(current->key);
-	if (node->key == NULL) 
+	if (node->key == NULL)
 	{
 		free(node);
 		copy_env_node_error(ft_envp, mini);
@@ -112,7 +112,7 @@ t_env_node	**copy_envp_list(t_env_node **envp_cp, t_mini *mini)
 	*ft_envp = NULL;
 	while (current)
 	{
-		if (copy_env_node(current, ft_envp, mini) == 1)
+		if (copy_env(current, ft_envp, mini) == 1)
 			return (NULL);
 		current = current->next;
 	}

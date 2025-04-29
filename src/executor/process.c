@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 21:29:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 04:17:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	find_last_argument(char **args)
 void	replace_underscore(char *arg, t_env_node *current)
 {
 	char		*tmp;
-	
+
 	tmp = ft_strdup(arg);
 	if (tmp == NULL)
 	{
