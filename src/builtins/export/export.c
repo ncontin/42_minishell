@@ -6,13 +6,13 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 04:47:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 05:07:53 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/29 06:28:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	ft_export_checks(t_mini *mini, char **cmd_args)
+static int	export_checks(t_mini *mini, char **cmd_args)
 {
 	if (!mini->lst_env || !mini->cmds || !cmd_args[0])
 		return (1);
@@ -21,7 +21,7 @@ static int	ft_export_checks(t_mini *mini, char **cmd_args)
 	return (0);
 }
 
-static int	ft_prepare_export_env(t_mini *mini)
+static int	prepare_export_env(t_mini *mini)
 {
 	t_env_node	**envp_copy;
 
@@ -67,9 +67,9 @@ static void	process_export(t_mini *mini, char **cmd_args, int i)
 
 void	ft_export(t_mini *mini, char **cmd_args)
 {
-	if (ft_export_checks(mini, cmd_args) == 1)
+	if (export_checks(mini, cmd_args) == 1)
 		return ;
-	if (ft_prepare_export_env(mini) == 1)
+	if (prepare_export_env(mini) == 1)
 		return ;
 	if (cmd_args[0])
 		print_export(mini->lst_env->sorted_envp_cp, cmd_args);

@@ -32,6 +32,9 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/export/export_utils2.c\
 				src/builtins/export/export_utils.c\
 				src/builtins/export/add_env.c\
+				src/builtins/export/copy_env.c\
+				src/builtins/export/joined_env.c\
+				src/builtins/export/replace_env.c\
 
 SRC_CLEANUP =	src/cleanup/free_path.c\
 				src/cleanup/free_stack.c\
