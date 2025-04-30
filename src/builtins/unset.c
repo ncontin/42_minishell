@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 11:01:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 07:10:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:13:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	unset_env(t_env_node **env_stack, char *arg)
 	prev = NULL;
 	while (current)
 	{
-		if (ft_strncmp(arg, current->key, ft_strlen(current->key)) == 0)
+		if (ft_strncmp(arg, current->key, ft_strlen(current->key) + 1) == 0)
 		{
 			next = current->next;
 			del_env(current, prev, env_stack);
