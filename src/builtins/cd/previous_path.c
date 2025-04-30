@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:17:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 14:24:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:34:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ static void	change_directory_and_update_env(t_mini *mini, char *pwd, char *path)
 		return ;
 	}
 	mini->exit_code = 0;
-	if (update_old_pwd(mini->lst_env->envp_cp) == 1)
+	if (update_old_pwd(mini->lst_env->envp_cp, mini) == 1)
 	{
 		free(pwd);
 		mini->exit_code = 2;
 		return ;
 	}
-	if (update_pwd(mini->lst_env->envp_cp) == 1)
+	if (update_pwd(mini->lst_env->envp_cp, mini) == 1)
 	{
 		free(pwd);
 		mini->exit_code = 2;

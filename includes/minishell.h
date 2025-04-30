@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 11:31:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:11:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,10 +162,12 @@ void					ft_echo(char **cmd_args, long long int *exit_code);
 void					ft_cd(t_mini *mini, char *path);
 char					*handle_home(t_mini *mini, char *pwd);
 void					handle_previous_path(t_mini *mini, char *pwd);
-int						update_old_pwd(t_env_node **env_stack);
+int						update_old_pwd(t_env_node **env_stack, t_mini *mini);
 int						check_cd_path(char *path);
 char					*get_env_value(t_env_node **envp_cp, char *key);
-int						update_pwd(t_env_node **env_stack);
+int						update_pwd(t_env_node **env_stack, t_mini *mini);
+int						get_or_create_pwd(t_env_node *current, t_mini *mini,
+							char *key_name, char *pwd);
 int						find_min_len(char *s1, char *s2);
 void					print_export(t_env_node **sorted_envp_cp, char **args);
 t_env_node				**copy_envp_list(t_env_node **envp_cp, t_mini *mini);

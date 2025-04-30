@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:31:53 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 14:25:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:49:58 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ static int	cd_to_path(t_mini *mini, char *path, char *pwd)
 		print_error_chdir(path, pwd, mini);
 		return (1);
 	}
-	if (update_old_pwd(mini->lst_env->envp_cp) == 1
-		|| update_pwd(mini->lst_env->envp_cp) == 1)
+	if (update_old_pwd(mini->lst_env->envp_cp, mini) == 1
+		|| update_pwd(mini->lst_env->envp_cp, mini) == 1)
 	{
 		free(pwd);
 		mini->exit_code = 2;

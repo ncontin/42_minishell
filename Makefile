@@ -28,6 +28,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/ft_atoll.c\
 				src/builtins/cd/cd.c\
 				src/builtins/cd/cd_utils.c\
+				src/builtins/cd/pwd_var.c\
 				src/builtins/cd/previous_path.c\
 				src/builtins/export/export.c\
 				src/builtins/export/export_utils.c\

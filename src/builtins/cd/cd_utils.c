@@ -6,13 +6,13 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 13:39:04 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:13:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	update_pwd(t_env_node **env_stack)
+int	update_pwd(t_env_node **env_stack, t_mini *mini)
 {
 	char		*pwd;
 	t_env_node	*current;
@@ -25,15 +25,8 @@ int	update_pwd(t_env_node **env_stack)
 		return (1);
 	}
 	current = *env_stack;
-	while (current)
-	{
-		if (strncmp(current->key, "PWD", 3) == 0)
-		{
-			free(current->value);
-			current->value = pwd;
-		}
-		current = current->next;
-	}
+	if (get_or_create_pwd(current, mini, "PWD", pwd) == 1)
+		return (1);
 	return (0);
 }
 
@@ -78,7 +71,7 @@ int	check_cd_path(char *path)
 	return (0);
 }
 
-int	update_old_pwd(t_env_node **env_stack)
+int	update_old_pwd(t_env_node **env_stack, t_mini *mini)
 {
 	t_env_node	*current;
 	char		*old_pwd_copy;
@@ -86,7 +79,7 @@ int	update_old_pwd(t_env_node **env_stack)
 
 	old_pwd = get_env_value(env_stack, "PWD");
 	if (!old_pwd)
-		return (1);
+		return (0);
 	old_pwd_copy = ft_strdup(old_pwd);
 	if (!old_pwd_copy)
 	{
@@ -94,16 +87,8 @@ int	update_old_pwd(t_env_node **env_stack)
 		return (1);
 	}
 	current = *env_stack;
-	while (current)
-	{
-		if (strncmp(current->key, "OLDPWD", 6) == 0)
-		{
-			free(current->value);
-			current->value = old_pwd_copy;
-			return (0);
-		}
-		current = current->next;
-	}
+	if (get_or_create_pwd(current, mini, "OLDPWD", old_pwd_copy) == 1)
+		return (1);
 	return (0);
 }
 
