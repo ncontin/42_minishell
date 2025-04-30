@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 09:43:19 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 06:46:11 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:43:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	copy_env_node_error(t_env_node **ft_envp, t_mini *mini)
 
 void	handle_join_env_error(char *str1, char *str2)
 {
-	write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+	write(STDERR_FILENO, "memory allocation failed in export\n", 35);
 	if (str1)
 		free(str1);
 	if (str2)
@@ -45,7 +45,7 @@ void	print_id_error(t_mini *mini, char *arg)
 
 void	handle_add_export_error(t_env_node *env, char *key)
 {
-	write(STDERR_FILENO, "memory allocation failed in export\n", 34);
+	write(STDERR_FILENO, "memory allocation failed in export\n", 35);
 	if (key)
 		free(key);
 	if (env)

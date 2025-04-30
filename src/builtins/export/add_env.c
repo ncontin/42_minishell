@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 05:45:58 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 09:24:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:43:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	no_value(t_env_node *env, char *arg)
 {
 	env->key = ft_strdup(arg);
-	if (!env->key)
+	if (env->key == NULL)
 	{
 		handle_add_export_error(env, NULL);
 		return (1);
