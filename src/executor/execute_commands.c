@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 12:06:31 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:50:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,10 @@ void	execute_cmd(t_command *cmd, char **envp, t_mini *mini)
 	check_special_cases(cmd, envp, mini);
 	if (is_builtin(cmd->argv[0]))
 	{
+		free_array(envp);
+		envp = NULL;
 		execute_builtin(mini, cmd->argv);
-		clean_exit(mini, envp, mini->exit_code);
+		clean_exit(mini, NULL, mini->exit_code);
 	}
 	if (cmd->argv[0][0] == '/'
 			|| (cmd->argv[0][0] == '.' && cmd->argv[0][1] == '/'))
