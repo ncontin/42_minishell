@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 15:01:27 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/22 15:06:01 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:26:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	add_env_to_array(t_env_node *current, char **envp_array, int i)
 	char	*temp;
 
 	temp = NULL;
+	envp_array[i] = NULL;
 	temp = ft_strjoin(current->key, "=");
 	if (temp == NULL)
 	{
