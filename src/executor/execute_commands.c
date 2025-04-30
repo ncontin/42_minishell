@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 10:32:06 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:06:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ static void	get_path_and_exec(t_mini *mini, t_command *cmd, char **envp,
 			free_and_exit(mini, unix_path, envp);
 		if (access(path, X_OK) == 0)
 		{
-			update_underscore_path(path, mini->lst_env->envp_cp);
+			update_underscore_path(path, mini->lst_env->envp_cp, mini);
 			if (execve(path, cmd->argv, envp) == -1)
 			{
+				free_array(unix_path);
+				handle_no_exec(cmd, envp, mini, errno);
 				write(STDERR_FILENO, "execve error\n", 13);
-				free(path);
-				free_and_exit(mini, unix_path, envp);
+				free_and_exit(mini, NULL, envp);
 			}
 		}
 		free(path);
@@ -57,6 +58,7 @@ static void	find_path(t_command *current, char **envp, t_mini *mini)
 	error_code = errno;
 	free_array(unix_path);
 	handle_no_exec(current, envp, mini, error_code);
+	clean_exit(mini, envp, 1);
 }
 
 static void	handle_path(t_command *current, char **envp, t_mini *mini)
@@ -72,6 +74,7 @@ static void	handle_path(t_command *current, char **envp, t_mini *mini)
 		is_path_a_directory(current, envp, mini);
 		if (execve(current->argv[0], current->argv, envp) == -1)
 		{
+			handle_no_exec(current, envp, mini, errno);
 			write(STDERR_FILENO, "execve error\n", 13);
 			clean_exit(mini, envp, errno);
 		}

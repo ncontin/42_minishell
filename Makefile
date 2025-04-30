@@ -105,6 +105,7 @@ SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/dup_create_pipe.c\
 				src/executor/path.c\
 				src/executor/get_envp.c\
+				src/executor/update_undrscore.c\
 				src/executor/here_doc/setup_here_docs.c\
 				src/executor/here_doc/here_doc_utils.c\
 				src/executor/here_doc/here_doc_get_str.c\

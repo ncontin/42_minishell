@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 10:41:49 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:31:50 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,14 +322,14 @@ void					execute_cmd(t_command *current, char **envp,
 void					get_path(char **envp, t_env *lst_env);
 char					**get_unix_path(char **envp);
 char					*copy_command(char *unix_path, char *commands);
-int						*is_user_in_bin(t_mini *mini, t_command *current,
+int						is_user_in_bin(t_mini *mini, t_command *current,
 							char **envp);
 void					is_path_a_directory(t_command *current, char **envp,
 							t_mini *mini);
 void					handle_no_exec(t_command *current, char **envp,
 							t_mini *mini, int error);
 void					update_underscore_path(char *path,
-							t_env_node **envp_cp);
+							t_env_node **envp_cp, t_mini *mini);
 /* === GET ENVP === */
 int						get_envp_array(t_env *lst_env, char ***envp);
 /* === HANDLE REDIRECTION === */

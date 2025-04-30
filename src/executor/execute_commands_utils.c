@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:12:56 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 10:30:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 12:05:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,14 @@ void	handle_no_exec(t_command *current, char **envp, t_mini *mini, int error)
 		print_executor_error("Permission denied", current->argv[0]);
 		clean_exit(mini, envp, 126);
 	}
-	clean_exit(mini, envp, 1);
+	else if (error == ENOEXEC)
+	{
+		print_executor_error("Exec format error", current->argv[0]);
+		clean_exit(mini, envp, 126);
+	}
 }
 
-int	*is_user_in_bin(t_mini *mini, t_command *cmd, char **envp)
+int	is_user_in_bin(t_mini *mini, t_command *cmd, char **envp)
 {
 	char	*path;
 	char	*bin_folder;
@@ -45,6 +49,7 @@ int	*is_user_in_bin(t_mini *mini, t_command *cmd, char **envp)
 		if (execve(path, cmd->argv, envp) == -1)
 		{
 			write(STDERR_FILENO, "execve error\n", 13);
+			free(bin_folder);
 			free(path);
 			clean_exit(mini, envp, 1);
 		}
@@ -64,9 +69,14 @@ void	is_path_a_directory(t_command *current, char **envp, t_mini *mini)
 			clean_exit(mini, envp, 126);
 		}
 	}
+	else
+	{
+		perror("lstat");
+		clean_exit(mini, envp, 1);
+	}
 }
 
-void	update_underscore_path(char *path, t_env_node **envp_cp)
+void	update_underscore_path(char *path, t_env_node **envp_cp, t_mini *mini)
 {
 	t_env_node	*current;
 
@@ -79,12 +89,18 @@ void	update_underscore_path(char *path, t_env_node **envp_cp)
 			current->value = path;
 			return ;
 		}
+		if (current->next == NULL)
+		{
+			if (add_export_env(mini->lst_env, "_", mini) == 1)
+				return ;
+		}
 		current = current->next;
 	}
 }
 
 void	free_and_exit(t_mini *mini, char **unix_path, char **envp)
 {
-	free_array(unix_path);
+	if (unix_path != NULL)
+		free_array(unix_path);
 	clean_exit(mini, envp, 1);
 }
