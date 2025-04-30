@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 21:26:13 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 10:41:49 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,10 +302,11 @@ int						str_and_operator(t_command *new, t_token *tokens);
 void					executor(t_mini *mini, t_command *current, int prev_fd,
 							int count);
 /* === PROCESS === */
-void					update_underscore(t_command *cmd, t_env_node **envp_cp);
+void					update_underscore(t_command *cmd, t_env_node **envp_cp, t_mini *mini);
 void					parent_process(int *prev_fd, t_command *current);
 void					child_process(t_command *current, int *prev_fd,
 							t_mini *mini);
+void					free_and_exit(t_mini *mini, char **unix_path, char **envp);
 /* === HERE DOC CLOSE FD === */
 void					close_child_heredoc_fd(t_command *cmds,
 							t_command *current);

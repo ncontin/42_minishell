@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:31:31 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/28 17:43:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 10:32:06 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	get_path_and_exec(t_mini *mini, t_command *cmd, char **envp,
 	while (unix_path[i])
 	{
 		path = copy_command(unix_path[i], cmd->argv[0]);
+		if (path == NULL)
+			free_and_exit(mini, unix_path, envp);
 		if (access(path, X_OK) == 0)
 		{
 			update_underscore_path(path, mini->lst_env->envp_cp);
@@ -30,8 +32,7 @@ static void	get_path_and_exec(t_mini *mini, t_command *cmd, char **envp,
 			{
 				write(STDERR_FILENO, "execve error\n", 13);
 				free(path);
-				free_array(unix_path);
-				clean_exit(mini, envp, 1);
+				free_and_exit(mini, unix_path, envp);
 			}
 		}
 		free(path);

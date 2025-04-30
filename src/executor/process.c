@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 04:17:50 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 10:49:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 
 	envp = NULL;
 	child_signal();
-	update_underscore(current, mini->lst_env->envp_cp);
+	update_underscore(current, mini->lst_env->envp_cp, mini);
 	if (current->next != NULL && current->next->check_here_doc == FALSE)
 	{
 		close(current->pipe_fd[0]);
@@ -85,7 +85,7 @@ void	replace_underscore(char *arg, t_env_node *current)
 	return ;
 }
 
-void	update_underscore(t_command *cmd, t_env_node **envp_cp)
+void	update_underscore(t_command *cmd, t_env_node **envp_cp, t_mini *mini)
 {
 	t_env_node	*current;
 	int			i;
@@ -104,6 +104,11 @@ void	update_underscore(t_command *cmd, t_env_node **envp_cp)
 			}
 			replace_underscore(cmd->argv[i], current);
 			return ;
+		}
+		if (current->next == NULL)
+		{
+			if (add_export_env(mini->lst_env, "_", mini) == 1)
+				return ;
 		}
 		current = current->next;
 	}

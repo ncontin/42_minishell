@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:12:56 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 11:49:24 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 10:30:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,10 @@ void	update_underscore_path(char *path, t_env_node **envp_cp)
 		}
 		current = current->next;
 	}
+}
+
+void	free_and_exit(t_mini *mini, char **unix_path, char **envp)
+{
+	free_array(unix_path);
+	clean_exit(mini, envp, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 14:57:25 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 11:53:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 10:17:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**get_unix_path(char **envp)
 	mypath = NULL;
 	while (envp && *envp)
 	{
-		if (!ft_strncmp("PATH", *envp, 4))
+		if (!ft_strncmp("PATH=", *envp, 5))
 		{
 			env_path = *envp + 5;
 			if (env_path[0] == '\0')
@@ -28,7 +28,7 @@ char	**get_unix_path(char **envp)
 			mypath = ft_split(env_path, ':');
 			if (mypath == NULL)
 			{
-				write(2, "memory allocation failed in unix path", 37);
+				write(2, "memory allocation failed in unix path\n", 38);
 				return (NULL);
 			}
 			break ;
@@ -49,7 +49,7 @@ char	*copy_command(char *unix_path, char *commands)
 	path = (char *)malloc(len_path + len_cmd + 2);
 	if (path == NULL)
 	{
-		write(2, "memory allocation failed in get path", 36);
+		write(2, "memory allocation failed in get path\n", 37);
 		return (NULL);
 	}
 	ft_strlcpy(path, unix_path, len_path + 1);
