@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:00:28 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 11:07:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:19:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	update_underscore(t_command *cmd, t_env_node **envp_cp, t_mini *mini)
 	i = find_last_argument(cmd->argv);
 	while (current != NULL)
 	{
-		if (strncmp(current->key, "_", ft_strlen(current->key) + 1) == 0)
+		if (ft_strncmp(current->key, "_", ft_strlen(current->key) + 1) == 0)
 		{
 			if (cmd->argv == NULL || cmd->argv[i] == NULL)
 			{

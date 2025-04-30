@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:04:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 17:06:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:19:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	handle_tilde(char **source, t_mini *mini)
 	current = *mini->lst_env->envp_cp;
 	while (current != NULL)
 	{
-		if (strncmp(current->key, "HOME", ft_strlen(current->key) + 1) == 0)
+		if (ft_strncmp(current->key, "HOME", ft_strlen(current->key) + 1) == 0)
 		{
 			if (current->value != NULL)
 			{

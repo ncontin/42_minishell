@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 19:13:08 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:21:00 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_env_value(t_env_node **envp_cp, char *key)
 	current = *envp_cp;
 	while (current)
 	{
-		if (strncmp(current->key, key, strlen(key)) == 0)
+		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
 			return (current->value);
 		current = current->next;
 	}

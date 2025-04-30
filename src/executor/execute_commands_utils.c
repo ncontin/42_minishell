@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:12:56 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 12:05:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/04/30 19:19:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	update_underscore_path(char *path, t_env_node **envp_cp, t_mini *mini)
 	current = *envp_cp;
 	while (current != NULL)
 	{
-		if (strncmp(current->key, "_", ft_strlen(current->key) + 1) == 0)
+		if (ft_strncmp(current->key, "_", ft_strlen(current->key) + 1) == 0)
 		{
 			free(current->value);
 			current->value = path;
