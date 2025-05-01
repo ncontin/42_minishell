@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 12:17:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 18:34:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 05:50:51 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*get_valid_oldpwd(t_mini *mini, char *pwd)
 		mini->exit_code = 1;
 		return (NULL);
 	}
-	if (check_cd_path(path))
+	if (check_cd_path(path) == 1)
 	{
 		free(pwd);
 		mini->exit_code = 1;

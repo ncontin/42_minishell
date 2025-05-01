@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_var.c                                          :+:      :+:    :+:   */
+/*   get_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 19:00:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 19:10:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 06:34:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 int	get_or_create_pwd(t_env_node *current, t_mini *mini, char *key_name,
 		char *pwd)
 {
+	size_t	len;
+
 	while (current)
 	{
-		if (ft_strncmp(current->key, key_name, 6) == 0)
+		len = ft_strlen(current->key) + 1;
+		if (ft_strncmp(current->key, key_name, len) == 0)
 		{
 			free(current->value);
 			current->value = pwd;

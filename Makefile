@@ -28,7 +28,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/ft_atoll.c\
 				src/builtins/cd/cd.c\
 				src/builtins/cd/cd_utils.c\
-				src/builtins/cd/pwd_var.c\
+				src/builtins/cd/get_pwd.c\
 				src/builtins/cd/previous_path.c\
 				src/builtins/export/export.c\
 				src/builtins/export/export_utils.c\
@@ -54,6 +54,7 @@ SRC_ERRORS = 	src/errors/parsing_error.c\
 				src/errors/cd_error.c\
 				src/errors/init_error.c\
 				src/errors/export_error.c\
+				src/errors/expander_error.c\
 
 SRC_PARSING =	src/parsing/split_args/args_count.c\
 				src/parsing/split_args/args_split.c\

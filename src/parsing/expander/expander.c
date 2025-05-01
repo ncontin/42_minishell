@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/27 10:52:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 06:22:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,19 @@ static char	*expand_special_vars(char *arg, t_mini *mini, int *err_code)
 	return (arg);
 }
 
-static int	expandable_token(t_mini *mini, t_token **tokens, t_token **current)
+static int	expandable_token(t_mini *mini, t_token **tokens, t_token **current,
+		int *err_code)
 {
-	int	err_code;
-
-	err_code = 0;
+	*err_code = 0;
 	(*tokens)->argument = expand_special_vars((*tokens)->argument, mini,
-			&err_code);
-	if (err_code == 1)
+			err_code);
+	if (*err_code == 1)
 		return (1);
 	if ((*tokens)->argument == NULL)
 		replace_tokens(tokens);
 	else
 	{
-		if (split_words(mini, tokens) == 1)
+		if (split_words(mini, tokens, err_code) == 1)
 			return (1);
 		advance_token(tokens, current);
 	}
@@ -54,7 +53,7 @@ static int	handle_dollar(t_token **tokens, t_token **current)
 	return (0);
 }
 
-int	expander(t_mini *mini, t_token *tokens, t_token *current)
+int	expander(t_mini *mini, t_token *tokens, t_token *current, int *err_code)
 {
 	tokens = mini->tokens;
 	current = NULL;
@@ -69,7 +68,7 @@ int	expander(t_mini *mini, t_token *tokens, t_token *current)
 			advance_token(&tokens, &current);
 		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
 		{
-			if (expandable_token(mini, &tokens, &current) == 1)
+			if (expandable_token(mini, &tokens, &current, err_code) == 1)
 				return (1);
 		}
 		else

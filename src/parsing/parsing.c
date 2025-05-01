@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 17:07:12 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 06:33:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ static int	validate_operators(t_mini *mini)
 
 static int	prepare_tokens(t_mini *mini)
 {
+	int	err_code;
+
 	mini->args = arg_split(mini->input);
 	if (!mini->args)
 	{
@@ -66,10 +68,9 @@ static int	prepare_tokens(t_mini *mini)
 		return (1);
 	if (process_tokens(mini) == 1)
 		return (1);
-	if (expander(mini, NULL, NULL) == 1)
+	if (expander(mini, NULL, NULL, &err_code) == 1)
 	{
-		mini->exit_code = 2;
-		write(STDERR_FILENO, "memory allocation failed in expander\n", 37);
+		expander_error(mini, &err_code);
 		return (1);
 	}
 	assign_type_argument(mini->tokens);

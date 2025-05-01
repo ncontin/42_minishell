@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 19:21:00 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 05:33:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*handle_home(t_mini *mini, char *pwd)
 {
 	char	*path;
 
-	if (!mini->cmds->argv[1] || ft_strncmp(mini->cmds->argv[1], "~", 1) == 0)
+	if (!mini->cmds->argv[1] || ft_strncmp(mini->cmds->argv[1], "~", 2) == 0)
 	{
 		mini->exit_code = 0;
 		path = get_env_value(mini->lst_env->envp_cp, "HOME");
