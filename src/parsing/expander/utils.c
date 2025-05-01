@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 12:23:32 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/26 15:43:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:10:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,13 @@ int	get_array_size(char **array)
 
 int	is_nl_char(t_token **tokens)
 {
-	if (ft_strncmp("\\n", (*tokens)->next->argument, 2) == 0
-		|| ft_strncmp("\\r", (*tokens)->next->argument, 2) == 0
-		|| ft_strncmp("\\t", (*tokens)->next->argument, 2) == 0)
-		return (1);
+	if ((*tokens)->next->quotes == SINGLE)
+	{
+		if (ft_strncmp("\\n", (*tokens)->next->argument, 2) == 0
+			|| ft_strncmp("\\r", (*tokens)->next->argument, 2) == 0
+			|| ft_strncmp("\\t", (*tokens)->next->argument, 2) == 0)
+			return (1);
+	}
 	return (0);
 }
 
