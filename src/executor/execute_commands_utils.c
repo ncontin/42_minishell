@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:12:56 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 19:19:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:56:05 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	is_user_in_bin(t_mini *mini, t_command *cmd, char **envp)
 	char	*path;
 	char	*bin_folder;
 
+	path = NULL;
 	bin_folder = getcwd(NULL, 0);
 	if (bin_folder == NULL)
 	{
@@ -54,6 +55,7 @@ int	is_user_in_bin(t_mini *mini, t_command *cmd, char **envp)
 			clean_exit(mini, envp, 1);
 		}
 	}
+	free(bin_folder);
 	return (0);
 }
 
