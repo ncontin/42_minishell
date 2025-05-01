@@ -1,8 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-
+CFLAGS = -Wall -Wextra -Werror -g 
 RM = rm -f
 
 OBJ_DIR = obj

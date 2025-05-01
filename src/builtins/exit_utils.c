@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 10:48:48 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/29 21:33:51 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 12:57:22 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,33 @@ int	check_digit(char *str)
 	return (0);
 }
 
+static char	check_is_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] != ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static char	*handle_temp(char *str)
+{
+	char	*temp;
+
+	temp = ft_strdup(str);
+	if (temp == NULL)
+	{
+		write(STDERR_FILENO, "memory allocation failed in exit\n", 33);
+		return (NULL);
+	}
+	return (temp);
+}
+
 char	*del_spaces(char *str)
 {
 	char	*res;
@@ -45,11 +72,16 @@ char	*del_spaces(char *str)
 
 	if (!str)
 		return (NULL);
-	temp = ft_strdup(str);
-	if (temp == NULL)
+	if (check_is_spaces(str) == 0)
 	{
-		write(STDERR_FILENO, "memory allocation failed in exit\n", 33);
-		return (NULL);
+		temp = handle_temp("");
+		return (temp);
+	}
+	else
+	{
+		temp = handle_temp(str);
+		if (temp == NULL)
+			return (NULL);
 	}
 	res = ft_strtrim(temp, " ");
 	free(temp);
