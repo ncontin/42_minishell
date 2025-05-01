@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:16:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/01 15:25:58 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 15:30:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	add_token(t_token *new, t_token *current)
 	new->next = current->next;
 	current->next = new;
 	new->prev = current;
-	new->quotes = NO_QUOTES; 
+	new->quotes = NO_QUOTES;
 	new->linked = TRUE;
 	new->hd_expand = TRUE;
 	new->operator = NONE;
