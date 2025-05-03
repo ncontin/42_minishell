@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 06:40:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/03 10:33:56 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 13:23:27 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,16 @@ static t_env	*create_env_node(t_env *current)
 
 static void	append_env_node(t_env **head, t_env **new, t_env **end)
 {
-    if (*head == NULL)
-    {
-        *head = *new;
-        *end = *new;
-    }
-    else
-    {
-        (*end)->next = *new;
-        *end = *new;
-    }
+	if (*head == NULL)
+	{
+		*head = *new;
+		*end = *new;
+	}
+	else
+	{
+		(*end)->next = *new;
+		*end = *new;
+	}
 }
 
 t_env	*copy_envp_list(t_env *envp_cp, t_mini *mini)
