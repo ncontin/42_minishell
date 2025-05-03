@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/03 12:45:48 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:39:55 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,20 @@
 // Errno
 # include <errno.h>
 
-extern int				g_signal_received;
+extern int	g_signal_received;
 
 typedef enum e_bool
 {
 	FALSE,
 	TRUE
-}						t_bool;
+}	t_bool;
 
 typedef enum e_quotes
 {
 	NO_QUOTES,
 	SINGLE,
 	DOUBLE
-}						t_quotes;
+}	t_quotes;
 
 typedef enum e_operator
 {
@@ -64,7 +64,7 @@ typedef enum e_operator
 	APPEND,
 	HEREDOC,
 	PIPE
-}						t_operator;
+}	t_operator;
 
 typedef enum e_arg_type
 {
@@ -76,14 +76,14 @@ typedef enum e_arg_type
 	REDIRECTION,
 	PIPE_OPERATOR,
 	ENV_VAR
-}						t_arg_type;
+}	t_arg_type;
 
 typedef struct s_env_node
 {
 	char				*key;
 	char				*value;
 	struct s_env_node	*next;
-}						t_env;
+}	t_env;
 
 typedef struct s_parser
 {
@@ -92,7 +92,7 @@ typedef struct s_parser
 	char				quote_char;
 	t_bool				in_word;
 	t_bool				in_quotes;
-}						t_parser;
+}	t_parser;
 
 typedef struct s_token
 {
@@ -104,7 +104,7 @@ typedef struct s_token
 	t_arg_type			arg_type;
 	struct s_token		*next;
 	struct s_token		*prev;
-}						t_token;
+}	t_token;
 
 typedef struct s_command
 {
@@ -120,21 +120,19 @@ typedef struct s_command
 	t_quotes			limiter_quotes;
 	struct s_command	*next;
 	struct s_command	*prev;
-}						t_command;
+}	t_command;
 
 typedef struct s_mini
 {
 	int					error;
 	char				*input;
-	char				**args;
 	char				*hd_input;
 	long long int		exit_code;
 	int					expanded;
 	t_env				*envp_cp;
-	t_env				*sorted_envp_cp;
 	t_token				*tokens;
 	t_command			*cmds;
-}						t_mini;
+}	t_mini;
 
 /* === INIT === */
 void		init_envp(t_mini *mini, char **envp);

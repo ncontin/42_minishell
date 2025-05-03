@@ -6,15 +6,15 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/03 09:12:46 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:36:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	process_tokens(t_mini *mini)
+static int	process_tokens(t_mini *mini, char **args)
 {
-	mini->tokens = create_list(mini->args);
+	mini->tokens = create_list(args);
 	if (mini->tokens == NULL)
 	{
 		mini->exit_code = 2;
@@ -37,17 +37,17 @@ static int	process_tokens(t_mini *mini)
 	return (0);
 }
 
-static int	validate_operators(t_mini *mini)
+static int	validate_operators(t_mini *mini, char **args)
 {
-	if (is_even_quotes(mini->args) == FALSE)
+	if (is_even_quotes(args) == FALSE)
 	{
-		free_array(mini->args);
+		free_array(args);
 		mini->exit_code = 1;
 		return (1);
 	}
-	if (is_valid_operator(mini->args) == FALSE)
+	if (is_valid_operator(args) == FALSE)
 	{
-		free_array(mini->args);
+		free_array(args);
 		mini->exit_code = 2;
 		return (1);
 	}
@@ -56,17 +56,18 @@ static int	validate_operators(t_mini *mini)
 
 static int	prepare_tokens(t_mini *mini)
 {
-	int	err_code;
+	int		err_code;
+	char	**args;
 
-	mini->args = arg_split(mini->input);
-	if (!mini->args)
+	args = arg_split(mini->input);
+	if (args == NULL)
 	{
 		error_arg_split(mini);
 		return (1);
 	}
-	if (validate_operators(mini) == 1)
+	if (validate_operators(mini, args) == 1)
 		return (1);
-	if (process_tokens(mini) == 1)
+	if (process_tokens(mini, args) == 1)
 		return (1);
 	if (expander(mini, mini->tokens, NULL, &err_code) == 1)
 	{
