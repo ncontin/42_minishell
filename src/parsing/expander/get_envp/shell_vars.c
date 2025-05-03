@@ -6,61 +6,18 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:43 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/27 12:38:21 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 09:25:21 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_parts(char *full_str, int i, char **before, char **after)
-{
-	size_t	len;
-	size_t	size;
-
-	len = find_word_len(&full_str[i + 1], i);
-	*before = handle_substr(full_str, 0, i);
-	if (*before == NULL)
-		return (1);
-	size = ft_strlen(full_str) - i - len - 1;
-	*after = handle_substr(full_str, i + len + 1, size);
-	if (*after == NULL)
-	{
-		free(*before);
-		*before = NULL;
-		return (1);
-	}
-	return (0);
-}
-
-static char	*no_args(char *full_str, int i, int *err_code)
-{
-	char	*before;
-	char	*after;
-	char	*temp;
-
-	if (get_parts(full_str, i, &before, &after) == 1)
-	{
-		free(full_str);
-		*err_code = 1;
-		return (NULL);
-	}
-	temp = handle_strjoin(before, after);
-	if (temp == NULL)
-	{
-		free_three(before, after, full_str);
-		*err_code = 1;
-		return (NULL);
-	}
-	free_three(before, after, full_str);
-	return (temp);
-}
-
 static char	*replace_env_var(char *full_str, t_mini *mini, int i, int *err_code)
 {
-	t_env_node		*current;
+	t_env			*current;
 	unsigned long	len;
 
-	current = *mini->lst_env->envp_cp;
+	current = mini->envp_cp;
 	while (current)
 	{
 		len = find_word_len(&full_str[i + 1], i);

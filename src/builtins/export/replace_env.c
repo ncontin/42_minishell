@@ -6,16 +6,16 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 07:20:09 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 07:25:35 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 11:02:44 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	replace_key_value(t_env_node *env_to_replace, char *arg)
+static int	replace_key_value(t_env *env_to_replace, char *arg)
 {
-	t_env_node	tmp;
-	int			err_code;
+	t_env	tmp;
+	int		err_code;
 
 	err_code = 0;
 	tmp.key = get_key(arg, &err_code);
@@ -34,7 +34,7 @@ static int	replace_key_value(t_env_node *env_to_replace, char *arg)
 	return (0);
 }
 
-static int	replace_key_only(t_env_node *env_to_replace, char *arg)
+static int	replace_key_only(t_env *env_to_replace, char *arg)
 {
 	char	*key;
 
@@ -51,7 +51,7 @@ static int	replace_key_only(t_env_node *env_to_replace, char *arg)
 	return (0);
 }
 
-int	replace_env(t_env_node *env_to_replace, char *arg)
+int	replace_env(t_env *env_to_replace, char *arg)
 {
 	int	equal_index;
 

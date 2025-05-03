@@ -6,19 +6,19 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:03:23 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/28 12:59:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:11:53 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_env(t_env_node **env_stack)
+void	print_env(t_env	*env_stack)
 {
-	t_env_node	*current;
+	t_env	*current;
 
-	if (!(*env_stack) && !env_stack)
+	if (env_stack == NULL)
 		return ;
-	current = *env_stack;
+	current = env_stack;
 	while (current)
 	{
 		if (current->key && current->value != NULL)

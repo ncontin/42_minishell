@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 17:51:21 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/01 06:33:07 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 09:12:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	prepare_tokens(t_mini *mini)
 		return (1);
 	if (process_tokens(mini) == 1)
 		return (1);
-	if (expander(mini, NULL, NULL, &err_code) == 1)
+	if (expander(mini, mini->tokens, NULL, &err_code) == 1)
 	{
 		expander_error(mini, &err_code);
 		return (1);

@@ -6,13 +6,13 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 06:56:48 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 09:41:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 11:12:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	allocate_temp_and_str(t_env_node *env_to_replace, char *arg,
+static int	allocate_temp_and_str(t_env	*env_to_replace, char *arg,
 		char **temp, char **str_to_join)
 {
 	int	err_code;
@@ -20,10 +20,7 @@ static int	allocate_temp_and_str(t_env_node *env_to_replace, char *arg,
 	err_code = 0;
 	*str_to_join = get_value(arg, &err_code);
 	if (err_code == 1)
-	{
-		write(STDERR_FILENO, "memory allocation failed in export\n", 34);
 		return (1);
-	}
 	*temp = ft_strdup(env_to_replace->value);
 	if (*temp == NULL)
 	{
@@ -33,7 +30,7 @@ static int	allocate_temp_and_str(t_env_node *env_to_replace, char *arg,
 	return (0);
 }
 
-int	join_env_value(t_env_node *env_to_replace, char *arg, t_mini *mini)
+int	join_env_value(t_env *env_to_replace, char *arg, t_mini *mini)
 {
 	char	*temp;
 	char	*str_to_join;

@@ -6,14 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 19:00:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/01 15:13:27 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:46:26 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_or_create_pwd(t_env_node *current, t_mini *mini, char *key_name,
-		char *pwd)
+int	get_or_create_pwd(t_env *current, t_mini *mini, char *key_name, char *pwd)
 {
 	size_t	len;
 
@@ -28,7 +27,7 @@ int	get_or_create_pwd(t_env_node *current, t_mini *mini, char *key_name,
 		}
 		if (current->next == NULL)
 		{
-			if (add_export_env(mini->lst_env, key_name, mini) == 1)
+			if (add_export_env(mini->envp_cp, key_name, mini) == 1)
 				return (1);
 		}
 		current = current->next;

@@ -37,8 +37,7 @@ SRC_BUILTINS =	src/builtins/builtins.c\
 				src/builtins/export/joined_env.c\
 				src/builtins/export/replace_env.c\
 
-SRC_CLEANUP =	src/cleanup/free_path.c\
-				src/cleanup/free_stack.c\
+SRC_CLEANUP =	src/cleanup/free_stack.c\
 				src/cleanup/free_exit.c\
 				src/cleanup/free_input.c\
 				src/cleanup/free_array.c\
@@ -81,20 +80,19 @@ SRC_PARSING =	src/parsing/split_args/args_count.c\
 				$(SRC_EXPANDER)\
 
 SRC_EXPANDER = 	src/parsing/expander/expander.c\
-				src/parsing/expander/exit_status.c\
-				src/parsing/expander/exit_status_utils.c\
-				src/parsing/expander/shell_vars.c\
-				src/parsing/expander/get_environment_var.c\
-				src/parsing/expander/split_words.c\
 				src/parsing/expander/expander_utils.c\
 				src/parsing/expander/utils.c\
+				src/parsing/expander/split_words.c\
 				src/parsing/expander/split_words_utils.c\
+				src/parsing/expander/get_envp/shell_vars.c\
+				src/parsing/expander/get_envp/get_environment_var.c\
+				src/parsing/expander/get_envp/get_environment_utils.c\
+				src/parsing/expander/get_envp/no_environment_var.c\
+				src/parsing/expander/get_envp/exit_status.c\
 
 SRC_READLINE =  src/readline/readline.c\
 
 SRC_INIT =		src/init/envp_init.c\
-				src/init/init_utils.c\
-				src/init/mini_init.c\
 
 SRC_EXECUTOR =	src/executor/executor.c\
 				src/executor/process.c\

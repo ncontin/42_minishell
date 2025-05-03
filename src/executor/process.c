@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 11:02:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:06:25 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 
 	envp = NULL;
 	child_signal();
-	update_underscore(current, mini->lst_env->envp_cp, mini);
+	update_underscore(current, mini->envp_cp, mini);
 	if (current->next != NULL && current->next->check_here_doc == FALSE)
 	{
 		close(current->pipe_fd[0]);
@@ -28,7 +28,7 @@ void	child_process(t_command *current, int *prev_fd, t_mini *mini)
 	duplicate_pipes(current, prev_fd, mini);
 	if (current->operator != NONE)
 		handle_redirection(current, mini);
-	if (get_envp_array(mini->lst_env, &envp) == 1)
+	if (get_envp_array(mini->envp_cp, &envp) == 1)
 	{
 		write(STDERR_FILENO, "child envp :", 12);
 		write(STDERR_FILENO, "memory allocation failed\n", 26);

@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_utils2.c                                    :+:      :+:    :+:   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/29 06:57:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:55:02 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env_node	*check_existing_env(t_env *lst_env, char *arg)
+t_env	*check_existing_env(t_env *envp_cp, char *arg)
 {
-	t_env_node	*current;
-	int			equal_index;
+	t_env	*current;
+	int		equal_index;
 
-	current = *lst_env->envp_cp;
+	current = envp_cp;
 	equal_index = find_equal(arg);
 	if (equal_index < 0)
 		equal_index = ft_strlen(arg);
@@ -32,7 +32,7 @@ t_env_node	*check_existing_env(t_env *lst_env, char *arg)
 	return (NULL);
 }
 
-void	swap_nodes(t_env_node *current, t_env_node *temp)
+void	swap_nodes(t_env *current, t_env *temp)
 {
 	char	*temp_key;
 	char	*temp_value;
@@ -49,18 +49,18 @@ void	swap_nodes(t_env_node *current, t_env_node *temp)
 	}
 }
 
-void	sort_env(t_env_node **envp_cp)
+void	sort_env(t_env *envp_cp)
 {
-	t_env_node	*current;
-	t_env_node	*temp;
+	t_env	*current;
+	t_env	*temp;
 
-	if (!envp_cp || !*envp_cp)
+	if (envp_cp == NULL)
 		return ;
-	current = *envp_cp;
-	while (current)
+	current = envp_cp;
+	while (current != NULL)
 	{
 		temp = current->next;
-		while (temp)
+		while (temp != NULL)
 		{
 			swap_nodes(current, temp);
 			temp = temp->next;

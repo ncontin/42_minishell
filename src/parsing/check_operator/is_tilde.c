@@ -6,13 +6,13 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:04:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 19:19:03 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 11:48:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	rep_tilde(char **source, t_env_node *env)
+static int	rep_tilde(char **source, t_env *env)
 {
 	char	*str;
 	char	*new_arg;
@@ -37,9 +37,9 @@ static int	rep_tilde(char **source, t_env_node *env)
 
 static int	handle_tilde(char **source, t_mini *mini)
 {
-	t_env_node	*current;
+	t_env	*current;
 
-	current = *mini->lst_env->envp_cp;
+	current = mini->envp_cp;
 	while (current != NULL)
 	{
 		if (ft_strncmp(current->key, "HOME", ft_strlen(current->key) + 1) == 0)

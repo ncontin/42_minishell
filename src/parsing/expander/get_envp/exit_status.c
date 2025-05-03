@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:11:53 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/27 10:53:54 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 09:42:41 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static char	*process_string(char *full_str, int i, char *exit_str)
 	tmp = NULL;
 	before_str = NULL;
 	after_str = NULL;
+	result = NULL;
 	if (extract_part(full_str, i, &before_str, &after_str) == 1)
 	{
 		free(full_str);
@@ -54,8 +55,8 @@ static char	*process_string(char *full_str, int i, char *exit_str)
 	result = handle_strjoin(tmp, after_str);
 	free_three(full_str, before_str, after_str);
 	free(tmp);
-	if (!result)
-		return (NULL);
+	//if (!result)
+		//return (NULL);
 	return (result);
 }
 

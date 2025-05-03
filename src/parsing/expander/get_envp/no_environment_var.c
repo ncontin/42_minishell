@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_environment_var.c                              :+:      :+:    :+:   */
+/*   no_environment_var.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/26 10:18:02 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/26 17:01:43 by aroullea         ###   ########.fr       */
+/*   Created: 2025/05/03 09:23:57 by aroullea          #+#    #+#             */
+/*   Updated: 2025/05/03 09:27:08 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	get_parts(char *full_str, int i, char **before, char **after)
 {
-	size_t		len;
-	size_t		size;
+	size_t	len;
+	size_t	size;
 
 	len = find_word_len(&full_str[i + 1], i);
 	*before = handle_substr(full_str, 0, i);
@@ -32,31 +32,11 @@ static int	get_parts(char *full_str, int i, char **before, char **after)
 	return (0);
 }
 
-static char	*build_env_var(char *before, char *after, t_env_node *current,
-		int *err_code)
-{
-	char	*result;
-	char	*tmp;
-
-	result = get_current_value(current->value);
-	tmp = handle_strjoin(before, result);
-	if (tmp == NULL)
-	{
-		*err_code = 1;
-		return (NULL);
-	}
-	result = handle_strjoin(tmp, after);
-	free(tmp);
-	if (result == NULL)
-		*err_code = 1;
-	return (result);
-}
-
-char	*get_env_var(char *full_str, t_env_node *current, int i, int *err_code)
+char	*no_args(char *full_str, int i, int *err_code)
 {
 	char	*before;
 	char	*after;
-	char	*result;
+	char	*temp;
 
 	if (get_parts(full_str, i, &before, &after) == 1)
 	{
@@ -64,7 +44,13 @@ char	*get_env_var(char *full_str, t_env_node *current, int i, int *err_code)
 		*err_code = 1;
 		return (NULL);
 	}
-	result = build_env_var(before, after, current, err_code);
-	free_three(full_str, before, after);
-	return (result);
+	temp = handle_strjoin(before, after);
+	if (temp == NULL)
+	{
+		free_three(before, after, full_str);
+		*err_code = 1;
+		return (NULL);
+	}
+	free_three(before, after, full_str);
+	return (temp);
 }

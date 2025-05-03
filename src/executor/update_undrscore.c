@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:00:28 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 19:19:36 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:00:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	find_last_argument(char **args)
 	return (i);
 }
 
-static void	replace_underscore(char *arg, t_env_node *current)
+static void	replace_underscore(char *arg, t_env *current)
 {
 	char	*tmp;
 
@@ -41,12 +41,12 @@ static void	replace_underscore(char *arg, t_env_node *current)
 	return ;
 }
 
-void	update_underscore(t_command *cmd, t_env_node **envp_cp, t_mini *mini)
+void	update_underscore(t_command *cmd, t_env *envp_cp, t_mini *mini)
 {
-	t_env_node	*current;
-	int			i;
+	t_env	*current;
+	int		i;
 
-	current = *envp_cp;
+	current = envp_cp;
 	i = find_last_argument(cmd->argv);
 	while (current != NULL)
 	{
@@ -63,7 +63,7 @@ void	update_underscore(t_command *cmd, t_env_node **envp_cp, t_mini *mini)
 		}
 		if (current->next == NULL)
 		{
-			if (add_export_env(mini->lst_env, "_", mini) == 1)
+			if (add_export_env(mini->envp_cp, "_", mini) == 1)
 				return ;
 		}
 		current = current->next;

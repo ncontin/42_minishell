@@ -6,21 +6,21 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 17:43:11 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/08 16:03:22 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/05/03 11:49:40 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_stack(t_env_node **my_envp)
+void	free_stack(t_env *head)
 {
-	t_env_node	*current;
-	t_env_node	*next;
+	t_env	*current;
+	t_env	*next;
 
-	if (!my_envp)
+	if (!head)
 		return ;
-	current = *my_envp;
-	while (current)
+	current = head;
+	while (current != NULL)
 	{
 		next = current->next;
 		if (current->value)
@@ -29,6 +29,4 @@ void	free_stack(t_env_node **my_envp)
 		free(current);
 		current = next;
 	}
-	*my_envp = NULL;
-	free(my_envp);
 }
