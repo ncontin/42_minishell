@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 11:12:56 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/01 18:56:05 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:21:07 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ void	is_path_a_directory(t_command *current, char **envp, t_mini *mini)
 	}
 }
 
-void	update_underscore_path(char *path, t_env_node **envp_cp, t_mini *mini)
+void	update_underscore_path(char *path, t_env *envp_cp, t_mini *mini)
 {
-	t_env_node	*current;
+	t_env	*current;
 
-	current = *envp_cp;
+	current = envp_cp;
 	while (current != NULL)
 	{
 		if (ft_strncmp(current->key, "_", ft_strlen(current->key) + 1) == 0)
@@ -93,7 +93,7 @@ void	update_underscore_path(char *path, t_env_node **envp_cp, t_mini *mini)
 		}
 		if (current->next == NULL)
 		{
-			if (add_export_env(mini->lst_env, "_", mini) == 1)
+			if (add_export_env(mini->envp_cp, "_", mini) == 1)
 				return ;
 		}
 		current = current->next;

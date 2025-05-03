@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/01 08:33:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:16:36 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <dirent.h>
 # include <limits.h>
 # include <sys/stat.h>
+# include <sys/types.h>
 # include <unistd.h>
 
 // Process & Signal Handling
@@ -32,15 +33,13 @@
 # include <signal.h> 
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <sys/wait.h> 
 
 // Readline (Interactive Input)
 # include <readline/history.h>
 # include <readline/readline.h> 
 
+// Errno
 # include <errno.h>
-# include <sys/stat.h>
-# include <sys/types.h>
 
 extern int				g_signal_received;
 
@@ -84,14 +83,6 @@ typedef struct s_env_node
 	char				*key;
 	char				*value;
 	struct s_env_node	*next;
-}						t_env_node;
-
-typedef struct s_env
-{
-	char				**envp;
-	char				**path;
-	t_env_node			**envp_cp;
-	t_env_node			**sorted_envp_cp;
 }						t_env;
 
 typedef struct s_parser
@@ -135,18 +126,18 @@ typedef struct s_mini
 {
 	int					error;
 	char				*input;
-	char				*hd_input;
 	char				**args;
+	char				*hd_input;
 	long long int		exit_code;
 	int					expanded;
-	t_env				*lst_env;
+	t_env				*envp_cp;
+	t_env				*sorted_envp_cp;
 	t_token				*tokens;
 	t_command			*cmds;
 }						t_mini;
 
 /* === INIT === */
-void		init_mini(t_mini *mini);
-void		init_envp(t_mini *mini);
+void		init_envp(t_mini *mini, char **envp);
 
 /* === BUILTINS === */
 int			is_builtin(char *str);
@@ -156,22 +147,21 @@ void		ft_echo(char **cmd_args, long long int *exit_code);
 void		ft_cd(t_mini *mini, char *path);
 char		*handle_home(t_mini *mini, char *pwd);
 void		handle_previous_path(t_mini *mini, char *pwd);
-int			update_old_pwd(t_env_node **env_stack, t_mini *mini);
+int			update_old_pwd(t_env *env_stack, t_mini *mini);
 int			check_cd_path(char *path);
-char		*get_env_value(t_env_node **envp_cp, char *key);
-int			update_pwd(t_env_node **env_stack, t_mini *mini);
-int			get_or_create_pwd(t_env_node *current, t_mini *mini,
+char		*get_env_value(t_env *envp_cp, char *key);
+int			update_pwd(t_env *env_stack, t_mini *mini);
+int			get_or_create_pwd(t_env *current, t_mini *mini,
 				char *key_name, char *pwd);
 int			find_min_len(char *s1, char *s2);
-void		print_export(t_env_node **sorted_envp_cp, char **args);
-t_env_node	**copy_envp_list(t_env_node **envp_cp, t_mini *mini);
-int			replace_env(t_env_node *env_to_replace, char *arg);
+void		print_export(t_env *sorted_envp_cp);
+t_env		*copy_envp_list(t_env *envp_cp, t_mini *mini);
+int			replace_env(t_env *env_to_replace, char *arg);
 void		ft_env(t_mini *mini, char **cmd_args);
 void		ft_export(t_mini *mini, char **cmd_args);
 void		ft_unset(t_mini *mini, char **cmd_args);
 void		ft_unset(t_mini *mini, char **cmd_args);
-void		print_env(t_env_node **env_stack);
-t_env_node	*find_last(t_env_node **my_envp);
+void		print_env(t_env *env_stack);
 int			find_equal(char *str);
 char		*get_key(char *str, int *err_code);
 char		*get_value(char *str, int *err_code);
@@ -180,20 +170,20 @@ long long	ft_atoll(const char *nptr, int *overflow);
 char		*del_spaces(char *str);
 int			check_digit(char *str);
 int			is_double_dash(char **cmd_args);
-t_env_node	*check_existing_env(t_env *lst_env, char *arg);
+t_env		*check_existing_env(t_env *envp_cp, char *arg);
 int			add_export_env(t_env *lst_env, char *arg, t_mini *mini);
-void		swap_nodes(t_env_node *current, t_env_node *temp);
-void		sort_env(t_env_node **envp_cp);
+void		swap_nodes(t_env *current, t_env *temp);
+void		sort_env(t_env *envp_cp);
 void		print_id_error(t_mini *mini, char *arg);
 int			is_valid_option(t_mini *mini, char **cmd_args);
 int			is_valid_identifier(t_mini *mini, char *arg);
-int			join_env_value(t_env_node *env_to_replace, char *arg, t_mini *mini);
+int			join_env_value(t_env *env_to_replace, char *arg, t_mini *mini);
 /* === SIGNAL === */
 void		executor_signal(void);
 void		child_signal(void);
 void		handle_signals(void);
 /* === FREEING === */
-void		free_stack(t_env_node **my_envp);
+void		free_stack(t_env *my_envp);
 void		free_array(char **array);
 void		free_path(t_env *lst_env);
 void		free_input(t_mini *mini);
@@ -219,13 +209,12 @@ void		get_str_error(t_mini *mini, int here_fd, char *new, char *limiter);
 void		print_error_cd(char *msg, char *arg);
 void		print_error_chdir(char *path, char *pwd, t_mini *mini);
 void		here_doc_error(char *str_error, int here_doc_pipe[2]);
-void		copy_env_error(t_env_node **ft_envp, t_mini *mini);
-void		envp_to_list_error(t_mini *mini);
+void		copy_env_error(t_env *head);
 void		ft_envp_error(t_mini *mini);
-void		copy_env_node_error(t_env_node **ft_envp, t_mini *mini);
+void		copy_env_node_error(t_env *sorted_envp_cp, t_mini *mini);
 void		handle_join_env_error(char *str1, char *str2);
 void		print_id_error(t_mini *mini, char *arg);
-void		handle_add_export_error(t_env_node *env, char *key);
+void		handle_add_export_error(t_env *env, char *key);
 void		expander_error(t_mini *mini, int *err_code);
 /* ====== READLINE ====== */
 void		line_read(t_mini *mini);
@@ -258,8 +247,9 @@ char		*get_current_value(char *value);
 char		*handle_strjoin(char *s1, char *s2);
 char		*handle_substr(char *src, int start, size_t len);
 char		*expand_shell_vars(char *arg, t_mini *mini, int *err_code);
-char		*get_env_var(char *full_str, t_env_node *current, int i,
+char		*get_env_var(char *full_str, t_env *current, int i,
 				int *err_code);
+char		*no_args(char *full_str, int i, int *err_code);
 int			split_words(t_mini *mini, t_token **tokens, int *err_code);
 int			find_word_len(char *arg, int len);
 int			get_array_size(char **array);
@@ -288,7 +278,7 @@ int			str_and_operator(t_command *new, t_token *tokens);
 /* ====== EXECUTOR ====== */
 void		executor(t_mini *mini, t_command *current, int prev_fd, int count);
 /* === PROCESS === */
-void		update_underscore(t_command *cmd, t_env_node **envp_cp,
+void		update_underscore(t_command *cmd, t_env *envp_cp,
 				t_mini *mini);
 void		parent_process(int *prev_fd, t_command *current);
 void		child_process(t_command *current, int *prev_fd, t_mini *mini);
@@ -308,7 +298,7 @@ int			is_user_in_bin(t_mini *mini, t_command *current, char **envp);
 void		is_path_a_directory(t_command *current, char **envp, t_mini *mini);
 void		handle_no_exec(t_command *current, char **envp, t_mini *mini,
 				int error);
-void		update_underscore_path(char *path, t_env_node **envp_cp,
+void		update_underscore_path(char *path, t_env *envp_cp,
 				t_mini *mini);
 /* === GET ENVP === */
 int			get_envp_array(t_env *lst_env, char ***envp);

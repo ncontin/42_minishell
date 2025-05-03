@@ -6,17 +6,17 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 06:40:44 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/29 06:42:16 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 10:33:56 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_env_node	*create_env_node(t_env_node *current)
+static t_env	*create_env_node(t_env *current)
 {
-	t_env_node	*node;
+	t_env	*node;
 
-	node = malloc(sizeof(t_env_node));
+	node = malloc(sizeof(t_env));
 	if (!node)
 		return (NULL);
 	node->key = ft_strdup(current->key);
@@ -41,51 +41,41 @@ static t_env_node	*create_env_node(t_env_node *current)
 	return (node);
 }
 
-static void	append_env_node(t_env_node **ft_envp, t_env_node *node)
+static void	append_env_node(t_env **head, t_env **new, t_env **end)
 {
-	t_env_node	*last;
-
-	if (!(*ft_envp))
-		*ft_envp = node;
-	else
-	{
-		last = find_last(ft_envp);
-		last->next = node;
-	}
+    if (*head == NULL)
+    {
+        *head = *new;
+        *end = *new;
+    }
+    else
+    {
+        (*end)->next = *new;
+        *end = *new;
+    }
 }
 
-static int	copy_env(t_env_node *current, t_env_node **ft_envp, t_mini *mini)
+t_env	*copy_envp_list(t_env *envp_cp, t_mini *mini)
 {
-	t_env_node	*node;
+	t_env	*current;
+	t_env	*new;
+	t_env	*head;
+	t_env	*end;
 
-	node = create_env_node(current);
-	if (!node)
+	current = envp_cp;
+	head = NULL;
+	new = NULL;
+	end = NULL;
+	while (current != NULL)
 	{
-		copy_env_node_error(ft_envp, mini);
-		return (1);
-	}
-	append_env_node(ft_envp, node);
-	return (0);
-}
-
-t_env_node	**copy_envp_list(t_env_node **envp_cp, t_mini *mini)
-{
-	t_env_node	**ft_envp;
-	t_env_node	*current;
-
-	current = *envp_cp;
-	ft_envp = malloc(sizeof(t_env_node *));
-	if (!ft_envp)
-	{
-		ft_envp_error(mini);
-		return (NULL);
-	}
-	*ft_envp = NULL;
-	while (current)
-	{
-		if (copy_env(current, ft_envp, mini) == 1)
+		new = create_env_node(current);
+		if (new == NULL)
+		{
+			copy_env_node_error(head, mini);
 			return (NULL);
+		}
+		append_env_node(&head, &new, &end);
 		current = current->next;
 	}
-	return (ft_envp);
+	return (head);
 }

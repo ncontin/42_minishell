@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/05/01 06:22:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 09:13:03 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ static int	handle_dollar(t_token **tokens, t_token **current)
 
 int	expander(t_mini *mini, t_token *tokens, t_token *current, int *err_code)
 {
-	tokens = mini->tokens;
-	current = NULL;
 	while (tokens != NULL)
 	{
 		if (is_dollar(&tokens) && tokens->next && tokens->next->argument)

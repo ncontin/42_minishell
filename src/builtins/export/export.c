@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 04:47:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/30 10:44:59 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:15:45 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	export_checks(t_mini *mini, char **cmd_args)
 {
-	if (!mini->lst_env || !mini->cmds || !cmd_args[0])
+	if (!mini->envp_cp || !mini->cmds || !cmd_args[0])
 		return (1);
 	if (cmd_args[1] && !is_valid_option(mini, cmd_args))
 		return (1);
@@ -23,30 +23,30 @@ static int	export_checks(t_mini *mini, char **cmd_args)
 
 static int	prepare_export_env(t_mini *mini)
 {
-	t_env_node	**envp_copy;
+	t_env	*envp_copy;
 
-	envp_copy = copy_envp_list(mini->lst_env->envp_cp, mini);
+	envp_copy = copy_envp_list(mini->envp_cp, mini);
 	if (!envp_copy)
 	{
-		mini->lst_env->sorted_envp_cp = NULL;
+		mini->sorted_envp_cp = NULL;
 		return (1);
 	}
 	else
-		mini->lst_env->sorted_envp_cp = envp_copy;
-	sort_env(mini->lst_env->sorted_envp_cp);
+		mini->sorted_envp_cp = envp_copy;
+	sort_env(mini->sorted_envp_cp);
 	return (0);
 }
 
 static void	process_export(t_mini *mini, char **cmd_args, int i)
 {
-	t_env_node	*env_to_replace;
-	int			equal_index;
+	t_env	*env_to_replace;
+	int		equal_index;
 
 	while (cmd_args[++i])
 	{
 		if (cmd_args[i] && !is_valid_identifier(mini, cmd_args[i]))
 			continue ;
-		env_to_replace = check_existing_env(mini->lst_env, cmd_args[i]);
+		env_to_replace = check_existing_env(mini->envp_cp, cmd_args[i]);
 		equal_index = find_equal(cmd_args[i]);
 		if (equal_index < 0)
 			equal_index = ft_strlen(cmd_args[i]);
@@ -61,7 +61,7 @@ static void	process_export(t_mini *mini, char **cmd_args, int i)
 				return ;
 		}
 		else
-			if (add_export_env(mini->lst_env, cmd_args[i], mini) == 1)
+			if (add_export_env(mini->envp_cp, cmd_args[i], mini) == 1)
 				return ;
 	}
 }
@@ -72,9 +72,9 @@ void	ft_export(t_mini *mini, char **cmd_args)
 		return ;
 	if (prepare_export_env(mini) == 1)
 		return ;
-	if (cmd_args[0])
-		print_export(mini->lst_env->sorted_envp_cp, cmd_args);
-	if (cmd_args[0] && cmd_args[1])
+	if (cmd_args[0] && !cmd_args[1])
+		print_export(mini->sorted_envp_cp);
+	else if (cmd_args[0] && cmd_args[1])
 		process_export(mini, cmd_args, 0);
-	free_stack(mini->lst_env->sorted_envp_cp);
+	free_stack(mini->sorted_envp_cp);
 }

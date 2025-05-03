@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:38:46 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/25 07:09:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 09:47:35 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_env(t_mini *mini, char **cmd_args)
 	}
 	else
 	{
-		print_env(mini->lst_env->envp_cp);
+		print_env(mini->envp_cp);
 		mini->exit_code = 0;
 	}
 }

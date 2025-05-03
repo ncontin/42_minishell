@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_utils.c                                     :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 16:47:09 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/29 07:50:34 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:15:10 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	display_export(t_env_node *current)
+static void	display_export(t_env *current)
 {
 	size_t	len;
 
-	while (current)
+	while (current != NULL)
 	{
 		len = ft_strlen(current->key) + 1;
 		if (ft_strncmp(current->key, "_", len) != 0)
@@ -31,18 +31,9 @@ static void	display_export(t_env_node *current)
 	}
 }
 
-void	print_export(t_env_node **sorted_envp_cp, char **args)
+void	print_export(t_env *sorted_envp_cp)
 {
-	t_env_node	*current;
-
-	if (!(*sorted_envp_cp) && !sorted_envp_cp)
+	if (sorted_envp_cp == NULL)
 		return ;
-	if (args[0] && !args[1])
-	{
-		if (sorted_envp_cp && *sorted_envp_cp)
-		{
-			current = *sorted_envp_cp;
-			display_export(current);
-		}
-	}
+	display_export(sorted_envp_cp);
 }

@@ -6,16 +6,16 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:18:54 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/01 05:33:03 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/03 12:12:17 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	update_pwd(t_env_node **env_stack, t_mini *mini)
+int	update_pwd(t_env *env_stack, t_mini *mini)
 {
-	char		*pwd;
-	t_env_node	*current;
+	char	*pwd;
+	t_env	*current;
 
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
@@ -24,17 +24,17 @@ int	update_pwd(t_env_node **env_stack, t_mini *mini)
 		write(STDERR_FILENO, "to update pwd\n", 14);
 		return (1);
 	}
-	current = *env_stack;
+	current = env_stack;
 	if (get_or_create_pwd(current, mini, "PWD", pwd) == 1)
 		return (1);
 	return (0);
 }
 
-char	*get_env_value(t_env_node **envp_cp, char *key)
+char	*get_env_value(t_env *envp_cp, char *key)
 {
-	t_env_node	*current;
+	t_env	*current;
 
-	current = *envp_cp;
+	current = envp_cp;
 	while (current)
 	{
 		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
@@ -71,9 +71,9 @@ int	check_cd_path(char *path)
 	return (0);
 }
 
-int	update_old_pwd(t_env_node **env_stack, t_mini *mini)
+int	update_old_pwd(t_env *env_stack, t_mini *mini)
 {
-	t_env_node	*current;
+	t_env		*current;
 	char		*old_pwd_copy;
 	char		*old_pwd;
 
@@ -86,7 +86,7 @@ int	update_old_pwd(t_env_node **env_stack, t_mini *mini)
 		write(STDERR_FILENO, "Memory allocation failed in old_pwd\n", 36);
 		return (1);
 	}
-	current = *env_stack;
+	current = env_stack;
 	if (get_or_create_pwd(current, mini, "OLDPWD", old_pwd_copy) == 1)
 		return (1);
 	return (0);
@@ -99,7 +99,7 @@ char	*handle_home(t_mini *mini, char *pwd)
 	if (!mini->cmds->argv[1] || ft_strncmp(mini->cmds->argv[1], "~", 2) == 0)
 	{
 		mini->exit_code = 0;
-		path = get_env_value(mini->lst_env->envp_cp, "HOME");
+		path = get_env_value(mini->envp_cp, "HOME");
 		if (!path)
 		{
 			mini->exit_code = 1;
