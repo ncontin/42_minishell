@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:04:18 by ncontin           #+#    #+#             */
-/*   Updated: 2025/05/03 09:13:03 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/04 11:53:47 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,27 +53,30 @@ static int	handle_dollar(t_token **tokens, t_token **current)
 	return (0);
 }
 
-int	expander(t_mini *mini, t_token *tokens, t_token *current, int *err_code)
+int	expander(t_mini *mini, t_token **tokens, t_token *current, int *err_code)
 {
-	while (tokens != NULL)
+	t_token	*temp;
+
+	temp = *tokens;
+	while (temp != NULL)
 	{
-		if (is_dollar(&tokens) && tokens->next && tokens->next->argument)
+		if (is_dollar(&temp) && (temp)->next && (temp)->next->argument)
 		{
-			if (handle_dollar(&tokens, &current) == 1)
+			if (handle_dollar(&temp, &current) == 1)
 				return (1);
 		}
-		else if (tokens->prev != NULL && tokens->prev->operator == HEREDOC)
-			advance_token(&tokens, &current);
-		else if (tokens->quotes != SINGLE && tokens->argument != NULL)
+		else if (temp->prev != NULL && temp->prev->operator == HEREDOC)
+			advance_token(&temp, &current);
+		else if (temp->quotes != SINGLE && temp->argument != NULL)
 		{
-			if (expandable_token(mini, &tokens, &current, err_code) == 1)
+			if (expandable_token(mini, &temp, &current, err_code) == 1)
 				return (1);
 		}
 		else
-			advance_token(&tokens, &current);
+			advance_token(&temp, &current);
 	}
 	while (current->prev != NULL)
 		current = current->prev;
-	mini->tokens = current;
+	*tokens = current;
 	return (0);
 }

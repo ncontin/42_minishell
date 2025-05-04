@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:19:29 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/27 16:03:52 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/04 10:22:46 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ static void	remove_dollar(t_token **current, t_token **next)
 	*current = NULL;
 }
 
-void	is_dollar_alone(t_mini *mini)
+void	is_dollar_alone(t_token *tokens)
 {
 	t_token	*current;
 	t_token	*next;
 	char	*str;
 
-	current = mini->tokens;
+	current = tokens;
 	while (current != NULL)
 	{
 		next = NULL;

@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 19:00:54 by ncontin           #+#    #+#             */
-/*   Updated: 2025/04/03 12:50:08 by ncontin          ###   ########.fr       */
+/*   Updated: 2025/05/04 10:21:28 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,4 @@ void	free_input(t_mini *mini)
 		free(mini->input);
 		mini->input = NULL;
 	}
-	if (mini->tokens)
-		mini->tokens = NULL;
 }

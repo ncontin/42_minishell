@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 04:47:01 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/03 14:25:30 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/04 10:49:20 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	process_export(t_mini *mini, char **cmd_args, int i)
 void	ft_export(t_mini *mini, char **cmd_args)
 {
 	t_env	*envp_copy;
-	
+
 	if (export_checks(mini, cmd_args) == 1)
 		return ;
 	envp_copy = copy_envp_list(mini->envp_cp, mini);

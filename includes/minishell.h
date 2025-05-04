@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/03 14:39:55 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/04 12:09:16 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@
 # include <limits.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 // Process & Signal Handling
 # include <fcntl.h>
 # include <signal.h> 
-# include <sys/types.h>
-# include <sys/wait.h>
 
 // Readline (Interactive Input)
 # include <readline/history.h>
@@ -130,7 +129,6 @@ typedef struct s_mini
 	long long int		exit_code;
 	int					expanded;
 	t_env				*envp_cp;
-	t_token				*tokens;
 	t_command			*cmds;
 }	t_mini;
 
@@ -224,9 +222,9 @@ void		assign_type_argument(t_token *tokens);
 t_bool		is_even_quotes(char **tokens);
 t_bool		is_valid_operator(char **args);
 t_bool		is_valid_token(t_token *tokens);
-int			is_tilde(t_mini *mini);
-void		is_dollar_alone(t_mini *mini);
-int			check_dollar(t_mini *mini);
+int			is_tilde(t_mini *mini, t_token *tokens);
+void		is_dollar_alone(t_token *tokens);
+int			check_dollar(t_mini *mini, t_token *tokens);
 /* === CREATE LIST === */
 t_token		*create_list(char **tokens);
 t_token		*init_new_list(t_token *head);
@@ -237,7 +235,7 @@ char		*rm_quotes(char *args, int size);
 void		multi_str(char *args, int nb_strings, t_token **head, int i);
 int			is_multi_strings(char *args, int i, t_bool dquote, t_bool squote);
 /* === EXPANDER === */
-int			expander(t_mini *mini, t_token *tokens, t_token *current,
+int			expander(t_mini *mini, t_token **tokens, t_token *current,
 				int *err_code);
 char		*expand_exit_status(char *arg, t_mini *mini);
 void		free_three(char *a, char *b, char *c);

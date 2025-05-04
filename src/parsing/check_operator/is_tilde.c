@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:04:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/03 11:48:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/04 09:51:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ static int	handle_tilde(char **source, t_mini *mini)
 	return (0);
 }
 
-int	is_tilde(t_mini *mini)
+int	is_tilde(t_mini *mini, t_token *tokens)
 {
 	t_token	*current;
 
-	current = mini->tokens;
+	current = tokens;
 	while (current != NULL)
 	{
 		if (current->argument != NULL && current->argument[0] == '~')

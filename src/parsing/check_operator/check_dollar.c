@@ -6,7 +6,7 @@
 /*   By: aroullea <aroullea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:16:20 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/01 15:30:15 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/04 09:46:31 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ static int	new_token(t_token *current, t_mini *mini)
 	return (0);
 }
 
-int	check_dollar(t_mini *mini)
+int	check_dollar(t_mini *mini, t_token *tokens)
 {
 	t_token		*current;
 	size_t		len;
 	t_quotes	quotes;
 
-	current = mini->tokens;
+	current = tokens;
 	while (current != NULL)
 	{
 		quotes = current->quotes;
