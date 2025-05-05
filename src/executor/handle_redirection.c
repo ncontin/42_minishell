@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 18:26:33 by aroullea          #+#    #+#             */
-/*   Updated: 2025/04/24 09:17:43 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:07:15 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,26 @@
 
 void	here_doc_redirection(t_command *current, t_mini *mini)
 {
-	duplicate_fd(current->here_doc_fd, STDIN_FILENO, mini, current);
+	int	null_fd;
+
+	if ((current->next == NULL)
+		|| (current->next != NULL && current->next->check_here_doc == FALSE))
+		duplicate_fd(current->here_doc_fd, STDIN_FILENO, mini, current);
+	else
+	{
+		null_fd = open("/dev/null", O_RDONLY);
+		duplicate_fd(null_fd, STDIN_FILENO, mini, current);
+		close(null_fd);
+	}
 	close(current->here_doc_fd);
 	current->here_doc_fd = -1;
-	if (current->next != NULL)
+	if (current->next != NULL && current->next->check_here_doc == TRUE)
+	{
+		null_fd = open("/dev/null", O_RDONLY);
+		duplicate_fd(null_fd, STDOUT_FILENO, mini, current);
+		close(null_fd);
+	}
+	if (current->next != NULL && current->next->check_here_doc == FALSE)
 	{
 		duplicate_fd(current->pipe_fd[1], STDOUT_FILENO, mini, current);
 		close(current->pipe_fd[1]);
