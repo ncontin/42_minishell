@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 16:52:00 by ncontin           #+#    #+#             */
-/*   Updated: 2025/05/03 10:55:02 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/05 17:10:31 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,22 @@
 
 t_env	*check_existing_env(t_env *envp_cp, char *arg)
 {
-	t_env	*current;
-	int		equal_index;
+	t_env			*current;
+	int				equal_index;
+	unsigned long	name_len;
 
 	current = envp_cp;
 	equal_index = find_equal(arg);
 	if (equal_index < 0)
-		equal_index = ft_strlen(arg);
+		name_len = ft_strlen(arg);
 	else if (arg[equal_index - 1] == '+')
-		equal_index -= 1;
+		name_len = equal_index - 1;
+	else
+		name_len = equal_index;
 	while (current)
 	{
-		if (ft_strncmp(arg, current->key, equal_index) == 0)
+		if (ft_strlen(current->key) == name_len && ft_strncmp(arg, current->key,
+				name_len) == 0)
 			return (current);
 		current = current->next;
 	}
