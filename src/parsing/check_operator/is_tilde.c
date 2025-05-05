@@ -6,7 +6,7 @@
 /*   By: aroullea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 17:04:55 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/05 10:21:17 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/05 10:29:01 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int	is_tilde(t_mini *mini)
 				if (current->argument[1] == '\0' || current->argument[1] == '/')
 				{
 					if (current->linked == FALSE || (current->linked == TRUE
-								&& current->next->argument != NULL
-								&& current->next->argument[0] == '/'))
+							&& current->next->argument != NULL
+							&& current->next->argument[0] == '/'))
 						if (handle_tilde(&current->argument, mini) == 1)
 							return (1);
 				}
