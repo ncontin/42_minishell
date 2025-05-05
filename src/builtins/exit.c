@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 18:03:52 by ncontin           #+#    #+#             */
-/*   Updated: 2025/05/01 12:27:10 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:07:05 by ncontin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,7 @@ static int	validate_exit_arg(t_mini *mini, char *arg_str, char **arg)
 	overflow = 0;
 	*arg = del_spaces(arg_str);
 	if (*arg == NULL)
-	{
-		perror("minishell: exit");
-		mini->exit_code = 1;
 		return (0);
-	}
 	if (check_digit(*arg) == 1 || check_overflow(*arg, &overflow) == 1)
 	{
 		print_error(mini, arg_str);
