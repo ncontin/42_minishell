@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 17:52:47 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/06 08:39:47 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/06 08:56:48 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	handle_start(t_command *current, t_mini *mini)
 	executor_signal();
 	if (setup_here_docs(mini) == 1)
 		return (1);
-	precreate_files(current, mini);
+	precreate_files(current);
 	return (0);
 }
 
