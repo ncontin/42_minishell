@@ -6,7 +6,7 @@
 /*   By: ncontin <ncontin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 10:30:06 by aroullea          #+#    #+#             */
-/*   Updated: 2025/05/06 08:40:37 by aroullea         ###   ########.fr       */
+/*   Updated: 2025/05/06 20:05:33 by aroullea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,8 +277,6 @@ t_bool		is_filename_or_limiter(t_arg_type arg_type);
 int			str_and_operator(t_command *new, t_token *tokens);
 /* ====== EXECUTOR ====== */
 void		executor(t_mini *mini, t_command *current, int prev_fd, int count);
-/* === EXECUTOR UTILS === */
-void		precreate_files(t_command *cmd);
 /* === PROCESS === */
 void		update_underscore(t_command *cmd, t_env *envp_cp,
 				t_mini *mini);
