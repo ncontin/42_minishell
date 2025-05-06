@@ -95,6 +95,7 @@ SRC_READLINE =  src/readline/readline.c\
 SRC_INIT =		src/init/envp_init.c\
 
 SRC_EXECUTOR =	src/executor/executor.c\
+				src/executor/executor_utils.c\
 				src/executor/process.c\
 				src/executor/here_doc_close_fd.c\
 				src/executor/handle_redirection.c\
