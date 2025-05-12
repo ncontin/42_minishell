@@ -8,7 +8,9 @@ fix expander :
 bash > $9USER
 bash > USER : command not found
 ---------------------------------------------------------------------------------------------
-fix here_doc signal : Ctrl+\ should quit here_doc
+bash> cat 
+Ctrl+\ should quit and write : 
+^\Quit (core dumped)
 ---------------------------------------------------------------------------------------------
 fun command to fix: ./minishell | ./minishell 
 if (isatty(STDIN_FILENO))
