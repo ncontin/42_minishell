@@ -1,0 +1,20 @@
+---------------------------------------------------------------------------------------------
+handle redirection files and create pipes before entering the main loop in executor
+to fix this command : echo hey > test1.txt | cat < test1.txt 
+---------------------------------------------------------------------------------------------
+handle Shell Level (SHLVL) in env function
+---------------------------------------------------------------------------------------------
+fix expander : 
+bash > $9USER
+bash > USER : command not found
+---------------------------------------------------------------------------------------------
+bash> cat 
+Ctrl+\ should quit and write : 
+^\Quit (core dumped)
+---------------------------------------------------------------------------------------------
+fun command to fix: ./minishell | ./minishell 
+if (isatty(STDIN_FILENO))
+---------------------------------------------------------------------------------------------
+free add_history
+---------------------------------------------------------------------------------------------
+then let's try bonus
