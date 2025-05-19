@@ -11,7 +11,7 @@ A basic implementation of a Unix shell, featuring command execution, pipes, redi
 - Input/output redirections (>, <, >>, <<)
 - Pipes (|)
 - Environment variables expansion
-- Signal handling (Ctrl-C, Ctrl-D, Ctrl-\)
+- Signal handling (Ctrl-C, Ctrl-D, Ctrl-\\)
 - Built-in commands:
   - echo
   - cd
