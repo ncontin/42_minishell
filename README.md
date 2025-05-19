@@ -24,7 +24,7 @@ A basic implementation of a Unix shell, featuring command execution, pipes, redi
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/42_minishell.git
+git clone https://github.com/ncontin/42_minishell.git
 cd 42_minishell
 make
 ```
